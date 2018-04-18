@@ -18,18 +18,9 @@ void TrussProp::SetJ(double J)
     this->J = J;
 }
 
-bool TrussProp::IsIsoMat()
+int TrussProp::IsIsoMat()
 {
-    Mat::MatType mattype = mat->GetMatType();
-
-    if(mattype != Mat::Iso)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	return mat->IsIsoMat();
 }
 
 int TrussProp::GetId()

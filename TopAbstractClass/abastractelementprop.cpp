@@ -4,3 +4,8 @@ EProp::EProp()
 {
 
 }
+
+EProp::~EProp()
+{
+
+}

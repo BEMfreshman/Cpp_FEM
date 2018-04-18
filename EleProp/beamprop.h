@@ -7,9 +7,10 @@
  */
 
 #include "Eigen/Eigen"
-#include "../MaterialProp/mat.h"
+#include "../TopAbstractClass/abstractmaterial.h"
+#include "../TopAbstractClass/abastractelementprop.h"
 
-class BeamProp
+class BeamProp:public EProp
 {
 
 public:

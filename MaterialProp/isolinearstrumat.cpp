@@ -1,8 +1,8 @@
 #include "isolinearstrumat.h"
 
-IsoLinearStruMat::IsoLinearStruMat()
+IsoLinearStruMat::IsoLinearStruMat(int dim) :LinearStruMat(dim)
 {
-
+	mattype = Iso;
 }
 
 IsoLinearStruMat::~IsoLinearStruMat()

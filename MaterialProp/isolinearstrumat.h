@@ -6,7 +6,7 @@
 class IsoLinearStruMat:public LinearStruMat
 {
 public:
-    IsoLinearStruMat();
+    IsoLinearStruMat(int dim);
     ~IsoLinearStruMat();
 };
 

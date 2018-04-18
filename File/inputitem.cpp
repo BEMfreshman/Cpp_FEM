@@ -140,6 +140,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double> Data,InputItemName
                     Data[PropName] = PropValue;
                 }
             }
+			return 1;
 
         }
         case EProp_PropNameAndPropValue:
@@ -166,6 +167,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double> Data,InputItemName
                     Data[PropName] = PropValue;
                 }
             }
+			return 1;
         }
     }
 }
@@ -337,12 +339,12 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
 
 int InputItem::GetDataByItemName(std::vector<int>& Data,InputItemName inputitemname)
 {
-
+	return 0;
 }
 
 int InputItem::GetDataByItemName(std::vector<double>& Data,InputItemName inputitemname)
 {
-
+	return 0;
 }
 
 int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemname)
@@ -427,5 +429,5 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
 
 int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemname)
 {
-
+	return 0;
 }

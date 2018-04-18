@@ -6,7 +6,7 @@
 class LinearStruMat :public StructureMat
 {
 public:
-    LinearStruMat();
+    LinearStruMat(int dim);
     virtual ~LinearStruMat() = 0;
 };
 

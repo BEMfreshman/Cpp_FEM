@@ -1,6 +1,6 @@
 #include "linearstrumat.h"
 
-LinearStruMat::LinearStruMat()
+LinearStruMat::LinearStruMat(int dim) :StructureMat(dim)
 {
 
 }

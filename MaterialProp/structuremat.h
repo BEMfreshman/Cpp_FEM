@@ -8,7 +8,10 @@
 class StructureMat:public Mat
 {
 public:
-    StructureMat();
+    StructureMat(int dim);
+
+	virtual int ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matReturn) = 0;
+
     virtual ~StructureMat() = 0;
 };
 

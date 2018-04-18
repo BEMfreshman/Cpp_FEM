@@ -1,7 +1,8 @@
 #include "structuremat.h"
 
-StructureMat::StructureMat()
+StructureMat::StructureMat(int dim) :Mat(dim)
 {
+	matcate = Solid;
 
 }
 

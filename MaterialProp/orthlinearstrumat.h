@@ -6,7 +6,7 @@
 class OrthLinearStruMat:public LinearStruMat
 {
 public:
-    OrthLinearStruMat();
+    OrthLinearStruMat(int dim);
     ~OrthLinearStruMat();
 };
 

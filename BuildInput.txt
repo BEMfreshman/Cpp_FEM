@@ -2232,4 +2232,4 @@
 *Material
 1,Linear,Iso,E,50000,Nu,0.3,RHO,1.0
 *EleProp
-1,Beam,Area,2.9,I1,3.5,I2,5.79
+1,Beam,Area,2.9,Iy,3.5,Iz,5.79

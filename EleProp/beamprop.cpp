@@ -1,6 +1,43 @@
 #include "beamprop.h"
 
-BeamProp::BeamProp():id(0),Area(0.0),L(0.0),I(0.0)
+BeamProp::BeamProp(int id) :EProp(id)
 {
-    mat = NULL;
+    
+}
+
+BeamProp::~BeamProp()
+{
+
+}
+
+int BeamProp::SetValue(const std::map<std::string, double>& EPropNameAndValue)
+{
+	std::map<std::string, double>::const_iterator it;
+	EPropVar EPV;
+	for (it = EPropNameAndValue.begin(); it != EPropNameAndValue.end(); it++)
+	{
+		if (it->first == "Area")
+		{
+			EPV = Area;
+		}
+		else if (it->first == "Iy")
+		{
+			EPV = Iy;
+		}
+		else if (it->first == "Iz")
+		{
+			EPV = Iz;
+		}
+		else if (it->first == "Tx")
+		{
+			EPV = Tx;
+		}
+
+		if (__SetValue(EPV, it->second) == 0)
+		{
+			printf("错误：单元属性设置错误\n");
+			return 0;
+		}
+	}
+	return 1;
 }

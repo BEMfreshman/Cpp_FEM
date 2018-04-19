@@ -47,10 +47,13 @@ public:
                            Eigen::ArrayXi& VertexIdArray,
                            Eigen::ArrayXi& VertexConnect);
 */
-    Mat* CreateMat(int MaterialId);
+	Mat* CreateMat(int MaterialId, const std::string& LinearOrNot,
+		const std::string& IsoOrNot, const std::map<std::string, double> PropNameAndPropValue,
+		const std::string& DimAndMatStatus);
     //2017.10.21 Mat需要更多的创建方式
 
-    EProp* CreateEProp(int EPropId);
+    EProp* CreateEProp(int EPropId,const std::string& ElementPropName,
+		const std::map<std::string,double>& PropNameAndPropValue);
     //创建一个单元截面属性
 
     Load* CreateLoad(int LoadId);

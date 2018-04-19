@@ -9,3 +9,8 @@ OrthLinearStruMat::~OrthLinearStruMat()
 {
 
 }
+
+int OrthLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matReturn)
+{
+	return 0;
+}

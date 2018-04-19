@@ -1,49 +1,34 @@
 #include "trussprop.h"
 
-TrussProp::TrussProp():id(0),Area(0),L(0),J(0)
+TrussProp::TrussProp(int id) :EProp(id)
 {
-    mat = NULL;
+   
 }
 
-TrussProp::TrussProp(int id,double Area,double L,Mat* mat)
+TrussProp::~TrussProp()
 {
-    this->id = id;
-    this->Area = Area;
-    this->L = L;
-    this->mat = mat;
+
 }
 
-void TrussProp::SetJ(double J)
+int TrussProp::SetValue(const std::map<std::string, double>& EPropNameAndValue)
 {
-    this->J = J;
+	std::map<std::string, double>::const_iterator it;
+	EPropVar EPV;
+	for (it = EPropNameAndValue.begin(); it != EPropNameAndValue.end(); it++)
+	{
+		if (it->first == "Area")
+		{
+			EPV = Area;
+		}
+
+
+		if (__SetValue(EPV, it->second) == 0)
+		{
+			printf("错误：单元属性设置错误\n");
+			return 0;
+		}
+	}
+	return 1;
 }
 
-int TrussProp::IsIsoMat()
-{
-	return mat->IsIsoMat();
-}
 
-int TrussProp::GetId()
-{
-    return id;
-}
-
-double TrussProp::GetArea()
-{
-    return Area;
-}
-
-double TrussProp::GetJ()
-{
-    return J;
-}
-
-double TrussProp::GetL()
-{
-    return L;
-}
-
-Mat* TrussProp::GetMat()
-{
-    return mat;
-}

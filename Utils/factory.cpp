@@ -2,6 +2,10 @@
 #include "../Geo/vertex.h"
 #include "../Geo/quadelement.h"
 #include "../Geo/truss.h"
+#include "../MaterialProp/isolinearstrumat.h"
+#include "../MaterialProp/orthlinearstrumat.h"
+#include "../EleProp/beamprop.h"
+#include "../EleProp/trussprop.h"
 
 
 Factory::Factory()
@@ -101,4 +105,51 @@ Element* Factory::CreateElement(int ElementId,
     }
     return NULL;
 
+}
+
+Mat* Factory::CreateMat(int MaterialId, const std::string& LinearOrNot,
+	const std::string& IsoOrNot, const std::map<std::string, double> PropNameAndPropValue,
+	const std::string& DimAndMatStatus)
+{
+
+	Mat *mat;
+	if (LinearOrNot == "Linear" && IsoOrNot == "Iso")
+	{
+		mat = new IsoLinearStruMat(MaterialId);
+	}
+	else if (LinearOrNot == "Linear" && IsoOrNot == "Orth")
+	{
+		mat = new OrthLinearStruMat(MaterialId);
+	}
+
+	if (mat->SetValue(PropNameAndPropValue) == 0)
+	{
+		printf("错误：没有设置材料属性项目\n");
+	}
+
+	if (mat->SetDimAndMatStatus(DimAndMatStatus) == 0)
+	{
+		printf("错误：无法设置维度项目\n");
+	}
+	return mat;
+}
+
+EProp* Factory::CreateEProp(int EPropId, const string& ElementPropName,
+	const std::map<std::string, double>& PropNameAndPropValue)
+{
+	EProp* EP;
+
+	if (ElementPropName == "Beam")
+	{
+		EP = new BeamProp(EPropId);
+		
+	}
+	else if (ElementPropName == "Truss")
+	{
+		EP = new TrussProp(EPropId);
+	}
+
+	EP->SetValue(PropNameAndPropValue);
+
+	return EP;
 }

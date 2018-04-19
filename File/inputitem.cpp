@@ -112,7 +112,7 @@ std::string InputItem::GetDataStr(int pos)
     }
 }
 
-int InputItem::GetDataByItemName(std::map<std::string,double> Data,InputItemName inputitemname)
+int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemName inputitemname)
 {
     switch(inputitemname)
     {
@@ -151,7 +151,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double> Data,InputItemName
             int Counter = 0;
             for(int i = 4 ; i <= NumofSplitStr;i++)
             {
-                if(i % 2 == 1)
+                if(i % 2 == 0)
                 {
                     PropName = GetDataStr(i);
                     Counter++;
@@ -195,8 +195,8 @@ int InputItem::GetDataByItemName(std::string& Data,InputItemName inputitemname)
         }
         case Mat_IsoOrNot:
         {
-        Data = GetDataStr(4);
-        return 1;
+			Data = GetDataStr(4);
+			return 1;
         }
         case EProp_ElementName:
         {

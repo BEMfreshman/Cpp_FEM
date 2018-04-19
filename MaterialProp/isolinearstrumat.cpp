@@ -9,3 +9,8 @@ IsoLinearStruMat::~IsoLinearStruMat()
 {
 
 }
+
+int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matReturn)
+{
+	return 1;
+}

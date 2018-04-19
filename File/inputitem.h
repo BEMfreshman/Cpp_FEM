@@ -36,7 +36,7 @@ public:
     int GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemname);
     int GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemname);
     int GetDataByItemName(std::string& Data,InputItemName inputitemname);
-    int GetDataByItemName(std::map<std::string,double> Data,InputItemName inputitemname);
+    int GetDataByItemName(std::map<std::string,double>& Data,InputItemName inputitemname);
 
     void GetData(bool* Data);
 

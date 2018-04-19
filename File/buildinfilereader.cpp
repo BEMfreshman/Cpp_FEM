@@ -202,7 +202,7 @@ BuildinKeyWord BuildInFileReader::SwitchFromKeyWordToEnum(const std::string& key
     {
         return ElementKW;
     }
-    else if((idx = keyword.find("*ElementProp")) != std::string::npos)
+    else if((idx = keyword.find("*EleProp")) != std::string::npos)
     {
         return ElementPropKW;
     }

@@ -56,8 +56,8 @@ protected:
     std::vector<Element *> EleVec; // 存放单元的容器
     std::vector<Mat *> MatVec; //存放材料的容器
     std::vector<EProp *> EPropVec; // 存放单元属性的容器
-    std::vector<Load *> LoadVec; //存放Load的容器
-    std::vector<Constraint *> ConstraintVec; // 存放约束的容器
+    std::vector<Load *> LoadVec; //存放载荷的容器
+    std::vector<Constraint *> ConstraintVec; // 存放位移边界的容器
 
 protected:
     void SetMatAndEProp();   //为单元设置Mat和EProp指针

@@ -3,13 +3,18 @@
 
 #include "matpropvar.h"
 #include "Eigen/Eigen"
+#include <map>
+
+#include <stdio.h>
+#include <string>
+
 
 using namespace std;
 
 class Mat
 {
 public:
-    Mat(int dim);
+    Mat(int id);
     virtual ~Mat() = 0;
 
 	int hasProp(MatVar SMP);
@@ -20,7 +25,9 @@ public:
 	int GetValue(MatVar SMP, Eigen::MatrixXd& Value);
     //int GetValue(MatVar SMP,Eigen::ArrayXXi& Value);
 
-	int SetValue(MatVar SMP, double Value);
+	int SetValue(const map<string, double>& PropNameAndValue);
+	int SetDimAndMatStatus(const string& str);
+	
 
     virtual int ComputeMatrix(MatMatrix matmatrix,Eigen::MatrixXd& matReturn) = 0;
 
@@ -42,11 +49,13 @@ public:
 
 
 protected:
-	
+	int __SetValue(MatVar SMP, double Value);
 
 
 protected:
+	int id;
 	int dim;     //Î¬¶È
+	
 
 	MatCategory matcate;
 	MatType mattype;

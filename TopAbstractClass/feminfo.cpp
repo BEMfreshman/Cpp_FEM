@@ -83,51 +83,51 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
         EachInputItem->GetDataByItemName(&MaterialId,Element_MatId);
 
 
-        if(EleTypeStr == "Line2")
+        if(EleTypeStr == "LINE2")
         {
             EleType = Element::Line2;
         }
-        else if(EleTypeStr == "Line3")
+        else if(EleTypeStr == "LINE3")
         {
             EleType = Element::Line3;
         }
-        else if(EleTypeStr == "Triangle3")
+        else if(EleTypeStr == "TRIANGLE3")
         {
             EleType = Element::Triangle3;
         }
-        else if(EleTypeStr == "Triangle4")
+        else if(EleTypeStr == "TRIANGLE4")
         {
             EleType = Element::Triangle4;
         }
-        else if(EleTypeStr == "Quad4")
+        else if(EleTypeStr == "QUAD4")
         {
             EleType = Element::Quadrilateral4;
         }
-        else if(EleTypeStr == "Quad8")
+        else if(EleTypeStr == "QUAD8")
         {
             EleType = Element::Quadrilateral8;
         }
-        else if(EleTypeStr == "Quad9")
+        else if(EleTypeStr == "QUAD9")
         {
             EleType = Element::Quadrilateral9;
         }
-        else if(EleTypeStr == "Tet4")
+        else if(EleTypeStr == "TET4")
         {
             EleType = Element::Tetrahedron4;
         }
-        else if(EleTypeStr == "Hex8")
+        else if(EleTypeStr == "HEX8")
         {
             EleType = Element::Hexahedron8;
         }
-        else if(EleTypeStr == "Truss")
+        else if(EleTypeStr == "TRUSS")
         {
             EleType = Element::Truss;
         }
-        else if(EleTypeStr == "Beams")
+        else if(EleTypeStr == "BEAM")
         {
             EleType = Element::Beam;
         }
-        else if(EleTypeStr == "Shell")
+        else if(EleTypeStr == "SHELL")
         {
             EleType = Element::Shell;
         }
@@ -154,7 +154,60 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
     // 实例化材料类
     // 目前只针对固体材料而言，
     // 固体材料一般具有 密度，杨氏弹性模量，泊松比，剪切刚度（可通过E和Nu得出结果）
-    //
+    
+	InputCard* MatInputCard =
+		FileReader->GetInputCard(AbstractFileReader::Material);
+
+	InputItem* AnalysisInputItem =
+		analysistypeinputcard->GetInputItemAccordtoID(0);
+
+	std::string DimAndMatStatus;
+	AnalysisInputItem->GetDataByItemName(DimAndMatStatus, Analysis_SolType);
+
+
+	for (size_t i = 0; i < MatInputCard->sizeofInputCard(); i++)
+	{
+		InputItem* MatInputItem = MatInputCard->GetInputItemAccordtoID(i);
+
+		int id;
+		std::string LinearOrNot;
+		std::string IsoOrNot;
+		std::map<std::string, double> PropNameAndPropValue;
+
+		MatInputItem->GetDataByItemName(&id, Mat_Id);
+		MatInputItem->GetDataByItemName(LinearOrNot, Mat_LinearOrNot);
+		MatInputItem->GetDataByItemName(IsoOrNot, Mat_IsoOrNot);
+		MatInputItem->GetDataByItemName(PropNameAndPropValue, Mat_PropNameAndPropValue);
+
+		Mat* mat = fac->CreateMat(id,LinearOrNot,IsoOrNot,PropNameAndPropValue,DimAndMatStatus);
+
+		MatVec.push_back(mat);
+
+	}
+
+	//实例化单元属性
+	//注意，可能完全没有单元属性（例如实体单元）
+
+	InputCard* ElePropInputCard =
+		FileReader->GetInputCard(AbstractFileReader::ElementProp);
+	
+	for (size_t i = 0; i < ElePropInputCard->sizeofInputCard(); i++)
+	{
+		InputItem* EPropInputItem = ElePropInputCard->GetInputItemAccordtoID(i);
+		
+		int id;
+		std::string ElementPropName;   //Beam,Truss等
+		std::map<std::string, double> PropNameAndPropValue;
+
+		EPropInputItem->GetDataByItemName(&id, EProp_Id);
+		EPropInputItem->GetDataByItemName(ElementPropName, EProp_ElementName);
+		EPropInputItem->GetDataByItemName(PropNameAndPropValue, EProp_PropNameAndPropValue);
+
+		EProp* EP = fac->CreateEProp(id, ElementPropName, PropNameAndPropValue);
+
+		EPropVec.push_back(EP);
+	}
+
 
 
     delete fac;

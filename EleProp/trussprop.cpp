@@ -20,6 +20,11 @@ int TrussProp::SetValue(const std::map<std::string, double>& EPropNameAndValue)
 		{
 			EPV = Area;
 		}
+		else
+		{
+			printf("·Ç·¨ÊôÐÔ\n");
+			return 0;
+		}
 
 
 		if (__SetValue(EPV, it->second) == 0)

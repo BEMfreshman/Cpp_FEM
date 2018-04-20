@@ -21,7 +21,7 @@ InputItem::InputItem(const std::string& inputitemReadFromFile,int RowIdReadFromF
         pos = inputitem.find(" ");
         if(pos != std::string::npos)
         {
-            seperateChar = ',';
+            seperateChar = ' ';
         }
         else
         {
@@ -35,14 +35,14 @@ InputItem::InputItem(const std::string& inputitemReadFromFile,int RowIdReadFromF
 
     KeyWord = GetDataStr(1);
 
-    NumofSplitStr = 0;
+    /*NumofSplitStr = 0;
     for(int i = 0; i < splitstr.size();i++)
     {
         if(splitstr[i] != "")
         {
             NumofSplitStr++;
         }
-    }
+    }*/
 
 }
 
@@ -58,58 +58,26 @@ std::string InputItem::GetKeyWord()
 
 int InputItem::GetDataI(int pos)
 {
-    for(int i = 0,validValueCounter = 0;i < splitstr.size();i++)
-    {
-        if(splitstr[i] != "")
-        {
-            validValueCounter++;
-        }
-
-        if(validValueCounter == pos)
-        {
-            int ReturnValue;
-            std::stringstream sstr;
-            sstr << splitstr[i];
-            sstr >> ReturnValue;
-            return ReturnValue;
-        }
-    }
+    
+	int ReturnValue;
+	std::stringstream sstr;
+	sstr << splitstr[pos - 1];   //从0开始
+	sstr >> ReturnValue;
+	return ReturnValue;
 }
 
 double InputItem::GetDataD(int pos)
 {
-    for(int i = 0,validValueCounter = 0;i < splitstr.size();i++)
-    {
-        if(splitstr[i] != "")
-        {
-            validValueCounter++;
-        }
-
-        if(validValueCounter == pos)
-        {
-            double ReturnValue;
-            std::stringstream sstr;
-            sstr << splitstr[i];
-            sstr >> ReturnValue;
-            return ReturnValue;
-        }
-    }
+	double ReturnValue;
+	std::stringstream sstr;
+	sstr << splitstr[pos - 1];  //从0开始
+	sstr >> ReturnValue;
+	return ReturnValue;
 }
 
 std::string InputItem::GetDataStr(int pos)
 {
-    for(int i = 0,validValueCounter = 0;i < splitstr.size();i++)
-    {
-        if(splitstr[i] != "")
-        {
-            validValueCounter++;
-        }
-
-        if(validValueCounter == pos)
-        {
-            return splitstr[i];
-        }
-    }
+	return splitstr[pos - 1];   //从0开始
 }
 
 int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemName inputitemname)
@@ -122,7 +90,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-            for(int i = 5 ; i <= NumofSplitStr;i++)
+			for (int i = 5; i <= splitstr.size(); i++)
             {
                 if(i % 2 == 1)
                 {
@@ -149,7 +117,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-            for(int i = 4 ; i <= NumofSplitStr;i++)
+			for (int i = 4; i <= splitstr.size(); i++)
             {
                 if(i % 2 == 0)
                 {
@@ -312,27 +280,52 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
     {
         case Vertex_CoordX:
         {
-            (*Data) = GetDataD(3);
-            return 1;
+			if (GetDataStr(3) == "")
+			{
+				(*Data) = 0.0;
+				return 1;
+			}
+			else
+			{
+				(*Data) = GetDataD(3);
+				return 1;
+			}
+            
         }
         case Vertex_CoordY:
         {
-            (*Data) = GetDataD(4);
-            return 1;
+			if (GetDataStr(4) == "")
+			{
+				(*Data) = 0.0;
+				return 1;
+			}
+			else
+			{
+				(*Data) = GetDataD(4);
+				return 1;
+			}
         }
         case Vertex_CoordZ:
         {
-            if(NumofSplitStr<5)
-            {
-                //没有Z坐标
-                (*Data) = 0.0;
-                return 0;
-            }
-            else
-            {
-                (*Data) = GetDataD(5);
-                return 1;
-            }
+			if (splitstr.size() > 4)
+			{
+				if (GetDataStr(5) == "")
+				{
+					(*Data) = 0.0;
+					return 0;
+				}
+				else
+				{
+					(*Data) = GetDataD(5);
+					return 1;
+				}
+			}
+			else
+			{
+				(*Data) = 0.0;
+				return 0;
+			}
+			
         }
     }
 }
@@ -430,4 +423,16 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
 int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemname)
 {
 	return 0;
+}
+
+int InputItem::GetValidPostion(const std::string& KeyWordInItem)
+{
+	int i;
+	for (int i = 0; i < splitstr.size(); i++)
+	{
+		if (splitstr[i] == KeyWordInItem)
+		{
+			return i + 1;   //Pos从1开始
+		}
+	}
 }

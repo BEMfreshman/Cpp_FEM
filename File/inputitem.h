@@ -58,6 +58,10 @@ protected:
     double GetDataD(int pos);
     std::string GetDataStr(int pos);
 
+	int GetValidPostion(const std::string& KeyWordInItem);
+	//在一个Item之中，还存在一些子关键字，返回其有效位置，
+	//下一个有效位置，就是该关键字表征的数值
+
 
     void GetData(std::vector<int>& Data);    // 返回数组
     void GetData(std::vector<double>& Data); //返回数组

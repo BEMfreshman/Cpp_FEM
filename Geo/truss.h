@@ -14,7 +14,7 @@ public:
           int MaterialId,
           int EPropId,
           Element::ElementType eletype,
-          Eigen::ArrayXXi VertexIdArray);
+		  const Eigen::MatrixXi& VertexIdArray);
 
     ~Truss();
 
@@ -22,6 +22,8 @@ public:
     Truss& operator=(const Truss& that);
 
     Element* Clone() const;
+
+	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 };
 
 #endif // TRUSS_H

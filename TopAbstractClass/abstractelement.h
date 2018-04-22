@@ -38,9 +38,12 @@ public:
         Tetrahedron4,      //四面体
         Hexahedron8,       //六面体
 
-        Truss,            //杆单元
-        Beam,             //梁单元
-        Shell            //壳单元
+        Truss,                //杆单元
+        BeamEB2,              //欧拉——伯努利梁单元（2节点）
+		BeamEB3,              //欧拉——伯努利梁单元（3节点）
+		BeamT2,               //铁木辛柯梁单元（2节点）
+		BeamT3,               //铁木辛柯梁单元（3节点）
+        Shell                 //壳单元
     };
 
     Element();
@@ -48,12 +51,12 @@ public:
     Element(int ElementId,
             int MaterialId,
             ElementType eletype,
-            Eigen::MatrixXi VertexIdArray);
+            const Eigen::MatrixXi& VertexIdArray);
     Element(int ElementId,
             int MaterialId,
             int EPropId,
             ElementType eletype,
-            Eigen::MatrixXi VertexIdArray);
+            const Eigen::MatrixXi& VertexIdArray);
 
     Element(const Element& that);
     Element& operator=(const Element& that);
@@ -63,10 +66,10 @@ public:
     virtual ~Element() = 0;
     //抽象类，本身不可被实例化
 
-    int GetElementId();
-    int GetEPropId();
-    int GetMaterialId();
-    Eigen::MatrixXi& GetVertexIdArray();
+    int GetElementId() const;
+    int GetEPropId() const;
+    int GetMaterialId() const;
+    const Eigen::MatrixXi& GetVertexIdArray() const;
     //Eigen::ArrayXXi& GetVertexConnect();
 
     void SetVertexCoord(Eigen::MatrixXd& VertexCoord);
@@ -79,7 +82,7 @@ public:
     //Order代表积分阶次
 
 public:
-    void GetSpecificMatrix(SparseMatrixType SMT,Eigen::MatrixXd& ReturnMatrix);
+    virtual int GetSpecificMatrix(SparseMatrixType SMT,Eigen::MatrixXd& ReturnMatrix) = 0;
 
 /*
  * 暂时不考虑边界单元的功能

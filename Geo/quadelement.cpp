@@ -3,7 +3,7 @@
 QuadElement::QuadElement(int ElementId,
                          int MaterialId,
                          Element::ElementType eletype,
-                         Eigen::ArrayXXi VertexIdArray):
+						 const Eigen::MatrixXi& VertexIdArray) :
     Element(ElementId,MaterialId,eletype,VertexIdArray)
 {
 

@@ -28,7 +28,7 @@ Vertex* Factory::CreateVertex(int VertexId,
 Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
                                 Element::ElementType eletype,
-                                Eigen::MatrixXi VertexIdArray)
+								const Eigen::MatrixXi& VertexIdArray)
 {
     switch(eletype)
     {
@@ -83,7 +83,7 @@ Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
                                 int EPropId,
                                 Element::ElementType eletype,
-                                Eigen::MatrixXi VertexIdArray)
+								const Eigen::MatrixXi& VertexIdArray)
 {
 
     switch(eletype)
@@ -94,10 +94,22 @@ Element* Factory::CreateElement(int ElementId,
                              EPropId,eletype,VertexIdArray);
             break;
         }
-        case Element::Beam:
+        case Element::BeamEB2:
         {
 
         }
+		case Element::BeamEB3:
+		{
+
+		}
+		case Element::BeamT2:
+		{
+
+		}
+		case Element::BeamT3:
+		{
+
+		}
         case Element::Shell:
         {
 

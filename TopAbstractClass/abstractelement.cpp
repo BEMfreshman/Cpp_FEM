@@ -36,7 +36,7 @@ Element::Element():ElementId(0),MatId(0),
 Element::Element(int ElementId,
                  int MaterialId,
                  ElementType eletype,
-                 Eigen::MatrixXi VertexIdArray)
+                 const Eigen::MatrixXi& VertexIdArray)
 {
     this->ElementId = ElementId;
     this->MatId = MaterialId;
@@ -63,7 +63,7 @@ Element::Element(int ElementId,
                  int MaterialId,
                  int EPropId,
                  ElementType eletype,
-                 Eigen::MatrixXi VertexIdArray)
+                 const Eigen::MatrixXi& VertexIdArray)
 {
     this->ElementId = ElementId;
     this->MatId = MaterialId;
@@ -128,22 +128,22 @@ Element::~Element()
 
 }
 
-int Element::GetElementId()
+int Element::GetElementId() const
 {
     return ElementId;
 }
 
-int Element::GetEPropId()
+int Element::GetEPropId() const
 {
     return EPropId;
 }
 
-int Element::GetMaterialId()
+int Element::GetMaterialId() const
 {
     return MatId;
 }
 
-Eigen::MatrixXi& Element::GetVertexIdArray()
+const Eigen::MatrixXi& Element::GetVertexIdArray() const
 {
     return VertexIdArray;
 }
@@ -499,8 +499,8 @@ void Element::ComputeShapeFunction()
 {
     //计算形函数以及形函数的导数
 
-    if(EleType == Truss || EleType == Beam ||
-            EleType == Shell)
+	if (EleType == Truss || EleType == BeamEB2 || EleType == BeamEB3 ||
+		EleType == BeamT2 || EleType == BeamT3 || EleType == Shell)
     {
         printf("不需要划分高斯积分点\n");
         return;

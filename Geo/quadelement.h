@@ -14,13 +14,15 @@ public:
     QuadElement(int ElementId,
                 int MaterialId,
                 Element::ElementType eletype,
-                Eigen::ArrayXXi VertexIdArray);
+                const Eigen::MatrixXi& VertexIdArray);
     ~QuadElement();
 
     QuadElement(const QuadElement& that);
     QuadElement& operator =(const QuadElement& that);
 
     Element* Clone() const;
+
+	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 };
 
 #endif // QUADELEMENT_H

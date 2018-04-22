@@ -4,7 +4,7 @@ Truss::Truss(int ElementId,
              int MaterialId,
              int EPropId,
              Element::ElementType eletype,
-             Eigen::ArrayXXi VertexIdArray)
+			 const Eigen::MatrixXi& VertexIdArray)
             :Element(ElementId,MaterialId,EPropId,
                      eletype,VertexIdArray)
 {

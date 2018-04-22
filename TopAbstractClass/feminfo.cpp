@@ -123,10 +123,22 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
         {
             EleType = Element::Truss;
         }
-        else if(EleTypeStr == "BEAM")
+        else if(EleTypeStr == "BEAMEB2")
         {
-            EleType = Element::Beam;
+            EleType = Element::BeamEB2;
         }
+		else if (EleTypeStr == "BEAMEB3")
+		{
+			EleType = Element::BeamEB3;
+		}
+		else if (EleTypeStr == "BEAMT2")
+		{
+			EleType = Element::BeamT2;
+		}
+		else if (EleTypeStr == "BEAMT3")
+		{
+			EleType = Element::BeamT3;
+		}
         else if(EleTypeStr == "SHELL")
         {
             EleType = Element::Shell;

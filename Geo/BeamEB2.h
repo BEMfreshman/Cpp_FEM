@@ -1,9 +1,10 @@
 #ifndef __BEAMEB2_H__
 #define __BEAMEB2_H__
 
-#include "../TopAbstractClass/abstractelement.h"
+//#include "../TopAbstractClass/abstractelement.h"
+#include "Line2.h"
 
-class BeamEB2:public Element
+class BeamEB2:public Line2
 {
 public:
 	BeamEB2();   //默认构造函数
@@ -16,14 +17,19 @@ public:
 	BeamEB2(const BeamEB2& that);
 	BeamEB2& operator=(const BeamEB2& that);
 
-	BeamEB2* Clone() const;
+	Element* Clone() const;
 
 	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 
-private:
+	int SetDOF(int dim);
+protected:
 
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
 	int ComputeMassMatrix(Eigen::MatrixXd& matReturn);
+
+private:
+
+	
 };
 
 #endif

@@ -58,10 +58,10 @@ std::string InputItem::GetKeyWord()
 
 int InputItem::GetDataI(int pos)
 {
-    
+	//从0开始
 	int ReturnValue;
 	std::stringstream sstr;
-	sstr << splitstr[pos - 1];   //从0开始
+	sstr << splitstr[pos];  
 	sstr >> ReturnValue;
 	return ReturnValue;
 }
@@ -70,14 +70,14 @@ double InputItem::GetDataD(int pos)
 {
 	double ReturnValue;
 	std::stringstream sstr;
-	sstr << splitstr[pos - 1];  //从0开始
+	sstr << splitstr[pos];  //从0开始
 	sstr >> ReturnValue;
 	return ReturnValue;
 }
 
 std::string InputItem::GetDataStr(int pos)
 {
-	return splitstr[pos - 1];   //从0开始
+	return splitstr[pos];   //从0开始
 }
 
 int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemName inputitemname)
@@ -90,9 +90,9 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-			for (int i = 5; i <= splitstr.size(); i++)
+			for (int i = 4; i < splitstr.size(); i++)
             {
-                if(i % 2 == 1)
+                if(i % 2 == 0)
                 {
                     PropName = GetDataStr(i);
                     Counter++;
@@ -105,6 +105,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
 
                 if(Counter % 2 == 0 && Counter != 0)
                 {
+					//读两个数据
                     Data[PropName] = PropValue;
                 }
             }
@@ -117,9 +118,9 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-			for (int i = 4; i <= splitstr.size(); i++)
+			for (int i = 3; i < splitstr.size(); i++)
             {
-                if(i % 2 == 0)
+                if(i % 2 == 1)
                 {
                     PropName = GetDataStr(i);
                     Counter++;
@@ -148,27 +149,27 @@ int InputItem::GetDataByItemName(std::string& Data,InputItemName inputitemname)
     {
         case Analysis_SolType:
         {
-            Data = GetDataStr(3);
+            Data = GetDataStr(2);
             return 1;
         }
         case Element_Type:
         {
-            Data = GetDataStr(3);
+            Data = GetDataStr(2);
             return 1;
         }
         case Mat_LinearOrNot:
         {
-            Data = GetDataStr(3);
+            Data = GetDataStr(2);
             return 1;
         }
         case Mat_IsoOrNot:
         {
-			Data = GetDataStr(4);
+			Data = GetDataStr(3);
 			return 1;
         }
         case EProp_ElementName:
         {
-            Data = GetDataStr(3);
+            Data = GetDataStr(2);
             return 1;
         }
     }
@@ -180,53 +181,54 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
     {
         case Analysis_SolNum:
         {
-            (*Data) = GetDataI(2);
+            (*Data) = GetDataI(1);
             return 1;
         }
         case Vertex_Id:
         {
-            (*Data) = GetDataI(2);
+            (*Data) = GetDataI(1);
             return 1;
         }
         case Element_Id:
         {
-            (*Data) = GetDataI(2);
+            (*Data) = GetDataI(1);
             return 1;
         }
         case Element_MatId:
         {
             std::string EleType;
             GetDataByItemName(EleType,Element_Type);
-            if(EleType == "Line2" ||
-                    EleType == "Truss" ||
-                    EleType == "Beams")
+            if(EleType == "LINE2" ||
+                    EleType == "TRUSS" ||
+                    EleType == "BEAMEB2" || EleType == "BEAMEB3" ||
+					EleType == "BEAMT2" || EleType == "BEAMT3")
+            {
+                (*Data) = GetDataI(5);
+                return 1;
+            }
+            else if(EleType == "LINE3" ||
+                    EleType == "TRIANGLE3")
             {
                 (*Data) = GetDataI(6);
                 return 1;
             }
-            else if(EleType == "Line3" ||
-                    EleType == "Triagnle3")
+            else if(EleType == "TRIANGLE4" ||
+                    EleType == "QUAD4" ||
+                    EleType == "TET4" ||
+                    EleType == "SHELL")
             {
                 (*Data) = GetDataI(7);
                 return 1;
             }
-            else if(EleType == "Triangle4" ||
-                    EleType == "Quad4" ||
-                    EleType == "Tet4" ||
-                    EleType == "Shell")
+            else if(EleType == "TRIANGLE6")
             {
-                (*Data) = GetDataI(8);
+                (*Data) = GetDataI(9);
                 return 1;
             }
-            else if(EleType == "Triangle6")
+            else if(EleType == "QUAD8" ||
+                    EleType == "HEX8")
             {
-                (*Data) = GetDataI(10);
-                return 1;
-            }
-            else if(EleType == "Quad8" ||
-                    EleType == "Hex8")
-            {
-                (*Data) = GetDataI(12);
+                (*Data) = GetDataI(11);
                 return 1;
             }
             else
@@ -240,14 +242,15 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
         {
             std::string EleType;
             GetDataByItemName(EleType,Element_Type);
-            if(EleType == "Truss" || EleType == "Beam")
+			if (EleType == "TRUSS" || EleType == "BEAMEB2" || EleType == "BEAMEB3" ||
+				EleType == "BEAMT2" || EleType == "BEAMT3")
             {
-                (*Data) = GetDataI(7);
+                (*Data) = GetDataI(6);
                 return 1;
             }
-            else if(EleType == "Shell")
+            else if(EleType == "SHELL")
             {
-                (*Data) = GetDataI(9);
+                (*Data) = GetDataI(8);
                 return 1;
             }
             else
@@ -258,12 +261,12 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
         }
         case Mat_Id:
         {
-            (*Data) = GetDataI(2);
+            (*Data) = GetDataI(1);
             return 1;
         }
         case EProp_Id:
         {
-            (*Data) = GetDataI(2);
+            (*Data) = GetDataI(1);
             return 1;
         }
         default:
@@ -280,6 +283,20 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
     {
         case Vertex_CoordX:
         {
+			if (GetDataStr(2) == "")
+			{
+				(*Data) = 0.0;
+				return 1;
+			}
+			else
+			{
+				(*Data) = GetDataD(2);
+				return 1;
+			}
+            
+        }
+        case Vertex_CoordY:
+        {
 			if (GetDataStr(3) == "")
 			{
 				(*Data) = 0.0;
@@ -290,33 +307,19 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
 				(*Data) = GetDataD(3);
 				return 1;
 			}
-            
-        }
-        case Vertex_CoordY:
-        {
-			if (GetDataStr(4) == "")
-			{
-				(*Data) = 0.0;
-				return 1;
-			}
-			else
-			{
-				(*Data) = GetDataD(4);
-				return 1;
-			}
         }
         case Vertex_CoordZ:
         {
 			if (splitstr.size() > 4)
 			{
-				if (GetDataStr(5) == "")
+				if (GetDataStr(4) == "")
 				{
 					(*Data) = 0.0;
 					return 0;
 				}
 				else
 				{
-					(*Data) = GetDataD(5);
+					(*Data) = GetDataD(4);
 					return 1;
 				}
 			}
@@ -350,63 +353,65 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
             std::string EleType;
             GetDataByItemName(EleType,Element_Type);
 
-            if(EleType == "Line2")
+            if(EleType == "LINE2" || EleType == "BEAMEB2" || EleType == "BEAMT2")
             {
 
                 Data.resize(1,2);
 
-                for(int i = 4; i < 6;i++)
+                for(int i = 3,tmp = 0; i < 5;i++,tmp++)
                 {
-                    //取第4个和第5个数据
+                    //取第3个和第4个数据
                     VertexId = GetDataI(i);
-                    Data << VertexId;
+                    Data(0,tmp) =  VertexId;
                 }
                 return 1;
             }
-            else if(EleType == "Line3" || EleType == "Triangle3")
+            else if(EleType == "LINE3" || EleType == "TRIANGLE3" || EleType == "BEAMEB3" ||
+				EleType == "BEAMT3")
             {
                 Data.resize(1,3);
 
-                for(int i = 4; i < 7;i++)
+                for(int i = 3,tmp = 0; i < 6;i++,tmp++)
                 {
                     //取第4,5,6个数据
                     VertexId = GetDataI(i);
-                    Data << VertexId;
+                    Data(0,tmp) = VertexId;
                 }
                 return 1;
             }
-            else if(EleType == "Triangle4" || EleType == "Quad4" || EleType == "Tet4")
+            else if(EleType == "TRIANGLE4" || EleType == "QUQD4" ||
+				EleType == "TET4")
             {
                 Data.resize(1,4);
 
-                for(int i = 4; i < 8;i++)
+                for(int i = 3,tmp = 0; i < 7;i++,tmp++)
                 {
-                    //取第4,5,6,7个数据
+                    //取第3,4,5,6个数据
                     VertexId = GetDataI(i);
-                    Data << VertexId;
+                    Data(0,tmp) =  VertexId;
                 }
                 return 1;
             }
-            else if(EleType == "Triangle6")
+            else if(EleType == "TRIANGLE6")
             {
                 Data.resize(1,6);
 
-                for(int i = 4; i < 10;i++)
+                for(int i = 3,tmp = 0; i < 9;i++,tmp++)
                 {
-                    //取第4,5,6,7,8,9个数据
+                    //取第3,4,5,6,7,8个数据
                     VertexId = GetDataI(i);
-                    Data << VertexId;
+                    Data(0,tmp) = VertexId;
                 }
                 return 1;
             }
-            else if(EleType == "Quad8" || EleType == "Hex8")
+            else if(EleType == "QUAD8" || EleType == "HEX8")
             {
                 Data.resize(1,8);
-                for(int i = 4; i < 12;i++)
+                for(int i = 3,tmp = 0; i < 11;i++,tmp++)
                 {
-                    //取第4,5,6,7,8,9,10,11个数据
+                    //取第3,4,5,6,7,8,9,10个数据
                     VertexId = GetDataI(i);
-                    Data << VertexId;
+                    Data(0,tmp) = VertexId;
                 }
                 return 1;
             }
@@ -427,12 +432,11 @@ int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemna
 
 int InputItem::GetValidPostion(const std::string& KeyWordInItem)
 {
-	int i;
 	for (int i = 0; i < splitstr.size(); i++)
 	{
 		if (splitstr[i] == KeyWordInItem)
 		{
-			return i + 1;   //Pos从1开始
+			return i;   //Pos从0开始
 		}
 	}
 }

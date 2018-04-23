@@ -3,28 +3,6 @@
 #include "../TopAbstractClass/abstractmaterial.h"
 #include "../TopAbstractClass/abastractelementprop.h"
 
-/*
-Element::Element(int ElementId,
-                 Eigen::ArrayXi& VertexIdArray,
-                 Eigen::ArrayXi& VertexConnect)
-{
-    this->ElementId = ElementId;
-    this->VertexIdArray = VertexIdArray;
-    this->VertexConnect = VertexConnect;
-}
-
-Element::Element(int ElementId,
-                 int EPropId,
-                 Eigen::ArrayXi &VertexIdArray,
-                 Eigen::ArrayXi &VertexConnect)
-{
-    this->ElementId = ElementId;
-    this->EPropId = EPropId;
-    this->VertexIdArray = VertexIdArray;
-    this->VertexConnect = VertexConnect;
-}
-*/
-
 Element::Element():ElementId(0),MatId(0),
     EPropId(0)
 {
@@ -48,15 +26,6 @@ Element::Element(int ElementId,
     EleProp = NULL;
     Material = NULL;
 
-    if(eletype >= Line2 && eletype <= Hexahedron8)
-    {
-        this->NeedGauss = true;
-    }
-    else
-    {
-        this->NeedGauss = false;
-    }
-
 }
 
 Element::Element(int ElementId,
@@ -73,22 +42,13 @@ Element::Element(int ElementId,
 
     EleProp = NULL;
     Material = NULL;
-
-    if(eletype >= Line2 && eletype <= Hexahedron8)
-    {
-        this->NeedGauss = true;
-    }
-    else
-    {
-        this->NeedGauss = false;
-    }
 }
 
 Element::Element(const Element& that):ElementId(that.ElementId),
     MatId(that.MatId),
     EPropId(that.EPropId),
     VertexIdArray(that.VertexIdArray),
-    VertexCoord(that.VertexCoord),
+    VertexVec(that.VertexVec),
     NeedGauss(that.NeedGauss),
     EleType(that.EleType),
     LocalGaussPoint(that.LocalGaussPoint),
@@ -112,7 +72,7 @@ Element& Element::operator =(const Element& that)
         EPropId = that.EPropId;
         MatId=that.MatId;
         VertexIdArray=that.VertexIdArray;
-        VertexCoord=that.VertexCoord;
+        VertexVec=that.VertexVec;
         NeedGauss=that.NeedGauss;
         EleType=that.EleType;
         LocalGaussPoint=that.LocalGaussPoint;
@@ -159,9 +119,9 @@ void Element::SetMat(Mat *Material)
     this->Material = Material;
 }
 
-void Element::SetVertexCoord(Eigen::MatrixXd &VertexCoord)
+void Element::SetVertex(Vertex* vertex)
 {
-    this->VertexCoord = VertexCoord;
+	this->VertexVec.push_back(vertex);
 }
 
 void Element::GenerateGaussPoint(int Order)
@@ -169,6 +129,109 @@ void Element::GenerateGaussPoint(int Order)
 
 }
 
+void Element::OneDimensionGPAndWeight(int Order)
+{
+	if (Order == 2)
+	{
+		GaussPointOneDimension.push_back(0.577350269189626);
+		GaussPointOneDimension.push_back(-0.577350269189626);
+
+		WeightOneDimension.push_back(1.0);
+		WeightOneDimension.push_back(1.0);
+	}
+	else if (Order == 3)
+	{
+		GaussPointOneDimension.push_back(0.774596669241483);
+		GaussPointOneDimension.push_back(-0.774596669241483);
+		GaussPointOneDimension.push_back(0.000000000000000);
+
+		WeightOneDimension.push_back(0.555555555555556);
+		WeightOneDimension.push_back(0.555555555555556);
+		WeightOneDimension.push_back(0.888888888888889);
+	}
+	else if (Order == 4)
+	{
+		GaussPointOneDimension.push_back(0.861134311594053);
+		GaussPointOneDimension.push_back(-0.861134311594053);
+		GaussPointOneDimension.push_back(0.339981043584856);
+		GaussPointOneDimension.push_back(-0.339981043584856);
+
+		WeightOneDimension.push_back(0.347854845137454);
+		WeightOneDimension.push_back(0.347854845137454);
+		WeightOneDimension.push_back(0.652145154862546);
+		WeightOneDimension.push_back(0.652145154862546);
+	}
+	else if (Order == 5)
+	{
+		GaussPointOneDimension.push_back(0.906179845938664);
+		GaussPointOneDimension.push_back(-0.906179845938664);
+		GaussPointOneDimension.push_back(0.538469310105683);
+		GaussPointOneDimension.push_back(-0.538469310105683);
+		GaussPointOneDimension.push_back(0.000000000000000);
+
+		WeightOneDimension.push_back(0.236926885056189);
+		WeightOneDimension.push_back(0.236926885056189);
+		WeightOneDimension.push_back(0.478628670499366);
+		WeightOneDimension.push_back(0.478628670499366);
+		WeightOneDimension.push_back(0.568888888888889);
+	}
+	else if (Order == 6)
+	{
+		GaussPointOneDimension.push_back(0.932469514203152);
+		GaussPointOneDimension.push_back(-0.932469514203152);
+		GaussPointOneDimension.push_back(0.661209386466265);
+		GaussPointOneDimension.push_back(-0.661209386466265);
+		GaussPointOneDimension.push_back(0.238619186003152);
+		GaussPointOneDimension.push_back(-0.238619186003152);
+
+		WeightOneDimension.push_back(0.171324492379170);
+		WeightOneDimension.push_back(0.171324492379170);
+		WeightOneDimension.push_back(0.360761573048139);
+		WeightOneDimension.push_back(0.360761573048139);
+		WeightOneDimension.push_back(0.467913934572691);
+		WeightOneDimension.push_back(0.467913934572691);
+	}
+	else if (Order == 7)
+	{
+		GaussPointOneDimension.push_back(0.949107912342759);
+		GaussPointOneDimension.push_back(-0.949107912342759);
+		GaussPointOneDimension.push_back(0.741531185599394);
+		GaussPointOneDimension.push_back(-0.741531185599394);
+		GaussPointOneDimension.push_back(0.405845151377397);
+		GaussPointOneDimension.push_back(-0.405845151377397);
+		GaussPointOneDimension.push_back(0.000000000000000);
+
+		WeightOneDimension.push_back(0.129484966168870);
+		WeightOneDimension.push_back(0.129484966168870);
+		WeightOneDimension.push_back(0.279705391489277);
+		WeightOneDimension.push_back(0.279705391489277);
+		WeightOneDimension.push_back(0.381830050505119);
+		WeightOneDimension.push_back(0.381830050505119);
+		WeightOneDimension.push_back(0.417959183673469);
+	}
+	else if (Order == 8)
+	{
+		GaussPointOneDimension.push_back(0.960289856497536);
+		GaussPointOneDimension.push_back(-0.960289856497536);
+		GaussPointOneDimension.push_back(0.796666477413627);
+		GaussPointOneDimension.push_back(-0.796666477413627);
+		GaussPointOneDimension.push_back(0.525532409916329);
+		GaussPointOneDimension.push_back(-0.525532409916329);
+		GaussPointOneDimension.push_back(0.183434642495650);
+		GaussPointOneDimension.push_back(-0.183434642495650);
+
+		WeightOneDimension.push_back(0.101228536290376);
+		WeightOneDimension.push_back(0.101228536290376);
+		WeightOneDimension.push_back(0.222381034453374);
+		WeightOneDimension.push_back(0.222381034453374);
+		WeightOneDimension.push_back(0.313706645877887);
+		WeightOneDimension.push_back(0.313706645877887);
+		WeightOneDimension.push_back(0.362683783378362);
+		WeightOneDimension.push_back(0.362683783378362);
+	}
+}
+
+/*
 void Element::GenerateLoacalGaussPointAndWeight(int Order)
 {
     std::vector<double> GaussPointOneDimension;
@@ -804,3 +867,5 @@ void Element::ComputeShapeFunction()
     }
     }
 }
+
+*/

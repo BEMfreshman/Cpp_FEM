@@ -2,6 +2,7 @@
 #define ABSTRACTELEMENT_H
 #include <Eigen/Eigen>
 #include "sparsematrixtype.h"
+#include "ShapeFunction.h"
 
 /* 抽象Element
  * 向下继承为
@@ -72,12 +73,15 @@ public:
     const Eigen::MatrixXi& GetVertexIdArray() const;
     //Eigen::ArrayXXi& GetVertexConnect();
 
-    void SetVertexCoord(Eigen::MatrixXd& VertexCoord);
+    void SetVertex(Vertex* vertex);
     void SetEProp(EProp* EleProp);
     void SetMat(Mat* Material);
+	virtual int SetDOF(int dim) = 0;         //设置自由度，根据各单元不同而不同
 
 public:
     // 网格内高斯积分点的生成
+	// 所有的网格都需要高斯积分点，即使是beam和truss,也需要
+	// 使用GaussPoint组装分布力形成阵列载荷矩阵
     void GenerateGaussPoint(int Order);
     //Order代表积分阶次
 
@@ -195,8 +199,8 @@ protected:
     EProp* EleProp;
     Mat*   Material;
 
-    Eigen::MatrixXd VertexCoord;
-    //顶点坐标
+	std::vector<Vertex*> VertexVec;
+
 
     bool NeedGauss;
     ElementType EleType;
@@ -218,12 +222,18 @@ protected:
     Eigen::MatrixXd dNdxi;
     //形函数的导数
 
+	std::vector<double> GaussPointOneDimension;
+	std::vector<double> WeightOneDimension;
+
 
 
 protected:
-    void GenerateLoacalGaussPointAndWeight(int Order);
-    void ComputeShapeFunction();
+    virtual void GenerateLoacalGaussPointAndWeight(int Order) = 0;
+    virtual int ComputeShapeFunction(ShapeFunType SFT) = 0;
     //计算形函数
+
+protected:
+	void OneDimensionGPAndWeight(int Order);
 
 
 

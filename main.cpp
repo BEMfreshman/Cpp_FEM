@@ -4,8 +4,8 @@
 
 int main()
 {
-    std::string InputFilePath = "F:\\FEMCode_CPP\\Cpp_FEM";
-    std::string InputFileName = "BuildInput.txt";
+    std::string InputFilePath = "F:\\Cpp_FEM";
+    std::string InputFileName = "1dbeam.txt";
     AbstractFileReader* FileReader = new BuildInFileReader(InputFilePath,
                                                            InputFileName);
     //Factory fac = new Factory();

@@ -86,7 +86,10 @@ Element* Factory::CreateElement(int ElementId,
 								const Eigen::MatrixXi& VertexIdArray)
 {
 
-    switch(eletype)
+	return new Truss(ElementId, MaterialId,
+		EPropId, eletype, VertexIdArray);
+
+    /*switch(eletype)
     {
         case Element::Truss:
         {
@@ -96,7 +99,9 @@ Element* Factory::CreateElement(int ElementId,
         }
         case Element::BeamEB2:
         {
-
+			return new Truss(ElementId, MaterialId,
+				EPropId, eletype, VertexIdArray);
+			break;
         }
 		case Element::BeamEB3:
 		{
@@ -114,8 +119,8 @@ Element* Factory::CreateElement(int ElementId,
         {
 
         }
-    }
-    return NULL;
+    }*/
+    //return NULL;
 
 }
 

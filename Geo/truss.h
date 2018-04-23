@@ -1,12 +1,13 @@
 ﻿#ifndef TRUSS_H
 #define TRUSS_H
-#include "../TopAbstractClass/abstractelement.h"
+//#include "../TopAbstractClass/abstractelement.h"
+#include "Line2.h"
 
 /*
  * 杆单元
  */
 
-class Truss:public Element
+class Truss:public Line2
 {
 public:
     Truss();
@@ -24,6 +25,13 @@ public:
     Element* Clone() const;
 
 	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	
+	int SetDOF(int dim);
+
+protected:
+	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
+	int ComputeMassMatrix(Eigen::MatrixXd& matReturn);
+
 };
 
 #endif // TRUSS_H

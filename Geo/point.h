@@ -15,7 +15,7 @@ public:
           int MaterialId,
           int EPropId,
           Element::ElementType eletype,
-          Eigen::ArrayXXi VertexIdArray);
+          const Eigen::MatrixXi& VertexIdArray);
 
     Point(const Point& that);
     Point& operator=(const Point& that);
@@ -23,6 +23,16 @@ public:
     Element* Clone() const;
 
     ~Point();
+	
+	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	int SetDOF(int dim);
+
+protected:
+	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
+
+	void GenerateLoacalGaussPointAndWeight(int Order);
+	int ComputeShapeFunction(ShapeFunType SFT);
+
 };
 
 #endif // POINT_H

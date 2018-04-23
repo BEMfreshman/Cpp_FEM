@@ -22,7 +22,17 @@ public:
 
     Element* Clone() const;
 
-	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	virtual int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+
+	virtual int SetDOF(int dim);
+
+protected:
+	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
+
+	void GenerateLoacalGaussPointAndWeight(int Order);
+	int ComputeShapeFunction(ShapeFunType SFT);
+
+
 };
 
 #endif // QUADELEMENT_H

@@ -4,7 +4,7 @@ Point::Point(int ElementId,
              int MaterialId,
              int EPropId,
              ElementType eletype,
-             Eigen::ArrayXXi VertexIdArray)
+			 const Eigen::MatrixXi& VertexIdArray)
             :Element(ElementId,MaterialId,EPropId,
                      eletype,VertexIdArray)
 {
@@ -40,7 +40,27 @@ Point& Point::operator =(const Point& that)
 
 }
 
+int Point::GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix)
+{
+	return 1;
+}
+
 Element* Point::Clone() const
 {
     return new Point(*this);
+}
+
+int Point::SetDOF(int dim)
+{
+	return 0;
+}
+
+void Point::GenerateLoacalGaussPointAndWeight(int Order)
+{
+	
+}
+
+int Point::ComputeShapeFunction(ShapeFunType SFT)
+{
+	return 0;
 }

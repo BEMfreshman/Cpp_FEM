@@ -1,4 +1,5 @@
 #include "Line2.h"
+#include "vertex.h"
 
 Line2::Line2()
 {
@@ -129,4 +130,43 @@ void Line2::GenerateLoacalGaussPointAndWeight(int Order)
 int Line2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 {
 	return 0;
+}
+
+int Line2::ComputeElementLength()
+{
+	//计算单元的长度
+	if (VertexVec.size() == 0)
+	{
+		printf("VertexVec为空\n");
+		return 0;
+	}
+	else
+	{
+		if (VertexVec.size() > 2)
+		{
+			printf("2节点梁单元存储的点的个数大于2个");
+		}
+
+		Vertex* FirstOne = VertexVec[0];
+		Vertex* SecondOne = VertexVec[1];
+
+		Eigen::Vector3d tmp;
+
+		double FirstXCoord = FirstOne->GetX();
+		double SecondXCoord = SecondOne->GetY();
+		tmp(0) = FirstXCoord - SecondXCoord;
+
+		double FirstYCoord = FirstOne->GetY();
+		double SecondYCoord = SecondOne->GetY();
+		tmp(1) = FirstYCoord - SecondYCoord;
+
+		double FirstZCoord = FirstOne->GetZ();
+		double SecondZCoord = SecondOne->GetZ();
+		tmp(2) = FirstZCoord - SecondZCoord;
+
+		
+		ElementLength = tmp.squaredNorm();
+
+		return 1;
+	}
 }

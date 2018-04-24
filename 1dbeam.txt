@@ -5,7 +5,7 @@
 3,1,0
 *Element
 1,BEAMEB2,1,2,1,1
-2,BEAMEB2,2,3,1,113:04 2018/4/23
+2,BEAMEB2,2,3,1,1
 *Material
 1,Linear,Iso,E,21,RHO,7860
 *EleProp

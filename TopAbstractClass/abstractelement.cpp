@@ -4,7 +4,7 @@
 #include "../TopAbstractClass/abastractelementprop.h"
 
 Element::Element():ElementId(0),MatId(0),
-    EPropId(0)
+EPropId(0), DOFNumofEle(0)
 {
 
     EleProp = NULL;
@@ -20,7 +20,7 @@ Element::Element(int ElementId,
     this->MatId = MaterialId;
     this->EleType = eletype;
     this->VertexIdArray = VertexIdArray;
-
+	this->DOFNumofEle = 0;
     this->EPropId = 0;
 
     EleProp = NULL;
@@ -39,7 +39,7 @@ Element::Element(int ElementId,
     this->EPropId = EPropId;
     this->EleType = eletype;
     this->VertexIdArray = VertexIdArray;
-
+	this->DOFNumofEle = 0;
     EleProp = NULL;
     Material = NULL;
 }
@@ -56,7 +56,8 @@ Element::Element(const Element& that):ElementId(that.ElementId),
     N(that.N),
     dNdxi(that.dNdxi),
     Material(that.Material),
-    EleProp(that.EleProp)
+    EleProp(that.EleProp),
+	DOFNumofEle(that.DOFNumofEle)
 
 {
 
@@ -79,6 +80,7 @@ Element& Element::operator =(const Element& that)
         GaussWeight=that.GaussWeight;
         N=that.N;
         dNdxi=that.dNdxi;
+		DOFNumofEle = that.DOFNumofEle;
     }
     return *this;
 }
@@ -106,6 +108,32 @@ int Element::GetMaterialId() const
 const Eigen::MatrixXi& Element::GetVertexIdArray() const
 {
     return VertexIdArray;
+}
+
+int Element::GetDOFNumofEle()
+{
+	if (DOFNumofEle == 0)
+	{
+		if (VertexVec.size() == 0)
+		{
+			return 0;
+		}
+		else
+		{
+			int res = 0;
+			for (int i = 0; i < VertexVec.size(); i++)
+			{
+				res += VertexVec[i]->getDOFSize();
+			}
+			DOFNumofEle = res;
+
+			return res;
+		}
+	}
+	else
+	{
+		return DOFNumofEle;
+	}
 }
 
 void Element::SetEProp(EProp *EleProp)

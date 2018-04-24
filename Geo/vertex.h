@@ -21,9 +21,9 @@ public:
     //Vertex* Clone() const;
 
 
-    double GetX();
-    double GetY();
-    double GetZ();
+    double GetX() const;
+    double GetY() const;
+    double GetZ() const;
 
 private:
     int Id;

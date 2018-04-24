@@ -2,7 +2,18 @@
 #define __BEAMEB2_H__
 
 //#include "../TopAbstractClass/abstractelement.h"
+
+/*
+一维梁单元，所在坐标系统为xoy坐标系统
+z轴通过其重心，一维单元刚度矩阵计算公式中
+的惯性矩为Iz
+
+
+*/
+
+
 #include "Line2.h"
+
 
 class BeamEB2:public Line2
 {
@@ -27,7 +38,6 @@ protected:
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
 	int ComputeMassMatrix(Eigen::MatrixXd& matReturn);
 
-private:
 
 	
 };

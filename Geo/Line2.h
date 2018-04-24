@@ -27,6 +27,11 @@ protected:
 
 	void GenerateLoacalGaussPointAndWeight(int Order);
 	int ComputeShapeFunction(ShapeFunType SFT);
+
+	int ComputeElementLength();
+
+protected:
+	double ElementLength;
 };
 
 

@@ -71,7 +71,7 @@ public:
     int GetEPropId() const;
     int GetMaterialId() const;
     const Eigen::MatrixXi& GetVertexIdArray() const;
-    //Eigen::ArrayXXi& GetVertexConnect();
+	int GetDOFNumofEle();
 
     void SetVertex(Vertex* vertex);
     void SetEProp(EProp* EleProp);
@@ -201,6 +201,7 @@ protected:
 
 	std::vector<Vertex*> VertexVec;
 
+	int DOFNumofEle;
 
     bool NeedGauss;
     ElementType EleType;

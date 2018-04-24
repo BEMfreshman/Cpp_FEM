@@ -110,3 +110,8 @@ int DofManager::findPosofDOF(int id) const
 
 	return -1;
 }
+
+int DofManager::getDOFSize() const
+{
+	return DOFVec.size();
+}

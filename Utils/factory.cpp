@@ -2,6 +2,7 @@
 #include "../Geo/vertex.h"
 #include "../Geo/quadelement.h"
 #include "../Geo/truss.h"
+#include "../Geo/BeamEB2.h"
 #include "../MaterialProp/isolinearstrumat.h"
 #include "../MaterialProp/orthlinearstrumat.h"
 #include "../EleProp/beamprop.h"
@@ -56,7 +57,6 @@ Element* Factory::CreateElement(int ElementId,
         {
             return new QuadElement(ElementId,MaterialId,
                                    eletype,VertexIdArray);
-            break;
         }
         case Element::Quadrilateral8:
         {
@@ -86,22 +86,17 @@ Element* Factory::CreateElement(int ElementId,
 								const Eigen::MatrixXi& VertexIdArray)
 {
 
-	return new Truss(ElementId, MaterialId,
-		EPropId, eletype, VertexIdArray);
-
-    /*switch(eletype)
+    switch(eletype)
     {
         case Element::Truss:
         {
             return new Truss(ElementId,MaterialId,
                              EPropId,eletype,VertexIdArray);
-            break;
         }
         case Element::BeamEB2:
         {
-			return new Truss(ElementId, MaterialId,
+			return new BeamEB2(ElementId, MaterialId,
 				EPropId, eletype, VertexIdArray);
-			break;
         }
 		case Element::BeamEB3:
 		{
@@ -119,8 +114,8 @@ Element* Factory::CreateElement(int ElementId,
         {
 
         }
-    }*/
-    //return NULL;
+    }
+    return NULL;
 
 }
 

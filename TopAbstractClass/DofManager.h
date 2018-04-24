@@ -24,12 +24,14 @@ public:
 	int getid() const;
 	DOF* getDOF(int i) const; //返回排在DOFVec中的第i个元素
 	DOF* getDOFByDOFId(int id) const;   //根据DOFVec中每个DOF的Id，返回一个DOF*
+	int getDOFSize() const;        //返回DOF的个数
 
 	int addDOF(DOF* dof);         //增加一个DOF（添加到vec的末尾）
 	int deleteDOF(int id);    //删除一个DOF
 
+	
 
-private:
+protected:
 	int findPosofDOF(DOF* dof) const;
 	//如果找到则返回Pos，找不到则返回-1
 

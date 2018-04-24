@@ -40,17 +40,17 @@ Vertex::Vertex(int Id, double x, double y, double z) :DofManager(0)
 //    return new Vertex(*this);
 //}
 
-double Vertex::GetX()
+double Vertex::GetX() const
 {
     return x;
 }
 
-double Vertex::GetY()
+double Vertex::GetY() const
 {
     return y;
 }
 
-double Vertex::GetZ()
+double Vertex::GetZ() const
 {
     return z;
 }

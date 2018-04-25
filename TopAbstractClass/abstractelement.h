@@ -72,6 +72,8 @@ public:
     int GetMaterialId() const;
     const Eigen::MatrixXi& GetVertexIdArray() const;
 	int GetDOFNumofEle();
+	const Eigen::MatrixXi GetAllDOF();
+
 
     void SetVertex(Vertex* vertex);
     void SetEProp(EProp* EleProp);

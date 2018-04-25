@@ -136,6 +136,26 @@ int Element::GetDOFNumofEle()
 	}
 }
 
+const Eigen::MatrixXi Element::GetAllDOF()
+{
+	Eigen::MatrixXi ans;
+	if (DOFNumofEle == 0)
+	{
+		GetDOFNumofEle();
+	}
+
+	ans.resize(1, DOFNumofEle);
+	
+	for (int i = 0,counter = 0; i < VertexVec.size(); i++)
+	{
+		Vertex* tmp = VertexVec[i];
+		for (int j = 0; j < tmp->getDOFSize(); j++)
+		{
+			ans(0,counter) = tmp->
+		}
+	}
+}
+
 void Element::SetEProp(EProp *EleProp)
 
 {

@@ -21,38 +21,37 @@ int DofManager::getid() const
 	return id;
 }
 
-DOF* DofManager::getDOF(int i) const
+DOFVar DofManager::getDOF(int i) const
 {
 	//从0开始
-	if (id >= DOFVec.size())
+	if (id >= DOFMap.size())
 	{
-		return NULL;
+		return UNK;
 	}
 	else
 	{
-		return DOFVec[id];
+		map<DOFVar, int>::const_iterator it;
+		int iter = 0;
+		for (it = DOFMap.begin(); it != DOFMap.end(); it++)
+		{
+			if (iter != i)
+			{
+				continue;
+			}
+			else
+			{
+				it->first;
+			}
+		}
 	}
 }
 
-DOF* DofManager::getDOFByDOFId(int id) const
-{
-	int Pos = findPosofDOF(id);
-	if (Pos == -1)
-	{
-		return NULL;
-	}
-	else
-	{
-		return DOFVec[Pos];
-	}
-}
-
-int DofManager::addDOF(DOF* dof)
+int DofManager::addDOF(DOFVar dof)
 {
 	//首先遍历寻找是否已经存在该自由度
 	if (findPosofDOF(dof) == -1)
 	{
-		DOFVec.push_back(dof);
+		DOFMap[dof] = 1;
 		return 1;
 	}
 	else
@@ -61,57 +60,26 @@ int DofManager::addDOF(DOF* dof)
 	}
 }
 
-int DofManager::deleteDOF(int id)
+int DofManager::deleteDOF(DOFVar dof)
 {
-	if (findPosofDOF(id) == -1)
+	map<DOFVar, int>::iterator it;
+	it = find(DOFMap.begin(), DOFMap.end(), dof);
+
+	if (it == DOFMap.end())
 	{
 		//不存在此点，返回0
 		return 0;
 	}
 	else
 	{
-		vector<DOF*>::iterator it;
-		for (it = DOFVec.begin(); it != DOFVec.end(); it++)
-		{
-			if ((*it)->getid() == id)
-			{
-				break;
-			}
-		}
 
-		it = DOFVec.erase(it);
+		DOFMap.erase(dof);
 		return 1;
 	}
 }
 
 
-int DofManager::findPosofDOF(DOF* dof) const
-{
-	for (int i = 0; i < DOFVec.size(); i++)
-	{
-		if (DOFVec[i]->getid() == dof->getid())
-		{
-			return i;
-		}
-	}
-
-	return -1;
-}
-
-int DofManager::findPosofDOF(int id) const
-{
-	for (int i = 0; i < DOFVec.size(); i++)
-	{
-		if (DOFVec[i]->getid() == id)
-		{
-			return i;
-		}
-	}
-
-	return -1;
-}
-
 int DofManager::getDOFSize() const
 {
-	return DOFVec.size();
+	return DOFMap.size();
 }

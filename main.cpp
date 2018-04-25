@@ -8,7 +8,8 @@ int main()
     std::string InputFileName = "1dbeam.txt";
     AbstractFileReader* FileReader = new BuildInFileReader(InputFilePath,
                                                            InputFileName);
-    //Factory fac = new Factory();
+
+
     abstractFEMModel* FEMModel = new LinearStaticModel(FileReader);
     //线性静态模型
 

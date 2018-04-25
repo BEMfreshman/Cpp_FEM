@@ -216,6 +216,138 @@ int BeamEB2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 
 int BeamEB2::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
 {
+	if (GetDOFNumofEle() == 0)
+	{
+		printf("该单元未设置单元节点\n");
+		return 0;
+	}
+
+	matReturn.resize(DOFNumofEle, DOFNumofEle);
+	matReturn.setZero();
+
+	if (DOFNumofEle == 4)
+	{
+		//一维梁单元
+
+		if (Material->hasProp(RHO) == 0)
+		{
+			printf("缺少密度\n");
+			return 0;
+		}
+		
+		if (EleProp->hasProp(Area) == 0)
+		{
+			printf("缺少截面面积\n");
+			return 0;
+		}
+
+		ComputeElementLength();
+
+		double RHOVal, AreaVal;
+
+		if (Material->GetValue(RHO, &RHOVal) == 0)
+		{
+			printf("未能抽取到密度值\n");
+			return 0;
+		}
+
+		if (EleProp->GetValue(Area, &AreaVal) == 0)
+		{
+			printf("未能抽取到面积\n");
+			return 0;
+		}
+
+		double Coeff = RHOVal*AreaVal*ElementLength / 420.0;
+
+		matReturn(0, 0) = 156;
+		matReturn(0, 1) = 22 * ElementLength;
+		matReturn(0, 2) = 54;
+		matReturn(0, 3) = -13 * ElementLength;
+
+		matReturn(1, 0) = matReturn(0, 1);
+		matReturn(1, 1) = 4 * pow(ElementLength, 2);
+		matReturn(1, 2) = 13 * ElementLength;
+		matReturn(1, 3) = -3 * pow(ElementLength, 2);
+
+		matReturn(2, 0) = matReturn(0, 2);
+		matReturn(2, 1) = matReturn(1, 2);
+		matReturn(2, 2) = 156;
+		matReturn(2, 3) = -22 * ElementLength;
+
+		matReturn(3, 0) = matReturn(0, 3);
+		matReturn(3, 1) = matReturn(1, 3);
+		matReturn(3, 2) = matReturn(2, 3);
+		matReturn(3, 3) = 4 * pow(ElementLength, 2);
+
+		matReturn *= Coeff;
+	}
+	else if (DOFNumofEle == 6)
+	{
+		//二维梁单元
+
+		if (Material->hasProp(RHO) == 0)
+		{
+			printf("缺少密度\n");
+			return 0;
+		}
+
+		if (EleProp->hasProp(Area) == 0)
+		{
+			printf("缺少截面面积\n");
+			return 0;
+		}
+
+		ComputeElementLength();
+
+		double RHOVal, AreaVal;
+
+		if (Material->GetValue(RHO, &RHOVal) == 0)
+		{
+			printf("未能抽取到密度值\n");
+			return 0;
+		}
+
+		if (EleProp->GetValue(Area, &AreaVal) == 0)
+		{
+			printf("未能抽取到面积\n");
+			return 0;
+		}
+
+		double Coeff = RHOVal*AreaVal*ElementLength / 420.0;
+
+		matReturn(0, 0) = 140;
+		matReturn(0, 3) = 70;
+
+		matReturn(1, 1) = 156;
+		matReturn(1, 2) = 22 * ElementLength;
+		matReturn(1, 4) = 54;
+		matReturn(1, 5) = -13 * ElementLength;
+
+		matReturn(2, 1) = matReturn(1, 2);
+		matReturn(2, 2) = 4 * pow(ElementLength, 2);
+		matReturn(2, 4) = 13 * ElementLength;
+		matReturn(2, 5) = -3 * pow(ElementLength, 2);
+
+		matReturn(3, 0) = matReturn(0, 3);
+		matReturn(3, 3) = 140;
+
+		matReturn(4, 1) = matReturn(1, 4);
+		matReturn(4, 2) = matReturn(2, 4);
+		matReturn(4, 4) = 156;
+		matReturn(4, 5) = -22 * ElementLength;
+
+		matReturn(5, 1) = matReturn(1, 5);
+		matReturn(5, 2) = matReturn(2, 5);
+		matReturn(5, 4) = matReturn(4, 5);
+		matReturn(5, 5) = 4 * pow(ElementLength, 2);
+
+		matReturn *= Coeff;
+	}
+	else if (DOFNumofEle == 12)
+	{
+		//三维梁单元
+	}
+
 	return 0;
 }
 

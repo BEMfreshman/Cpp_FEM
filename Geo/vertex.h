@@ -5,12 +5,14 @@
  */
 
 #include "../TopAbstractClass/DofManager.h"
+#include "../TopAbstractClass/elementtype.h"
+using namespace std;
 
 class Vertex:public DofManager
 {
 public:
-    Vertex(int Id,double x,double y); // 二维点
-    Vertex(int Id,double x,double y,double z); // 三维点
+    Vertex(int Id,double x,double y,int SPCsNum); // 二维点
+    Vertex(int Id,double x,double y,double z,int SPCsNum); // 三维点
 
 
     //Vertex(const Vertex& vertex);
@@ -25,11 +27,20 @@ public:
     double GetY() const;
     double GetZ() const;
 
+	int SetDOF(int dim, ElementType ET);
+
 private:
     int Id;
+	int SPCsNum;
     double x;
     double y;
     double z;
+
+	vector<int> SPCDOF;
+
+private:
+	bool findSPCValid(DOFVar DF);
+
 };
 
 #endif // VERTEX_H

@@ -4,6 +4,8 @@
 #include "abstractfilereader.h"
 #include "../Geo/vertex.h"
 #include "abstractelement.h"
+
+#include "elementtype.h"
 /*
  * include "abstractMat.h"
  * include "abstractEProp.h"
@@ -31,6 +33,24 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
     EachInputItem->GetDataByItemName(&AnalysisTypeData,Analysis_SolNum);
 
+	std::string DimAndMatStatus;
+	EachInputItem->GetDataByItemName(DimAndMatStatus, Analysis_SolType);
+
+	if (DimAndMatStatus.find("1d") != string::npos)
+	{
+		dim = 1;
+	}
+	else if (DimAndMatStatus.find("2d") != string::npos)
+	{
+		dim = 2;
+	}
+	else if (DimAndMatStatus.find("3d") != string::npos)
+	{
+		dim = 3;
+	}
+
+
+
     //实例化Vertex
     InputCard *VertexInputCard =
             FileReader->GetInputCard(AbstractFileReader::Vertex);
@@ -40,25 +60,18 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
         InputItem* EachInputItem =
                 VertexInputCard->GetInputItemAccordtoID(i);
         int id;
-        double CoordX,CoordY,CoordZ;
+		int SPCsNum;                         //单点约束
+        double CoordX = 0.0,CoordY = 0.0,CoordZ = 0.0;
 
         EachInputItem->GetDataByItemName(&id,Vertex_Id);
         EachInputItem->GetDataByItemName(&CoordX,Vertex_CoordX);
         EachInputItem->GetDataByItemName(&CoordY,Vertex_CoordY);
-        int SuccessFlag =
-                EachInputItem->GetDataByItemName(&CoordZ,Vertex_CoordZ);
-        if(SuccessFlag == 0)
-        {
-            //不存在Z坐标
-            Vertex* vertex = fac->CreateVertex(id,CoordX,CoordY);
-            VertexVec.push_back(vertex);
-        }
-        else
-        {
-            //存在Z坐标
-            Vertex* vertex = fac->CreateVertex(id,CoordX,CoordY,CoordZ);
-            VertexVec.push_back(vertex);
-        }
+        EachInputItem->GetDataByItemName(&CoordZ,Vertex_CoordZ);
+		EachInputItem->GetDataByItemName(&SPCsNum, SPC);
+
+		Vertex* vertex = fac->CreateVertex(id, CoordX, CoordY, CoordZ,SPCsNum);
+		VertexMap[id] = vertex;
+
     }
     //实例化Element
 
@@ -74,7 +87,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
         int MaterialId;
         int EPropId;
         std::string EleTypeStr;
-        Element::ElementType EleType;
+        ElementType EleType;
         Eigen::MatrixXi VertexIdArray;
 
         EachInputItem->GetDataByItemName(&id,Element_Id);
@@ -85,63 +98,63 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
         if(EleTypeStr == "LINE2")
         {
-            EleType = Element::Line2;
+            EleType = Line2;
         }
         else if(EleTypeStr == "LINE3")
         {
-            EleType = Element::Line3;
+            EleType = Line3;
         }
         else if(EleTypeStr == "TRIANGLE3")
         {
-            EleType = Element::Triangle3;
+            EleType = Triangle3;
         }
         else if(EleTypeStr == "TRIANGLE4")
         {
-            EleType = Element::Triangle4;
+            EleType = Triangle4;
         }
         else if(EleTypeStr == "QUAD4")
         {
-            EleType = Element::Quadrilateral4;
+            EleType = Quadrilateral4;
         }
         else if(EleTypeStr == "QUAD8")
         {
-            EleType = Element::Quadrilateral8;
+            EleType = Quadrilateral8;
         }
         else if(EleTypeStr == "QUAD9")
         {
-            EleType = Element::Quadrilateral9;
+            EleType = Quadrilateral9;
         }
         else if(EleTypeStr == "TET4")
         {
-            EleType = Element::Tetrahedron4;
+            EleType = Tetrahedron4;
         }
         else if(EleTypeStr == "HEX8")
         {
-            EleType = Element::Hexahedron8;
+            EleType = Hexahedron8;
         }
         else if(EleTypeStr == "TRUSS")
         {
-            EleType = Element::Truss;
+            EleType = Truss;
         }
         else if(EleTypeStr == "BEAMEB2")
         {
-            EleType = Element::BeamEB2;
+            EleType = BeamEB2;
         }
 		else if (EleTypeStr == "BEAMEB3")
 		{
-			EleType = Element::BeamEB3;
+			EleType = BeamEB3;
 		}
 		else if (EleTypeStr == "BEAMT2")
 		{
-			EleType = Element::BeamT2;
+			EleType = BeamT2;
 		}
 		else if (EleTypeStr == "BEAMT3")
 		{
-			EleType = Element::BeamT3;
+			EleType = BeamT3;
 		}
         else if(EleTypeStr == "SHELL")
         {
-            EleType = Element::Shell;
+            EleType = Shell;
         }
 
 
@@ -153,13 +166,14 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
             //不存在单元属性
             Element* Ele = fac->CreateElement(id,MaterialId,
                                               EleType,VertexIdArray);
-            EleVec.push_back(Ele);
+
+			EleMap[id] = Ele;
         }
         else
         {
             Element* Ele = fac->CreateElement(id,MaterialId,EPropId,
                                               EleType,VertexIdArray);
-            EleVec.push_back(Ele);
+			EleMap[id] = Ele;
         }
     }
 
@@ -193,7 +207,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
 		Mat* mat = fac->CreateMat(id,LinearOrNot,IsoOrNot,PropNameAndPropValue,DimAndMatStatus);
 
-		MatVec.push_back(mat);
+		MatMap[id] = mat;
 
 	}
 
@@ -217,7 +231,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
 		EProp* EP = fac->CreateEProp(id, ElementPropName, PropNameAndPropValue);
 
-		EPropVec.push_back(EP);
+		EPropMap[id] = EP;
 	}
 
 
@@ -247,48 +261,83 @@ FEMinfo* FEMinfo::CreateCopy(int NewId)
     feminfo->AnalysisTypeData = this->AnalysisTypeData;
     //feminfo->fem2dtype = this->fem2dtype;
 
-    for(int i = 0 ; i < VertexVec.size();i++)
+    for(int i = 0 ; i < VertexMap.size();i++)
     {
-        Vertex* NewVertex = new Vertex(*(VertexVec[i]));
-        feminfo->VertexVec.push_back(NewVertex);
+        Vertex* NewVertex = new Vertex(*(VertexMap.at(i)));
+        feminfo->VertexMap[NewVertex->getid()] = NewVertex;
     }
 
-    for(int i = 0;i < EleVec.size();i++)
+    for(int i = 0;i < EleMap.size();i++)
     {
-        Element* NewEle = (EleVec[i])->Clone();
-        feminfo->EleVec.push_back(NewEle);
+        Element* NewEle = (EleMap[i])->Clone();
+        feminfo->EleMap[NewEle->GetElementId()] = NewEle;
     }
 
-    feminfo->SetMatAndEProp();
+	//feminfo->SetMatAndEPropAndVertexInElement();
     return feminfo;
 }
 
-void FEMinfo::SetMatAndEProp()
+int FEMinfo::SetMatAndEPropAndVertexInElement()
 {
-    if(EleVec.size() == 0)
+	if (VertexMap.size() == 0)
+	{
+		return 0;
+	}
+    else if(EleMap.size() == 0)
     {
-        return;
+        return 0;
     }
-    else if(MatVec.size() == 0)
+	else if (MatMap.size() == 0)
     {
-        return;
+        return 0;
     }
+	
 
-    for(size_t i = 0 ; i < EleVec.size();i++)
+    for(size_t i = 0 ; i < EleMap.size();i++)
     {
-        Element* Ele = EleVec[i];
+        Element* Ele = EleMap[i];
+
+		const Eigen::MatrixXi VertexIdArray = Ele->GetVertexIdArray();
+		int row = VertexIdArray.rows();
+		int col = VertexIdArray.cols();
+		if (row == 1 && col >= 1)
+		{
+			for (int i = 0; i < col; i++)
+			{
+				int VertexId = VertexIdArray(0, i);
+				Vertex* Vert = VertexMap.find(VertexId)->second;
+				Vert->SetDOF(dim, Ele->GetElementType());
+				Ele->SetVertex(Vert);
+			}
+		}
+		else
+		{
+			for (int i = 0; i < row; i++)
+			{
+				int VertexId = VertexIdArray(i, 0);
+				Vertex* Vert = VertexMap.find(VertexId)->second;
+				Vert->SetDOF(dim, Ele->GetElementType());
+				Ele->SetVertex(Vert);
+			}
+		}
+
         int MaterialId = Ele->GetMaterialId();
-        Mat* mat = MatVec[MaterialId];
+        Mat* mat = MatMap.find(MaterialId)->second;
         Ele->SetMat(mat);
 
         int EPropId = Ele->GetEPropId();
         if(EPropId != 0)
         {
-            EProp* eprop = EPropVec[EPropId];
+            EProp* eprop = EPropMap.find(EPropId)->second;
             Ele->SetEProp(eprop);
         }
+
     }
+
+	return 1;
 }
+
+int FEMinfo::
 
 
 

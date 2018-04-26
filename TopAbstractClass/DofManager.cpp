@@ -46,12 +46,12 @@ DOFVar DofManager::getDOF(int i) const
 	}
 }
 
-int DofManager::addDOF(DOFVar dof)
+int DofManager::addDOF(DOFVar dof,bool isVaild)
 {
 	//首先遍历寻找是否已经存在该自由度
-	if (findPosofDOF(dof) == -1)
+	if (DOFMap.find(dof) == DOFMap.end())
 	{
-		DOFMap[dof] = 1;
+		DOFMap[dof] = (int)(isVaild == true);
 		return 1;
 	}
 	else

@@ -59,7 +59,7 @@ protected:
     std::string GetDataStr(int pos);
 
 	int GetValidPostion(const std::string& KeyWordInItem);
-	//在一个Item之中，还存在一些子关键字，返回其有效位置，
+	//在一个Item之中，还存在一些子关键字，返回其位置，
 	//下一个有效位置，就是该关键字表征的数值
 
 

@@ -1,18 +1,25 @@
 ﻿#include "abstractfemmodel.h"
-#include "feminfo.h"
-#include "../File/buildinfilereader.h"
-abstractFEMModel::abstractFEMModel(AbstractFileReader* InputFileReader)
+abstractFEMModel::abstractFEMModel(FEMinfo* FEMInformation)
 {
-    FEMinfo *FemInformation = new FEMinfo(1,InputFileReader);
-    FemInformationVec.push_back(FemInformation);
+    
+	FemInformation = FEMInformation;
 }
 
 abstractFEMModel::~abstractFEMModel()
 {
-    std::vector<FEMinfo*>::iterator it;
-    for(it = FemInformationVec.begin();
-        it!=FemInformationVec.end();it++)
-    {
-        delete (*it);
-    }
+    
+}
+
+int abstractFEMModel::PreProcess()
+{
+	//前操作
+	//为每个单元赋予材料属性、单元属性和点的指针
+	//确定总的自由度个数，SPC的自由度直接删除，不计入总数
+
+	if (FemInformation->SetMatAndEPropAndVertexInElement() == 0)
+	{
+		printf("单元Mat、EProp和Vertex指针设置失败\n");
+		return 0;
+	}
+
 }

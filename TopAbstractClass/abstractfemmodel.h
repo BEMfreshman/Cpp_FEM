@@ -1,8 +1,8 @@
 ﻿#ifndef ABSTRACTFEMMODEL_H
 #define ABSTRACTFEMMODEL_H
-#include "abstractfilereader.h"
-
+#include "feminfo.h"
 #include <iostream>
+#include "Eigen\Eigen"
 /*
  * FEMModel的抽象类
  * FEMModel（作为abstractFEMModel的派生类）
@@ -14,16 +14,12 @@
 class BuildInFileReader;
 class FEMinfo;
 
+typedef Eigen::SparseMatrix<double> SpMat;
+
 class abstractFEMModel
 {
 public:
-    enum FEMModelType
-    {
-        Static,
-        Dynamic,
-
-    };
-    abstractFEMModel(AbstractFileReader* InputFileReader);
+    abstractFEMModel(FEMinfo* FEMInformation);
 
     virtual ~abstractFEMModel();
 
@@ -31,11 +27,16 @@ public:
 
     virtual void Solve() = 0;
     //在Solve方法中指定OutputFilePath和OutputFileName
+
 protected:
 
-    std::vector<FEMinfo*> FemInformationVec;
-    //可以容乃多个有限元模型
-    //但是需要是相同的模型（都是线性或者都是非线性）
+	int PreProcess();
+
+
+protected:
+
+    FEMinfo* FemInformation;
+    //有限元模型
 
 
     //保存所有的FEM信息
@@ -43,10 +44,10 @@ protected:
     std::string OutputFilePath;
     std::string OutputFileName;
 
-    FEMModelType FMT;
-
-protected:
-    //保存解的信息
+	SpMat K;     //总体刚度矩阵
+	SpMat M;     //总体质量矩阵
+	SpMat f;     //总体载荷矩阵
+    
 
 };
 

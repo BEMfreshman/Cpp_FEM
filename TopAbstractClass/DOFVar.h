@@ -10,6 +10,7 @@ enum DOFVar
 	tx,       //
 	ty,
 	tz,
+
 	UNK
 };
 

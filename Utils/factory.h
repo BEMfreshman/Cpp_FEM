@@ -22,8 +22,7 @@ class Factory
 {
 public:
     Factory();
-    Vertex* CreateVertex(int VertexId,double x,double y);
-    Vertex* CreateVertex(int VertexId,double x,double y,double z);
+    Vertex* CreateVertex(int VertexId,double x,double y,double z,int SPCsNum);
 
     Element* CreateElement(int ElementId,
                            int MaterialId,

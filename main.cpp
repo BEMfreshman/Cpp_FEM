@@ -9,13 +9,18 @@ int main()
     AbstractFileReader* FileReader = new BuildInFileReader(InputFilePath,
                                                            InputFileName);
 
+	FEMinfo *FemInformation = new FEMinfo(1,FileReader);
 
-    abstractFEMModel* FEMModel = new LinearStaticModel(FileReader);
+	abstractFEMModel* FEMModel = new LinearStaticModel(FemInformation);
     //线性静态模型
 
 
 
+	
+
+
     delete FEMModel;
+	delete FemInformation;
     delete FileReader;
 
     return 0;

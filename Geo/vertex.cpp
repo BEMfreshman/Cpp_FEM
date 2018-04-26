@@ -1,19 +1,43 @@
 ﻿#include "vertex.h"
-
-Vertex::Vertex(int Id, double x, double y) :DofManager(0)
+#include <vector>
+Vertex::Vertex(int Id, double x, double y,int SPCsNum) :DofManager(0)
 {
     this->Id = Id;
     this->x = x;
     this->y = y;
     this->z = 0.0;
+	this->SPCsNum = SPCsNum;
+
+	if (SPCsNum != 0)
+	{
+		int tmp = SPCsNum;
+		while (tmp != 0)
+		{
+			SPCDOF.push_back((tmp % 10) - 1);
+			tmp = tmp / 10;
+		}
+
+	}
 }
 
-Vertex::Vertex(int Id, double x, double y, double z) :DofManager(0)
+Vertex::Vertex(int Id, double x, double y, double z, int SPCsNum) :DofManager(0)
 {
     this->Id = Id;
     this->x = x;
     this->y = y;
     this->z = z;
+	this->SPCsNum = SPCsNum;
+
+	if (SPCsNum != 0)
+	{
+		int tmp = SPCsNum;
+		while (tmp != 0)
+		{
+			SPCDOF.push_back((tmp % 10) - 1);
+			tmp = tmp / 10;
+		}
+
+	}
 }
 
 //Vertex::Vertex(const Vertex& vertex):Id(vertex.Id),
@@ -53,4 +77,45 @@ double Vertex::GetY() const
 double Vertex::GetZ() const
 {
     return z;
+}
+
+int Vertex::SetDOF(int dim, ElementType ET)
+{
+	
+	if (dim == 1)
+	{
+		if (ET == BeamEB2)
+		{
+			addDOF(u,findSPCValid(u));
+			addDOF(tx,findSPCValid(tx));
+		}
+	}
+	else
+	{
+		if (ET == BeamEB2)
+		{
+			addDOF(u, findSPCValid(u));
+			addDOF(v, findSPCValid(v));
+			addDOF(tx, findSPCValid(tx));
+		}
+	}
+}
+
+bool Vertex::findSPCValid(DOFVar DF)
+{
+	if (SPCDOF.size() == 0)
+	{
+		return true;
+	}
+	else
+	{
+		if (find(SPCDOF.begin(), SPCDOF.end(), DF) != SPCDOF.end())
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 }

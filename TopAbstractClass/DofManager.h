@@ -25,7 +25,7 @@ public:
 	DOFVar getDOF(int i) const; //返回排在DOFVec中的第i个元素
 	int getDOFSize() const;        //返回DOF的个数
 
-	int addDOF(DOFVar dof);         //增加一个DOF（添加到vec的末尾）
+	int addDOF(DOFVar dof,bool isVaild);         //增加一个DOF（添加到vec的末尾）
 	int deleteDOF(DOFVar dof);    //删除一个DOF
 
 	

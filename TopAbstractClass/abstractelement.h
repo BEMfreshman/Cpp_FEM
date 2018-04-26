@@ -1,6 +1,7 @@
 ﻿#ifndef ABSTRACTELEMENT_H
 #define ABSTRACTELEMENT_H
 #include <Eigen/Eigen>
+#include "elementtype.h"
 #include "sparsematrixtype.h"
 #include "ShapeFunction.h"
 
@@ -25,27 +26,7 @@ class Mat;
 class Element
 {
 public: 
-    enum ElementType
-    {
-        //等参单元形状
-        Line2 = 1,             //线单元
-        Line3,
-        Triangle3,         //三角形
-        Triangle4,
-        Triangle6,
-        Quadrilateral4,    //四边形
-        Quadrilateral8,
-        Quadrilateral9,
-        Tetrahedron4,      //四面体
-        Hexahedron8,       //六面体
-
-        Truss,                //杆单元
-        BeamEB2,              //欧拉——伯努利梁单元（2节点）
-		BeamEB3,              //欧拉——伯努利梁单元（3节点）
-		BeamT2,               //铁木辛柯梁单元（2节点）
-		BeamT3,               //铁木辛柯梁单元（3节点）
-        Shell                 //壳单元
-    };
+    
 
     Element();
 
@@ -72,14 +53,14 @@ public:
     int GetMaterialId() const;
     const Eigen::MatrixXi& GetVertexIdArray() const;
 	int GetDOFNumofEle();
-	const Eigen::MatrixXi GetAllDOF();
+	//const Eigen::MatrixXi GetAllDOF();
 
 
     void SetVertex(Vertex* vertex);
     void SetEProp(EProp* EleProp);
     void SetMat(Mat* Material);
 	virtual int SetDOF(int dim) = 0;         //设置自由度，根据各单元不同而不同
-
+	virtual ElementType GetElementType() = 0;
 public:
     // 网格内高斯积分点的生成
 	// 所有的网格都需要高斯积分点，即使是beam和truss,也需要

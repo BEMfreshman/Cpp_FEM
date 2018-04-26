@@ -15,15 +15,9 @@ Factory::Factory()
 }
 
 Vertex* Factory::CreateVertex(int VertexId,
-                              double x,double y)
+                              double x, double y, double z,int SPCsNum)
 {
-    return new Vertex(VertexId,x,y);
-}
-
-Vertex* Factory::CreateVertex(int VertexId,
-                              double x, double y, double z)
-{
-    return new Vertex(VertexId,x,y,z);
+    return new Vertex(VertexId,x,y,z,SPCsNum);
 }
 
 Element* Factory::CreateElement(int ElementId,

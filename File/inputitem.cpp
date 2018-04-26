@@ -189,6 +189,19 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
             (*Data) = GetDataI(1);
             return 1;
         }
+		case SPC:
+		{
+			int Pos = GetValidPostion("SPC");
+			if (Pos == -1)
+			{
+				//无此关键字
+				(*Data) = 0;
+			}
+			else
+			{
+				(*Data) = GetDataI(Pos + 1);
+			}
+		}
         case Element_Id:
         {
             (*Data) = GetDataI(1);
@@ -439,4 +452,5 @@ int InputItem::GetValidPostion(const std::string& KeyWordInItem)
 			return i;   //Pos从0开始
 		}
 	}
+	return -1;
 }

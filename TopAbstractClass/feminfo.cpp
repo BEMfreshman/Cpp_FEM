@@ -98,63 +98,63 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
         if(EleTypeStr == "LINE2")
         {
-            EleType = Line2;
+            EleType = LINE2;
         }
         else if(EleTypeStr == "LINE3")
         {
-            EleType = Line3;
+            EleType = LINE3;
         }
         else if(EleTypeStr == "TRIANGLE3")
         {
-            EleType = Triangle3;
+            EleType = TRIANGLE3;
         }
         else if(EleTypeStr == "TRIANGLE4")
         {
-            EleType = Triangle4;
+			EleType = TRIANGLE4;
         }
         else if(EleTypeStr == "QUAD4")
         {
-            EleType = Quadrilateral4;
+            EleType = QUADRILATERAL4;
         }
         else if(EleTypeStr == "QUAD8")
         {
-            EleType = Quadrilateral8;
+			EleType = QUADRILATERAL8;
         }
         else if(EleTypeStr == "QUAD9")
         {
-            EleType = Quadrilateral9;
+			EleType = QUADRILATERAL9;
         }
         else if(EleTypeStr == "TET4")
         {
-            EleType = Tetrahedron4;
+            EleType = TETRAHEDRON4;
         }
         else if(EleTypeStr == "HEX8")
         {
-            EleType = Hexahedron8;
+            EleType = HEXAHEDRON8;
         }
         else if(EleTypeStr == "TRUSS")
         {
-            EleType = Truss;
+            EleType = TRUSS;
         }
         else if(EleTypeStr == "BEAMEB2")
         {
-            EleType = BeamEB2;
+            EleType = BEAMEB2;
         }
 		else if (EleTypeStr == "BEAMEB3")
 		{
-			EleType = BeamEB3;
+			EleType = BEAMEB3;
 		}
 		else if (EleTypeStr == "BEAMT2")
 		{
-			EleType = BeamT2;
+			EleType = BEAMT2;
 		}
 		else if (EleTypeStr == "BEAMT3")
 		{
-			EleType = BeamT3;
+			EleType = BEAMT3;
 		}
         else if(EleTypeStr == "SHELL")
         {
-            EleType = Shell;
+            EleType = SHELL;
         }
 
 
@@ -277,7 +277,7 @@ FEMinfo* FEMinfo::CreateCopy(int NewId)
     return feminfo;
 }
 
-int FEMinfo::SetMatAndEPropAndVertexInElement()
+int FEMinfo::FinallyCompulsorySet()
 {
 	if (VertexMap.size() == 0)
 	{
@@ -337,7 +337,31 @@ int FEMinfo::SetMatAndEPropAndVertexInElement()
 	return 1;
 }
 
-int FEMinfo::
+int FEMinfo::getVertexNum() const
+{
+	return VertexMap.size();
+}
+
+Vertex* FEMinfo::getVertexById(int id) const
+{
+	map<int, Vertex*>::const_iterator it;
+	it = VertexMap.find(id);
+
+	return (it == VertexMap.end()? NULL:it->second);
+}
+
+int FEMinfo::getElementNum() const
+{
+	return EleMap.size();
+}
+
+Element* FEMinfo::getElementById(int id)const
+{
+	map<int, Element*>::const_iterator it;
+	it = EleMap.find(id);
+
+	return(it == EleMap.end() ? NULL : it->second);
+}
 
 
 

@@ -1,12 +1,11 @@
 ﻿#include "vertex.h"
 #include <vector>
-Vertex::Vertex(int Id, double x, double y,int SPCsNum) :DofManager(0)
+Vertex::Vertex(int Id, double x, double y,int SPCsNum) :DofManager(0,SPCsNum)
 {
     this->Id = Id;
     this->x = x;
     this->y = y;
     this->z = 0.0;
-	this->SPCsNum = SPCsNum;
 
 	if (SPCsNum != 0)
 	{
@@ -20,13 +19,12 @@ Vertex::Vertex(int Id, double x, double y,int SPCsNum) :DofManager(0)
 	}
 }
 
-Vertex::Vertex(int Id, double x, double y, double z, int SPCsNum) :DofManager(0)
+Vertex::Vertex(int Id, double x, double y, double z, int SPCsNum) :DofManager(0,SPCsNum)
 {
     this->Id = Id;
     this->x = x;
     this->y = y;
     this->z = z;
-	this->SPCsNum = SPCsNum;
 
 	if (SPCsNum != 0)
 	{
@@ -97,25 +95,6 @@ int Vertex::SetDOF(int dim, ElementType ET)
 			addDOF(u, findSPCValid(u));
 			addDOF(v, findSPCValid(v));
 			addDOF(tx, findSPCValid(tx));
-		}
-	}
-}
-
-bool Vertex::findSPCValid(DOFVar DF)
-{
-	if (SPCDOF.size() == 0)
-	{
-		return true;
-	}
-	else
-	{
-		if (find(SPCDOF.begin(), SPCDOF.end(), DF) != SPCDOF.end())
-		{
-			return false;
-		}
-		else
-		{
-			return true;
 		}
 	}
 }

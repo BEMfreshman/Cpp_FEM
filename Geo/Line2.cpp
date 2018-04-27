@@ -7,7 +7,7 @@ Line2::Line2()
 }
 
 Line2::Line2(int ElementID, int MaterialId,
-	Element::ElementType eletype,
+	ElementType eletype,
 	const Eigen::MatrixXi& VertexIdArray) :
 	Element(ElementId,MaterialId,eletype,VertexIdArray)
 {
@@ -36,6 +36,11 @@ Line2& Line2::operator =(const Line2& that)
 		return *this;
 	}
 
+}
+
+ElementType Line2::GetElementType()
+{
+	return LINE2;
 }
 
 Element* Line2::Clone() const

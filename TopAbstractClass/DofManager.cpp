@@ -6,7 +6,7 @@ DofManager::DofManager()
 
 }
 
-DofManager::DofManager(int id_) :id(id_)
+DofManager::DofManager(int id_, int SPCsNum_) :id(id_), SPCsNum(SPCsNum)
 {
 
 }
@@ -21,16 +21,16 @@ int DofManager::getid() const
 	return id;
 }
 
-DOFVar DofManager::getDOF(int i) const
+DOF* DofManager::getDOF(int i) const
 {
 	//从0开始
 	if (id >= DOFMap.size())
 	{
-		return UNK;
+		return NULL;
 	}
 	else
 	{
-		map<DOFVar, int>::const_iterator it;
+		map<DOFVar, DOF*>::const_iterator it;
 		int iter = 0;
 		for (it = DOFMap.begin(); it != DOFMap.end(); it++)
 		{
@@ -40,18 +40,19 @@ DOFVar DofManager::getDOF(int i) const
 			}
 			else
 			{
-				it->first;
+				it->second;
 			}
 		}
 	}
 }
 
-int DofManager::addDOF(DOFVar dof,bool isVaild)
+int DofManager::addDOF(DOF* dof,bool isVaild)
 {
 	//首先遍历寻找是否已经存在该自由度
-	if (DOFMap.find(dof) == DOFMap.end())
+	if (DOFMap.find(dof->getDOFVar()) == DOFMap.end())
 	{
-		DOFMap[dof] = (int)(isVaild == true);
+		dof->SetVaild(isVaild);
+		DOFMap[dof->getDOFVar()] = dof;
 		return 1;
 	}
 	else
@@ -60,10 +61,10 @@ int DofManager::addDOF(DOFVar dof,bool isVaild)
 	}
 }
 
-int DofManager::deleteDOF(DOFVar dof)
+int DofManager::deleteDOF(DOF* dof)
 {
-	map<DOFVar, int>::iterator it;
-	it = find(DOFMap.begin(), DOFMap.end(), dof);
+	map<DOFVar, DOF*>::iterator it;
+	it = find(DOFMap.begin(), DOFMap.end(), dof->getDOFVar());
 
 	if (it == DOFMap.end())
 	{
@@ -73,7 +74,7 @@ int DofManager::deleteDOF(DOFVar dof)
 	else
 	{
 
-		DOFMap.erase(dof);
+		DOFMap.erase(dof->getDOFVar());
 		return 1;
 	}
 }
@@ -82,4 +83,17 @@ int DofManager::deleteDOF(DOFVar dof)
 int DofManager::getDOFSize() const
 {
 	return DOFMap.size();
+}
+
+
+bool DofManager::findSPCValid(DOFVar DF)
+{
+	if (DOFMap.size() == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return find(DOFMap.begin(), DOFMap.end(), DF)->second->getIsVaild();
+	}
 }

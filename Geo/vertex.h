@@ -31,16 +31,11 @@ public:
 
 private:
     int Id;
-	int SPCsNum;
+	
     double x;
     double y;
     double z;
-
-	vector<int> SPCDOF;
-
-private:
-	bool findSPCValid(DOFVar DF);
-
+	
 };
 
 #endif // VERTEX_H

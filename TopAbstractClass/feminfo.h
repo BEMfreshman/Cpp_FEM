@@ -47,8 +47,16 @@ public:
     //注意：在这个函数里面会new一个新的FEMinfo出来
     //要在别的地方销毁
 
-	int SetMatAndEPropAndVertexInElement();   //为单元设置Mat、EProp和Vertex指针
+	int FinallyCompulsorySet();   //为单元设置Mat、EProp和Vertex指针
 	int ComputeTotalDOF();
+
+public:
+	int getVertexNum() const;
+	//Vertex* getVertex(int Pos) const;  //Pos从0开始
+	Vertex* getVertexById(int Id) const;   //以Vertex的节点编号为依据获得Vertex*
+
+	int getElementNum() const;
+	Element* getElementById(int Id) const;
 
 protected:
     //AbstractFileReader *FileReader;

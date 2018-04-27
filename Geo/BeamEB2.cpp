@@ -10,7 +10,7 @@ BeamEB2::BeamEB2()
 BeamEB2::BeamEB2(int ElementId,
 	int MaterialId,
 	int EPropId,
-	Element::ElementType eletype,
+	ElementType eletype,
 	const Eigen::MatrixXi& VertexIdArray) :Line2(ElementId, MaterialId,
 	eletype, VertexIdArray)
 {

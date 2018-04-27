@@ -8,7 +8,7 @@ class Line2:public Element
 public:
 	Line2();
 	Line2(int ElementID,int MaterialId,
-		Element::ElementType eletype,
+		ElementType eletype,
 		const Eigen::MatrixXi& VertexIdArray);
 
 	virtual ~Line2();
@@ -21,6 +21,8 @@ public:
 	virtual int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 
 	virtual int SetDOF(int dim);
+
+	virtual ElementType GetElementType();
 
 protected:
 	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

@@ -20,7 +20,7 @@ class BeamEB2:public Line2
 public:
 	BeamEB2();   //默认构造函数
 	BeamEB2(int ElementId, int MaterialId,
-		int EPropId, Element::ElementType eletype,
+		int EPropId, ElementType eletype,
 		const Eigen::MatrixXi& VertexIdArray);
 
 	~BeamEB2();

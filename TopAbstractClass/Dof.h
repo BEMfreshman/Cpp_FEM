@@ -2,12 +2,14 @@
 #define __DOF_H__
 
 #include "DOFVar.h"
+#include "Eigen/SparseCore"
+using namespace std;
 
 class DOF
 {
 public:
 	DOF(int LocalDOFId,DOFVar DF);
-	DOF(int LocalDOFId, int VaildTotalDOFId, DOFVar DF);
+	DOF(int LocalDOFId, bool IsVaild, DOFVar DF);
 	~DOF();
 
 	int getLocalDOFId();
@@ -15,7 +17,9 @@ public:
 	bool getIsVaild();
 	DOFVar getDOFVar();
 
-	void SetVaild(bool vaildflag);
+	int addresidualK(const Eigen::Triplet<double>& T);
+
+	void SetVaildTotalDOFId(int VaildTotalDOFId);
 
 private:
 	int LocalDOFId;
@@ -23,6 +27,8 @@ private:
 	bool IsVaild;
 
 	DOFVar DF;
+
+	vector<Eigen::Triplet<double>> residualK; //如果此DOF无效，则residualK存在
 
 };
 

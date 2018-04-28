@@ -201,6 +201,7 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
 			{
 				(*Data) = GetDataI(Pos + 1);
 			}
+			return 1;
 		}
         case Element_Id:
         {

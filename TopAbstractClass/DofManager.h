@@ -12,6 +12,7 @@
 //所以自由度的设定只在单元设置完成后进行
 #include <map>
 #include <vector>
+#include "DOFVar.h"
 using namespace std;
 
 class DOF;
@@ -26,22 +27,29 @@ public:
 
 	int getid() const;
 	DOF* getDOF(int i) const; //返回排在DOFVec中的第i个元素
+	DOF* getDOFById(DOFVar DF) const;
 	int getDOFSize() const;        //返回DOF的个数
 
-	int addDOF(DOF* dof,bool isVaild);         //增加一个DOF（添加到vec的末尾）
+	int addDOF(DOF* dof);         //增加一个DOF（添加到vec的末尾）
 	int deleteDOF(DOF* dof);    //删除一个DOF
 
-	
+	int SetVaildDOFId(int& ValidDOFNum,int PerscribedDOFNum);
+
 
 protected:
 
 	int id;
 	int SPCsNum;
 
-	map<DOFVar,DOF*> DOFMap;   //装载DOF的Map，第二个表示是否有效
+	map<DOFVar,DOF*> DOFMap;   
+
+	//vector<DOF*> DOFVec;
+	vector<int> SPCDOF;
 
 	
 protected:
+
+	int SetSPC();
 
 	bool findSPCValid(DOFVar DF);
 	

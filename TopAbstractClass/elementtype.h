@@ -20,7 +20,9 @@ enum ElementType
 	BEAMEB3,              //欧拉——伯努利梁单元（3节点）
 	BEAMT2,               //铁木辛柯梁单元（2节点）
 	BEAMT3,               //铁木辛柯梁单元（3节点）
-	SHELL                 //壳单元
+	SHELL,                //壳单元
+
+	POINT
 };
 
 #endif

@@ -94,10 +94,12 @@ int Line2::ComputeShapeFunction(ShapeFunType SFT)
 			dNdxi.row(i) = EachGaussPointdNdxi;
 
 		}
+		return 1;
 	}
 	else if (SFT == Hermite)
 	{
 		//HermiteÐÎ×´º¯Êý
+		return 0;
 	}
 	else
 	{
@@ -158,7 +160,7 @@ int Line2::ComputeElementLength()
 		Eigen::Vector3d tmp;
 
 		double FirstXCoord = FirstOne->GetX();
-		double SecondXCoord = SecondOne->GetY();
+		double SecondXCoord = SecondOne->GetX();
 		tmp(0) = FirstXCoord - SecondXCoord;
 
 		double FirstYCoord = FirstOne->GetY();

@@ -48,7 +48,6 @@ public:
     //要在别的地方销毁
 
 	int FinallyCompulsorySet();   //为单元设置Mat、EProp和Vertex指针
-	int ComputeTotalDOF();
 
 public:
 	int getVertexNum() const;
@@ -57,6 +56,14 @@ public:
 
 	int getElementNum() const;
 	Element* getElementById(int Id) const;
+
+	int getLoadNum() const;
+	Load* getLoadById(int id) const;
+
+	int getConstraintNum() const;
+	Constraint* getConstraintById(int id) const;
+
+	int getdim() const;
 
 protected:
     //AbstractFileReader *FileReader;

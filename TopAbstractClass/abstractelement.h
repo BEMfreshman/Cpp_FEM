@@ -22,6 +22,7 @@
 class Vertex;
 class EProp;
 class Mat;
+class DOF;
 
 class Element
 {
@@ -61,6 +62,12 @@ public:
     void SetMat(Mat* Material);
 	virtual int SetDOF(int dim) = 0;         //设置自由度，根据各单元不同而不同
 	virtual ElementType GetElementType() = 0;
+
+	int GetVertexInEleNum() const;  //获得单元中点的数目
+	Vertex* GetVertexInEle(int i) const;
+	DOF* GetDOFInEleByTotalDOFId(int TotalDOFId) const;
+
+	void GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray, Eigen::VectorXi& IsValidArray);
 public:
     // 网格内高斯积分点的生成
 	// 所有的网格都需要高斯积分点，即使是beam和truss,也需要

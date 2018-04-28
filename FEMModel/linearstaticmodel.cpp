@@ -13,5 +13,6 @@ LinearStaticModel::~LinearStaticModel()
 
 void LinearStaticModel::Solve()
 {
-
+	PreProcess();
+	BuildKMatrix();
 }

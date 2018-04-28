@@ -64,3 +64,8 @@ int Point::ComputeShapeFunction(ShapeFunType SFT)
 {
 	return 0;
 }
+
+ElementType Point::GetElementType()
+{
+	return POINT;
+}

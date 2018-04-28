@@ -9,3 +9,8 @@ NodeLoad::~NodeLoad()
 {
 
 }
+
+void NodeLoad::ComputeEleForce(SpMat& ForceMatrix)
+{
+
+}

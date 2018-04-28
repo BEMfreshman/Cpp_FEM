@@ -31,6 +31,9 @@ public:
 protected:
 
 	int PreProcess();
+	int BuildKMatrix();
+	int BuildMMatrix();
+	int BuildfMatrix();
 
 
 protected:
@@ -43,6 +46,12 @@ protected:
 
     std::string OutputFilePath;
     std::string OutputFileName;
+
+	int ValidDOFNum;     
+	int PerscribedDOFNum;
+	//有效的DOF数目
+	//通过遍历Vertex计算总的有效自由度
+	//同时为各Vertex的有效DOF编号
 
 	SpMat K;     //总体刚度矩阵
 	SpMat M;     //总体质量矩阵

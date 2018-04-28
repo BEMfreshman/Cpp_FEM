@@ -6,8 +6,8 @@ DOF::DOF(int LocalDOFId_, DOFVar DF_)
 
 }
 
-DOF::DOF(int LocalDOFId_, int VaildTotalDOFId_, DOFVar DF_)
-: LocalDOFId(LocalDOFId_), VaildTotalDOFId(VaildTotalDOFId_), DF(DF_)
+DOF::DOF(int LocalDOFId_, bool IsVaild_, DOFVar DF_)
+: LocalDOFId(LocalDOFId_), IsVaild(IsVaild_), DF(DF_)
 {
 
 }
@@ -37,7 +37,13 @@ bool DOF::getIsVaild()
 	return IsVaild;
 }
 
-void DOF::SetVaild(bool vaildflag)
+void DOF::SetVaildTotalDOFId(int VaildTotalDOFId)
 {
-	IsVaild = vaildflag;
+	this->VaildTotalDOFId = VaildTotalDOFId;
+}
+
+int DOF::addresidualK(const Eigen::Triplet<double>& T)
+{
+	residualK.push_back(T);
+	return 1;
 }

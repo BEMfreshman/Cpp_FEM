@@ -49,6 +49,18 @@ int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 	Eigen::MatrixXd& ReturnMatrix)
 {
 	//计算单元刚度矩阵或者单元质量矩阵
+	if (SMT == Stiffness)
+	{
+		ComputeStiffnessMatrix(ReturnMatrix);
+		return 1;
+	}
+	else if (SMT == Mass)
+	{
+		ComputeMassMatrix(ReturnMatrix);
+		return 1;
+	}
+
+	printf("不可识别的SparseMatrixType\n");
 	return 0;
 }
 
@@ -354,5 +366,10 @@ int BeamEB2::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
 int BeamEB2::SetDOF(int dim)
 {
 	return 0;
+}
+
+ElementType BeamEB2::GetElementType()
+{
+	return BEAMEB2;
 }
 

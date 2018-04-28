@@ -22,49 +22,49 @@ Vertex* Factory::CreateVertex(int VertexId,
 
 Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
-                                Element::ElementType eletype,
+                                ElementType eletype,
 								const Eigen::MatrixXi& VertexIdArray)
 {
     switch(eletype)
     {
-        case Element::Line2:
+        case LINE2:
         {
 
         }
-        case Element::Line3:
+        case LINE3:
         {
 
         }
-        case Element::Triangle3:
+        case TRIANGLE3:
         {
 
         }
-        case Element::Triangle4:
+        case TRIANGLE4:
         {
 
         }
-        case Element::Triangle6:
+        case TRIANGLE6:
         {
 
         }
-        case Element::Quadrilateral4:
+        case QUADRILATERAL4:
         {
             return new QuadElement(ElementId,MaterialId,
                                    eletype,VertexIdArray);
         }
-        case Element::Quadrilateral8:
+		case QUADRILATERAL8:
         {
 
         }
-        case Element::Quadrilateral9:
+		case QUADRILATERAL9:
         {
 
         }
-        case Element::Tetrahedron4:
+        case TETRAHEDRON4:
         {
 
         }
-        case Element::Hexahedron8:
+        case HEXAHEDRON8:
         {
 
         }
@@ -76,35 +76,35 @@ Element* Factory::CreateElement(int ElementId,
 Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
                                 int EPropId,
-                                Element::ElementType eletype,
+                                ElementType eletype,
 								const Eigen::MatrixXi& VertexIdArray)
 {
 
     switch(eletype)
     {
-        case Element::Truss:
+        case TRUSS:
         {
             return new Truss(ElementId,MaterialId,
                              EPropId,eletype,VertexIdArray);
         }
-        case Element::BeamEB2:
+        case BEAMEB2:
         {
 			return new BeamEB2(ElementId, MaterialId,
 				EPropId, eletype, VertexIdArray);
         }
-		case Element::BeamEB3:
+		case BEAMEB3:
 		{
 
 		}
-		case Element::BeamT2:
+		case BEAMT2:
 		{
 
 		}
-		case Element::BeamT3:
+		case BEAMT3:
 		{
 
 		}
-        case Element::Shell:
+        case SHELL:
         {
 
         }

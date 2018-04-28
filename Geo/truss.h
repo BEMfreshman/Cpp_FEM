@@ -14,7 +14,7 @@ public:
     Truss(int ElementId,
           int MaterialId,
           int EPropId,
-          Element::ElementType eletype,
+          ElementType eletype,
 		  const Eigen::MatrixXi& VertexIdArray);
 
     ~Truss();
@@ -27,6 +27,8 @@ public:
 	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 	
 	int SetDOF(int dim);
+
+	ElementType GetElementType();
 
 protected:
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

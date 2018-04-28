@@ -6,14 +6,31 @@ DofManager::DofManager()
 
 }
 
-DofManager::DofManager(int id_, int SPCsNum_) :id(id_), SPCsNum(SPCsNum)
+DofManager::DofManager(int id_, int SPCsNum_) :id(id_), SPCsNum(SPCsNum_)
 {
+	if (SPCsNum != 0)
+	{
+		int tmp = SPCsNum;
+		while (tmp != 0)
+		{
+			SPCDOF.push_back((tmp % 10) - 1);
+			tmp = tmp / 10;
+		}
 
+	}
 }
 
 DofManager::~DofManager()
 {
-
+	if (DOFMap.size() != 0)
+	{
+		for (map<DOFVar, DOF*>::iterator it = DOFMap.begin();
+			it != DOFMap.end(); it++)
+		{
+			delete it->second;
+			it->second = NULL;
+		}
+	}
 }
 
 int DofManager::getid() const
@@ -36,22 +53,31 @@ DOF* DofManager::getDOF(int i) const
 		{
 			if (iter != i)
 			{
+				iter++;
 				continue;
 			}
 			else
 			{
-				it->second;
+				return it->second;
 			}
 		}
+		return NULL;
 	}
 }
 
-int DofManager::addDOF(DOF* dof,bool isVaild)
+DOF* DofManager::getDOFById(DOFVar DF) const
+{
+	map<DOFVar, DOF*>::const_iterator it;
+	it = DOFMap.find(DF);
+
+	return (it == DOFMap.end() ? NULL : it->second);
+}
+
+int DofManager::addDOF(DOF* dof)
 {
 	//首先遍历寻找是否已经存在该自由度
 	if (DOFMap.find(dof->getDOFVar()) == DOFMap.end())
 	{
-		dof->SetVaild(isVaild);
 		DOFMap[dof->getDOFVar()] = dof;
 		return 1;
 	}
@@ -59,12 +85,24 @@ int DofManager::addDOF(DOF* dof,bool isVaild)
 	{
 		return 0;
 	}
+
+
+	/*vector<DOF*>::iterator it;
+	it = find(DOFVec.begin(), DOFVec.end(), dof);
+	if (it != DOFVec.end())
+	{
+		return;
+	}
+	else
+	{
+		DOFVec.push_back(dof);
+	}*/
 }
 
 int DofManager::deleteDOF(DOF* dof)
 {
 	map<DOFVar, DOF*>::iterator it;
-	it = find(DOFMap.begin(), DOFMap.end(), dof->getDOFVar());
+	it = DOFMap.find(dof->getDOFVar());
 
 	if (it == DOFMap.end())
 	{
@@ -88,12 +126,54 @@ int DofManager::getDOFSize() const
 
 bool DofManager::findSPCValid(DOFVar DF)
 {
-	if (DOFMap.size() == 0)
+	if (SPCDOF.size() == 0)
 	{
 		return true;
 	}
 	else
 	{
-		return find(DOFMap.begin(), DOFMap.end(), DF)->second->getIsVaild();
+		return !(find(SPCDOF.begin(), SPCDOF.end(), (int)DF) == SPCDOF.end());
 	}
 }
+
+int DofManager::SetVaildDOFId(int& ValidDOFNum, int PerscribedDOFNum)
+{
+	for (map<DOFVar, DOF*>::iterator it = DOFMap.begin();
+		it != DOFMap.end(); it++)
+	{
+		DOF* dof = it->second;
+		if (dof->getIsVaild() == true)
+		{
+			dof->SetVaildTotalDOFId(ValidDOFNum++);
+		}
+		else
+		{
+			dof->SetVaildTotalDOFId(--PerscribedDOFNum);
+		}
+	}
+	return 1;
+}
+
+//int DofManager::SetSPC()
+//{
+//	if (DOFMap.size() == 0)
+//	{
+//		return 0;
+//	}
+//	else
+//	{
+//		for (int i = 0; i < SPCDOF.size(); i++)
+//		{
+//			map<DOFVar, DOF*>::iterator it = DOFMap.find((DOFVar)SPCDOF[i]);
+//			if (it == DOFMap.end())
+//			{
+//				return 0;
+//			}
+//			else
+//			{
+//				it->second->
+//			}
+//		}
+//		
+//	}
+//}

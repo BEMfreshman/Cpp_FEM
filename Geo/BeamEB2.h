@@ -33,6 +33,8 @@ public:
 	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 
 	int SetDOF(int dim);
+
+	ElementType GetElementType();
 protected:
 
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

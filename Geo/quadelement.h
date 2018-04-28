@@ -2,7 +2,7 @@
 #define QUADELEMENT_H
 
 /* 四边形单元
- * 包括4节点单元，8节点单元，9节点单元
+ * 4节点单元
  */
 
 #include "../TopAbstractClass/abstractelement.h"
@@ -13,7 +13,7 @@ public:
     QuadElement();
     QuadElement(int ElementId,
                 int MaterialId,
-                Element::ElementType eletype,
+                ElementType eletype,
                 const Eigen::MatrixXi& VertexIdArray);
     ~QuadElement();
 
@@ -25,6 +25,8 @@ public:
 	virtual int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 
 	virtual int SetDOF(int dim);
+
+	virtual ElementType GetElementType();
 
 protected:
 	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

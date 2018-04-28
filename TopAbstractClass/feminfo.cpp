@@ -4,6 +4,10 @@
 #include "abstractfilereader.h"
 #include "../Geo/vertex.h"
 #include "abstractelement.h"
+#include "abstractmaterial.h"
+#include "abastractelementprop.h"
+#include "abstractload.h"
+#include "abstractconstraint.h"
 
 #include "elementtype.h"
 /*
@@ -187,7 +191,6 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 	InputItem* AnalysisInputItem =
 		analysistypeinputcard->GetInputItemAccordtoID(0);
 
-	std::string DimAndMatStatus;
 	AnalysisInputItem->GetDataByItemName(DimAndMatStatus, Analysis_SolType);
 
 
@@ -251,7 +254,35 @@ FEMinfo::FEMinfo(int FEMinfoId)
 
 FEMinfo::~FEMinfo()
 {
+	for (map<int, Vertex*>::iterator it = VertexMap.begin(); it != VertexMap.end(); it++)
+	{
+		delete it->second;
+	}
 
+	for (map<int, Element*>::iterator it = EleMap.begin(); it != EleMap.end(); it++)
+	{
+		delete it->second;
+	}
+
+	for (map<int, Mat*>::iterator it = MatMap.begin(); it != MatMap.end(); it++)
+	{
+		delete it->second;
+	}
+
+	for (map<int, EProp*>::iterator it = EPropMap.begin(); it != EPropMap.end(); it++)
+	{
+		delete it->second;
+	}
+
+	for (map<int, Load*>::iterator it = LoadMap.begin(); it != LoadMap.end(); it++)
+	{
+		delete it->second;
+	}
+
+	for (map<int, Constraint*>::iterator it = ConstraintMap.begin(); it != ConstraintMap.end(); it++)
+	{
+		delete it->second;
+	}
 }
 
 FEMinfo* FEMinfo::CreateCopy(int NewId)
@@ -261,15 +292,15 @@ FEMinfo* FEMinfo::CreateCopy(int NewId)
     feminfo->AnalysisTypeData = this->AnalysisTypeData;
     //feminfo->fem2dtype = this->fem2dtype;
 
-    for(int i = 0 ; i < VertexMap.size();i++)
+    for(int id = 1 ; id <= VertexMap.size();id++)
     {
-        Vertex* NewVertex = new Vertex(*(VertexMap.at(i)));
+        Vertex* NewVertex = new Vertex(*(VertexMap.find(id)->second));
         feminfo->VertexMap[NewVertex->getid()] = NewVertex;
     }
 
-    for(int i = 0;i < EleMap.size();i++)
+    for(int id = 1;id <= EleMap.size();id++)
     {
-        Element* NewEle = (EleMap[i])->Clone();
+        Element* NewEle = (EleMap.find(id)->second)->Clone();
         feminfo->EleMap[NewEle->GetElementId()] = NewEle;
     }
 
@@ -293,9 +324,9 @@ int FEMinfo::FinallyCompulsorySet()
     }
 	
 
-    for(size_t i = 0 ; i < EleMap.size();i++)
+    for(size_t i = 1 ; i <= EleMap.size();i++)
     {
-        Element* Ele = EleMap[i];
+        Element* Ele = EleMap.find(i)->second;
 
 		const Eigen::MatrixXi VertexIdArray = Ele->GetVertexIdArray();
 		int row = VertexIdArray.rows();
@@ -361,6 +392,37 @@ Element* FEMinfo::getElementById(int id)const
 	it = EleMap.find(id);
 
 	return(it == EleMap.end() ? NULL : it->second);
+}
+
+int FEMinfo::getLoadNum() const
+{
+	return LoadMap.size();
+}
+
+Load* FEMinfo::getLoadById(int id) const
+{
+	map<int, Load*>::const_iterator it;
+	it = LoadMap.find(id);
+
+	return (it == LoadMap.end() ? NULL : it->second);
+}
+
+int FEMinfo::getConstraintNum() const
+{
+	return ConstraintMap.size();
+}
+
+Constraint* FEMinfo::getConstraintById(int id)const
+{
+	map<int, Constraint*>::const_iterator it;
+	it = ConstraintMap.find(id);
+
+	return (it == ConstraintMap.end() ? NULL : it->second);
+}
+
+int FEMinfo::getdim() const
+{
+	return dim;
 }
 
 

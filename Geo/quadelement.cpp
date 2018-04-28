@@ -2,7 +2,7 @@
 
 QuadElement::QuadElement(int ElementId,
                          int MaterialId,
-                         Element::ElementType eletype,
+                         ElementType eletype,
 						 const Eigen::MatrixXi& VertexIdArray) :
     Element(ElementId,MaterialId,eletype,VertexIdArray)
 {
@@ -66,4 +66,9 @@ int QuadElement::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 int QuadElement::SetDOF(int dim)
 {
 	return 0;
+}
+
+ElementType QuadElement::GetElementType()
+{
+	return QUADRILATERAL4;
 }

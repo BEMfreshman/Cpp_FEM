@@ -14,7 +14,7 @@ public:
     Point(int ElementId,
           int MaterialId,
           int EPropId,
-          Element::ElementType eletype,
+          ElementType eletype,
           const Eigen::MatrixXi& VertexIdArray);
 
     Point(const Point& that);
@@ -26,6 +26,8 @@ public:
 	
 	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
 	int SetDOF(int dim);
+
+	virtual ElementType GetElementType();
 
 protected:
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

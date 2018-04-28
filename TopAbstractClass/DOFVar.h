@@ -3,7 +3,7 @@
 
 enum DOFVar
 {
-	u,        //x方向
+	u = 1,        //x方向
 	v,        //y方向
 	w,        //z方向
 

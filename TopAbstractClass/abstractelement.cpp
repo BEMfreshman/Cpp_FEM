@@ -1,5 +1,6 @@
 ﻿#include "abstractelement.h"
 #include "../Geo/vertex.h"
+#include "Dof.h"
 #include "../TopAbstractClass/abstractmaterial.h"
 #include "../TopAbstractClass/abastractelementprop.h"
 
@@ -259,6 +260,57 @@ void Element::OneDimensionGPAndWeight(int Order)
 		WeightOneDimension.push_back(0.362683783378362);
 		WeightOneDimension.push_back(0.362683783378362);
 	}
+}
+
+int Element::GetVertexInEleNum() const
+{
+	return VertexVec.size();
+}
+
+Vertex* Element::GetVertexInEle(int i) const
+{
+	return (i >= VertexVec.size() ? NULL : VertexVec[i]);
+}
+void Element::GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray,
+	Eigen::VectorXi& IsValidArray)
+{
+	vector<int> tmpDOFId;
+	vector<int> tmpValid;
+	for (int i = 0; i < VertexVec.size(); i++)
+	{
+		for (int j = 0; j < VertexVec[i]->getDOFSize(); j++)
+		{
+			DOF* dof = VertexVec[i]->getDOF(j);
+			tmpDOFId.push_back(dof->getVaildTotalDOFId());
+			tmpValid.push_back(dof->getIsVaild() == true ? 1 : 0);
+		}
+	}
+
+	ValidTotalDOFIdArray.resize(tmpDOFId.size());
+	IsValidArray.resize(tmpValid.size());
+
+	for (int i = 0; i < tmpDOFId.size(); i++)
+	{
+		ValidTotalDOFIdArray(i) = tmpDOFId[i];
+		IsValidArray(i) = tmpValid[i];
+	}
+}
+
+DOF* Element::GetDOFInEleByTotalDOFId(int TotalDOFId) const
+{
+	for (int i = 0; i < VertexVec.size(); i++)
+	{
+		Vertex* Ver = VertexVec[i];
+		for (int j = 0; j < Ver->getDOFSize(); j++)
+		{
+			if (Ver->getDOF(j)->getVaildTotalDOFId() == TotalDOFId)
+			{
+				return Ver->getDOF(j);
+			}
+		}
+	}
+
+	return NULL;
 }
 
 /*

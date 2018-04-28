@@ -14,7 +14,7 @@ int main()
 	abstractFEMModel* FEMModel = new LinearStaticModel(FemInformation);
     //线性静态模型
 
-
+	FEMModel->Solve();
 
 	
 

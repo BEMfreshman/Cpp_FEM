@@ -3,7 +3,7 @@
 Truss::Truss(int ElementId,
              int MaterialId,
              int EPropId,
-             Element::ElementType eletype,
+             ElementType eletype,
 			 const Eigen::MatrixXi& VertexIdArray)
             :Line2(ElementId,MaterialId,
                      eletype,VertexIdArray)
@@ -65,4 +65,9 @@ int Truss::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 int Truss::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
 {
 	return 0;
+}
+
+ElementType Truss::GetElementType()
+{
+	return TRUSS;
 }

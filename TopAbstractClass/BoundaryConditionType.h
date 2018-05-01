@@ -1,10 +1,10 @@
 #ifndef __BOUNDARYCONDITIONTYPE_H__
 #define __BOUNDARYCONDITIONTYPE_H__
 
-enum LoadType
+enum BCType
 {
-	ForceLoad,
-	PressureLoad,
+	Dirichelet,   //狄利克雷边界条件
+	Neumann,      //纽曼边界条件
 };
 
 

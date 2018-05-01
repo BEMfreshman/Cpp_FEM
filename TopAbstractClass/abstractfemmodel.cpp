@@ -113,3 +113,8 @@ int abstractFEMModel::BuildKMatrix()
 	cout << K << endl;
 	return 1;
 }
+
+int abstractFEMModel::BuildfMatrix()
+{
+	//组建f矩阵
+}

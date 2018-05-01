@@ -10,3 +10,6 @@
 1,Linear,Iso,E,21,RHO,7860
 *EleProp
 1,Beam,Area,0.0004,Iz,0.0004
+*Constraint
+1,Dirichelet,1,1,0.0
+2,Dirichelet,1,4,0.0

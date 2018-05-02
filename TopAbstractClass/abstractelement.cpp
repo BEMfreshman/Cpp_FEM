@@ -122,7 +122,7 @@ int Element::GetDOFNumofEle()
 		else
 		{
 			int res = 0;
-			for (int i = 0; i < VertexVec.size(); i++)
+			for (size_t i = 0; i < VertexVec.size(); i++)
 			{
 				res += VertexVec[i]->getDOFSize();
 			}
@@ -276,20 +276,21 @@ void Element::GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray,
 {
 	vector<int> tmpDOFId;
 	vector<int> tmpValid;
-	for (int i = 0; i < VertexVec.size(); i++)
+	for (size_t i = 0; i < VertexVec.size(); i++)
 	{
-		for (int j = 0; j < VertexVec[i]->getDOFSize(); j++)
+		/*for (int j = 0; j < VertexVec[i]->getDOFSize(); j++)
 		{
 			DOF* dof = VertexVec[i]->getDOF(j);
 			tmpDOFId.push_back(dof->getVaildTotalDOFId());
 			tmpValid.push_back(dof->getIsVaild() == true ? 1 : 0);
-		}
+		}*/
+		VertexVec[i]->getValidDOFIdAndIsValidArray(tmpDOFId, tmpValid);
 	}
 
 	ValidTotalDOFIdArray.resize(tmpDOFId.size());
 	IsValidArray.resize(tmpValid.size());
 
-	for (int i = 0; i < tmpDOFId.size(); i++)
+	for (size_t i = 0; i < tmpDOFId.size(); i++)
 	{
 		ValidTotalDOFIdArray(i) = tmpDOFId[i];
 		IsValidArray(i) = tmpValid[i];
@@ -298,7 +299,7 @@ void Element::GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray,
 
 DOF* Element::GetDOFInEleByTotalDOFId(int TotalDOFId) const
 {
-	for (int i = 0; i < VertexVec.size(); i++)
+	for (size_t i = 0; i < VertexVec.size(); i++)
 	{
 		Vertex* Ver = VertexVec[i];
 		for (int j = 0; j < Ver->getDOFSize(); j++)
@@ -311,6 +312,42 @@ DOF* Element::GetDOFInEleByTotalDOFId(int TotalDOFId) const
 	}
 
 	return NULL;
+}
+
+void Element::ProduceValidTriple(const Eigen::MatrixXd& mat,
+	vector<T_>& TripleList)
+{
+	Eigen::VectorXi ValidTotalDOFIdArray;
+	Eigen::VectorXi IsValidArray;
+
+	GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
+
+	for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
+	{
+		for (int j = 0; j < ValidTotalDOFIdArray.size(); j++)
+		{
+			if (abs(IsValidArray(i)) > EPS && abs(IsValidArray(j)) > EPS)
+				//IsValidArray(i) != 0 && IsValidArray(j) != 0
+			{
+				TripleList.push_back(T_(ValidTotalDOFIdArray(i),
+					ValidTotalDOFIdArray(j),
+					mat(i, j)));
+			}
+			else if (abs(IsValidArray(i)) < EPS && abs(IsValidArray(j)) > EPS)
+				//IsValidArray(i) == 0 && IsValidArray(j) != 0
+			{
+				GetDOFInEleByTotalDOFId(ValidTotalDOFIdArray(i))
+					->addresidualK(T_(IsValidArray(j), 0, mat(i, j)));
+
+			}
+			else
+				//IsValidArray(i) == 0 && IsValidArray(j) == 0
+				//IsValidArray(i) != 0 && IsValidArray(j) == 0
+			{
+				continue;
+			}
+		}
+	}
 }
 
 /*

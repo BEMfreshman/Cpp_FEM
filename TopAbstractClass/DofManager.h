@@ -35,6 +35,7 @@ public:
 
 	int SetVaildDOFId(int& ValidDOFNum,int PerscribedDOFNum);
 
+	int getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int>& ValidArray) const;
 
 protected:
 

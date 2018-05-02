@@ -43,7 +43,7 @@ Element* QuadElement::Clone() const
     return new QuadElement(*this);
 }
 
-int QuadElement::GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix)
+int QuadElement::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 {
 	return 0;
 }

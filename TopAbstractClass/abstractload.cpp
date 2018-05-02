@@ -1,6 +1,6 @@
 #include "abstractload.h"
 
-Load::Load(int id_) :id(id_)
+Load::Load(int id_) :id(id_), CoordId(0)
 {
 	
 }
@@ -15,18 +15,23 @@ int Load::GetId()
 	return id;
 }
 
-void Load::addElement(Element* Ele)
+void Load::addData(const Eigen::VectorXi& NodeId, const Eigen::VectorXd& Value)
 {
-	vector<Element*>::iterator it;
-	it = find(ElementVec.begin(), ElementVec.end(), Ele);
+	this->NodeId = NodeId;
+	this->Value = Value;
+}
 
-	if (it != ElementVec.end())
-	{
-		//已经存在此Ele
-		return;
-	}
-	else
-	{
-		ElementVec.push_back(Ele);
-	}
+const Eigen::VectorXi Load::getNodeId() const
+{
+	return NodeId;
+}
+
+const Eigen::VectorXd Load::getValue() const
+{
+	return Value;
+}
+
+int Load::getCoordId() const
+{
+	return CoordId;
 }

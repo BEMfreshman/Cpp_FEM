@@ -48,7 +48,7 @@ Element* Line2::Clone() const
 	return new Line2(*this);
 }
 
-int Line2::GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix)
+int Line2::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 {
 	return 0;
 }

@@ -5,6 +5,10 @@
 #include "sparsematrixtype.h"
 #include "ShapeFunction.h"
 
+#define EPS 1e-10
+
+using namespace std;
+
 /* 抽象Element
  * 向下继承为
  * 点单元
@@ -23,6 +27,8 @@ class Vertex;
 class EProp;
 class Mat;
 class DOF;
+
+typedef Eigen::Triplet<double> T_;
 
 class Element
 {
@@ -76,7 +82,7 @@ public:
     //Order代表积分阶次
 
 public:
-    virtual int GetSpecificMatrix(SparseMatrixType SMT,Eigen::MatrixXd& ReturnMatrix) = 0;
+    virtual int GetSpecificMatrix(SparseMatrixType SMT,vector<T_>& ReturnValue) = 0;
 
 /*
  * 暂时不考虑边界单元的功能
@@ -225,6 +231,9 @@ protected:
 
 protected:
 	void OneDimensionGPAndWeight(int Order);
+
+	void ProduceValidTriple(const Eigen::MatrixXd& mat,
+		vector<T_>& TripleList);
 
 
 

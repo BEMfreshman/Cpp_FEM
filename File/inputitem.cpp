@@ -90,7 +90,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-			for (int i = 4; i < splitstr.size(); i++)
+			for (size_t i = 4; i < splitstr.size(); i++)
             {
                 if(i % 2 == 0)
                 {
@@ -118,7 +118,7 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             std::string PropName;
             double PropValue;
             int Counter = 0;
-			for (int i = 3; i < splitstr.size(); i++)
+			for (size_t i = 3; i < splitstr.size(); i++)
             {
                 if(i % 2 == 1)
                 {
@@ -138,6 +138,10 @@ int InputItem::GetDataByItemName(std::map<std::string,double>& Data,InputItemNam
             }
 			return 1;
         }
+		default:
+		{
+			return 0;
+		}
     }
 }
 
@@ -172,6 +176,10 @@ int InputItem::GetDataByItemName(std::string& Data,InputItemName inputitemname)
             Data = GetDataStr(2);
             return 1;
         }
+		default:
+		{
+			return 0;
+		}
     }
 }
 
@@ -344,6 +352,11 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
 			}
 			
         }
+		default:
+		{
+				(*Data) = 0.0;
+				return 0;
+		}
     }
 }
 
@@ -436,6 +449,11 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
             }
 
         }
+		default:
+		{
+				Data.resize(1, 1);
+				return 0;
+		}
     }
 }
 
@@ -446,7 +464,7 @@ int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemna
 
 int InputItem::GetValidPostion(const std::string& KeyWordInItem)
 {
-	for (int i = 0; i < splitstr.size(); i++)
+	for (size_t i = 0; i < splitstr.size(); i++)
 	{
 		if (splitstr[i] == KeyWordInItem)
 		{

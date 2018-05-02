@@ -292,13 +292,13 @@ FEMinfo* FEMinfo::CreateCopy(int NewId)
     feminfo->AnalysisTypeData = this->AnalysisTypeData;
     //feminfo->fem2dtype = this->fem2dtype;
 
-    for(int id = 1 ; id <= VertexMap.size();id++)
+	for (size_t id = 1; id <= VertexMap.size(); id++)
     {
         Vertex* NewVertex = new Vertex(*(VertexMap.find(id)->second));
         feminfo->VertexMap[NewVertex->getid()] = NewVertex;
     }
 
-    for(int id = 1;id <= EleMap.size();id++)
+	for (size_t id = 1; id <= EleMap.size(); id++)
     {
         Element* NewEle = (EleMap.find(id)->second)->Clone();
         feminfo->EleMap[NewEle->GetElementId()] = NewEle;

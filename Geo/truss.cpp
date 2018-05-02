@@ -50,7 +50,7 @@ int Truss::SetDOF(int dim)
 	return 0;
 }
 
-int Truss::GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix)
+int Truss::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 {
 	return 0;
 }

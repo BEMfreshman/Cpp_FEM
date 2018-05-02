@@ -13,10 +13,13 @@
 #include "Eigen\Eigen"
 #include <vector>
 
+class FEMinfo;
+
 typedef Eigen::SparseMatrix<double> SpMat;
 
 using namespace std;
 
+typedef Eigen::Triplet<double> T_;
 class Load
 {
 public:
@@ -25,15 +28,19 @@ public:
 
 	int GetId();
 
-	virtual void ComputeEleForce(SpMat& ForceMatrix) = 0;
+	virtual int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList) = 0;
 
-	void addElement(Element* Ele);
+	void addData(const Eigen::VectorXi& NodeId, const Eigen::VectorXd& Value);
+	void setCoordId(int CoordId);
 
-
+	const Eigen::VectorXi getNodeId() const;
+	const Eigen::VectorXd getValue() const;
+	int getCoordId() const;          //获得坐标轴编号
 protected:
 	int id;                        //该载荷的ID
-
-	vector<Element*> ElementVec;
+	int CoordId;                   //坐标轴编号
+	Eigen::VectorXi NodeId;        //点的Id合集
+	Eigen::VectorXd Value;         //Load值得大小
 
 protected:
 	

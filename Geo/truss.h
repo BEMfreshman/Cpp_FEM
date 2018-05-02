@@ -24,7 +24,7 @@ public:
 
     Element* Clone() const;
 
-	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList);
 	
 	int SetDOF(int dim);
 

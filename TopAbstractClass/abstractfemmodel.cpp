@@ -70,40 +70,40 @@ int abstractFEMModel::BuildKMatrix()
 	{
 		Element* Ele = FemInformation->getElementById(id);
 
-		Ele->GetSpecificMatrix(Stiffness, EleStiffnessMatrix);
+		Ele->GetSpecificMatrix(Stiffness, tripleList);
 		//计算单元刚度矩阵
 
 
-		Eigen::VectorXi ValidTotalDOFIdArray;
-		Eigen::VectorXi IsValidArray;
+		//Eigen::VectorXi ValidTotalDOFIdArray;
+		//Eigen::VectorXi IsValidArray;
 
-		Ele->GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
+		//Ele->GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
 
-		for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
-		{
-			for (int j = 0; j < ValidTotalDOFIdArray.size(); j++)
-			{
-				if (abs(IsValidArray(i)) > EPS && abs(IsValidArray(j)) > EPS) 
-					//IsValidArray(i) != 0 && IsValidArray(j) != 0
-				{
-					tripleList.push_back(T(ValidTotalDOFIdArray(i),
-						ValidTotalDOFIdArray(j),
-						EleStiffnessMatrix(i,j)));
-				}
-				else if (abs(IsValidArray(i)) < EPS && abs(IsValidArray(j)) > EPS)
-					//IsValidArray(i) == 0 && IsValidArray(j) != 0
-				{
-					Ele->GetDOFInEleByTotalDOFId(ValidTotalDOFIdArray(i))
-						->addresidualK(T(IsValidArray(j), 0, EleStiffnessMatrix(i, j)));
-				}
-				else 
-					//IsValidArray(i) == 0 && IsValidArray(j) == 0
-					//IsValidArray(i) != 0 && IsValidArray(j) == 0
-				{
-					continue;
-				}
-			}
-		}
+		//for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
+		//{
+		//	for (int j = 0; j < ValidTotalDOFIdArray.size(); j++)
+		//	{
+		//		if (abs(IsValidArray(i)) > EPS && abs(IsValidArray(j)) > EPS) 
+		//			//IsValidArray(i) != 0 && IsValidArray(j) != 0
+		//		{
+		//			tripleList.push_back(T(ValidTotalDOFIdArray(i),
+		//				ValidTotalDOFIdArray(j),
+		//				EleStiffnessMatrix(i,j)));
+		//		}
+		//		else if (abs(IsValidArray(i)) < EPS && abs(IsValidArray(j)) > EPS)
+		//			//IsValidArray(i) == 0 && IsValidArray(j) != 0
+		//		{
+		//			Ele->GetDOFInEleByTotalDOFId(ValidTotalDOFIdArray(i))
+		//				->addresidualK(T(IsValidArray(j), 0, EleStiffnessMatrix(i, j)));
+		//		}
+		//		else 
+		//			//IsValidArray(i) == 0 && IsValidArray(j) == 0
+		//			//IsValidArray(i) != 0 && IsValidArray(j) == 0
+		//		{
+		//			continue;
+		//		}
+		//	}
+		//}
 	}
 
 	//组装K
@@ -117,4 +117,5 @@ int abstractFEMModel::BuildKMatrix()
 int abstractFEMModel::BuildfMatrix()
 {
 	//组建f矩阵
+	return 0;
 }

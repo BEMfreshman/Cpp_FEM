@@ -11,7 +11,7 @@ public:
 	NodeLoad(int id);
 	~NodeLoad();
 
-	void ComputeEleForce(SpMat& ForceMatrix);
+	int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList);
 
 private:
 	

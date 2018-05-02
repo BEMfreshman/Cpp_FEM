@@ -22,7 +22,7 @@ public:
 
     Element* Clone() const;
 
-	virtual int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	virtual int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList);
 
 	virtual int SetDOF(int dim);
 

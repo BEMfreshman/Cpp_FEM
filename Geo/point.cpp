@@ -40,9 +40,9 @@ Point& Point::operator =(const Point& that)
 
 }
 
-int Point::GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix)
+int Point::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 {
-	return 1;
+	return 0;
 }
 
 Element* Point::Clone() const

@@ -1,4 +1,5 @@
 #include "BeamEB2.h"
+#include "../TopAbstractClass/Dof.h"
 #include "../TopAbstractClass/abastractelementprop.h"
 #include "../TopAbstractClass/abstractmaterial.h"
 
@@ -46,17 +47,18 @@ Element* BeamEB2::Clone() const
 }
 
 int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
-	Eigen::MatrixXd& ReturnMatrix)
+	vector<T_>& ReturnValue)
 {
 	//计算单元刚度矩阵或者单元质量矩阵
+
 	if (SMT == Stiffness)
 	{
-		ComputeStiffnessMatrix(ReturnMatrix);
+		ComputeStiffnessMatrix(ReturnValue);
 		return 1;
 	}
 	else if (SMT == Mass)
 	{
-		ComputeMassMatrix(ReturnMatrix);
+		ComputeMassMatrix(ReturnValue);
 		return 1;
 	}
 
@@ -64,12 +66,14 @@ int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 	return 0;
 }
 
-int BeamEB2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
+int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 {
 	//欧拉——伯努利梁
 	//计算刚度矩阵
 
 	//通过点的自由度，确定刚度矩阵的大小
+
+	Eigen::MatrixXd matReturn;
 	
 	if (GetDOFNumofEle() == 0)
 	{
@@ -140,6 +144,10 @@ int BeamEB2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 				matReturn(3, 3) = 4 * pow(ElementLength, 2);
 
 				matReturn *= Coeff;
+
+
+
+				ProduceValidTriple(matReturn, tripleList);
 
 			}
 		}
@@ -215,6 +223,8 @@ int BeamEB2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 				matReturn(5, 4) = matReturn(4, 5);
 				matReturn(5, 5) = 4 * EVal*IzVal / ElementLength;
 
+				ProduceValidTriple(matReturn, tripleList);
+
 			}
 		}
 	}
@@ -226,13 +236,15 @@ int BeamEB2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 	return 0;
 }
 
-int BeamEB2::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
+int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 {
 	if (GetDOFNumofEle() == 0)
 	{
 		printf("该单元未设置单元节点\n");
 		return 0;
 	}
+
+	Eigen::MatrixXd matReturn;
 
 	matReturn.resize(DOFNumofEle, DOFNumofEle);
 	matReturn.setZero();
@@ -292,6 +304,8 @@ int BeamEB2::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
 		matReturn(3, 3) = 4 * pow(ElementLength, 2);
 
 		matReturn *= Coeff;
+
+		ProduceValidTriple(matReturn, tripleList);
 	}
 	else if (DOFNumofEle == 6)
 	{
@@ -354,6 +368,8 @@ int BeamEB2::ComputeMassMatrix(Eigen::MatrixXd& matReturn)
 		matReturn(5, 5) = 4 * pow(ElementLength, 2);
 
 		matReturn *= Coeff;
+
+		ProduceValidTriple(matReturn, tripleList);
 	}
 	else if (DOFNumofEle == 12)
 	{

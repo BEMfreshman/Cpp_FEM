@@ -30,15 +30,15 @@ public:
 
 	Element* Clone() const;
 
-	int GetSpecificMatrix(SparseMatrixType SMT, Eigen::MatrixXd& ReturnMatrix);
+	int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& ReturnValue);
 
 	int SetDOF(int dim);
 
 	ElementType GetElementType();
 protected:
 
-	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
-	int ComputeMassMatrix(Eigen::MatrixXd& matReturn);
+	int ComputeStiffnessMatrix(vector<T_>& ReturnValue);
+	int ComputeMassMatrix(vector<T_>& ReturnValue);
 
 
 	

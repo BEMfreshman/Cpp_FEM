@@ -154,6 +154,18 @@ int DofManager::SetVaildDOFId(int& ValidDOFNum, int PerscribedDOFNum)
 	return 1;
 }
 
+int DofManager::getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int>& ValidArray) const
+{
+	for (map<DOFVar, DOF*>::const_iterator it = DOFMap.begin();
+		it != DOFMap.end();
+		it++)
+	{
+		DOF* dof = it->second;
+		ValidDOFId.push_back(dof->getVaildTotalDOFId());
+		ValidArray.push_back(dof->getIsVaild() == true ? 1 : 0);
+	}
+	return 1;
+}
 //int DofManager::SetSPC()
 //{
 //	if (DOFMap.size() == 0)

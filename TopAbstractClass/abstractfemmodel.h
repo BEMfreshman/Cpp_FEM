@@ -16,6 +16,7 @@ class FEMinfo;
 
 typedef Eigen::SparseMatrix<double> SpMat;
 
+
 class abstractFEMModel
 {
 public:
@@ -31,9 +32,9 @@ public:
 protected:
 
 	int PreProcess();
-	int BuildKMatrix();
-	int BuildMMatrix();
-	int BuildfMatrix();
+	virtual int BuildKMatrix() = 0;
+	virtual int BuildMMatrix() = 0;
+	virtual int BuildfMatrix() = 0;
 
 
 protected:

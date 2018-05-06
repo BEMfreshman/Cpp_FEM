@@ -33,7 +33,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
             FileReader->GetInputCard(AbstractFileReader::AnalysisType);
 
     InputItem* EachInputItem =
-            analysistypeinputcard->GetInputItemAccordtoID(0);
+            analysistypeinputcard->GetInputItem(0);
 
     EachInputItem->GetDataByItemName(&AnalysisTypeData,Analysis_SolNum);
 
@@ -62,7 +62,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
     for(size_t i = 0; i < VertexInputCard->sizeofInputCard();i++)
     {
         InputItem* EachInputItem =
-                VertexInputCard->GetInputItemAccordtoID(i);
+                VertexInputCard->GetInputItem(i);
         int id;
 		int SPCsNum;                         //单点约束
         double CoordX = 0.0,CoordY = 0.0,CoordZ = 0.0;
@@ -85,7 +85,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
     for(size_t i = 0;i < EleInputCard->sizeofInputCard();i++)
     {
         InputItem* EachInputItem =
-                EleInputCard->GetInputItemAccordtoID(i);
+                EleInputCard->GetInputItem(i);
 
         int id;
         int MaterialId;
@@ -189,14 +189,14 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 		FileReader->GetInputCard(AbstractFileReader::Material);
 
 	InputItem* AnalysisInputItem =
-		analysistypeinputcard->GetInputItemAccordtoID(0);
+		analysistypeinputcard->GetInputItem(0);
 
 	AnalysisInputItem->GetDataByItemName(DimAndMatStatus, Analysis_SolType);
 
 
 	for (size_t i = 0; i < MatInputCard->sizeofInputCard(); i++)
 	{
-		InputItem* MatInputItem = MatInputCard->GetInputItemAccordtoID(i);
+		InputItem* MatInputItem = MatInputCard->GetInputItem(i);
 
 		int id;
 		std::string LinearOrNot;
@@ -222,7 +222,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 	
 	for (size_t i = 0; i < ElePropInputCard->sizeofInputCard(); i++)
 	{
-		InputItem* EPropInputItem = ElePropInputCard->GetInputItemAccordtoID(i);
+		InputItem* EPropInputItem = ElePropInputCard->GetInputItem(i);
 		
 		int id;
 		std::string ElementPropName;   //Beam,Truss等
@@ -237,7 +237,56 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 		EPropMap[id] = EP;
 	}
 
+	//实例化Load类
+	InputCard* LoadInputCard = FileReader->GetInputCard(AbstractFileReader::Load);
+	for (size_t i = 0; i < LoadInputCard->sizeofInputCard(); i++)
+	{
+		InputItem* LoadInputItem = LoadInputCard->GetInputItem(i);
 
+		int id;
+		std::string LoadName;   //集中力或者分布力
+		Eigen::MatrixXi NodeId;
+		Eigen::MatrixXd Value;
+
+		LoadInputItem->GetDataByItemName(&id, Load_Id);
+		LoadInputItem->GetDataByItemName(LoadName, Load_Name);
+		LoadInputItem->GetDataByItemName(NodeId, Load_NodeId);
+		LoadInputItem->GetDataByItemName(Value, Load_Value);
+
+		Load* ld = fac->CreateLoad(id, LoadName, NodeId, Value);
+		
+		LoadMap[id] = ld;
+	}
+
+	//实例化Constraint类
+	InputCard* ConstraintInputCard = FileReader->GetInputCard(AbstractFileReader::Constraint);
+
+	for (size_t i = 0; i < ConstraintInputCard->sizeofInputCard(); i++)
+	{
+		InputItem* ConstraintInputItem = ConstraintInputCard->GetInputItem(i);
+
+		int id;
+		std::string ConstraintName;   //狄利克雷或纽曼边界条件
+		int NodeId;
+		int DFi;
+		DOFVar DF;
+		double Value;
+
+		ConstraintInputItem->GetDataByItemName(&id, Constraint_Id);
+		ConstraintInputItem->GetDataByItemName(ConstraintName, Constraint_Name);
+		ConstraintInputItem->GetDataByItemName(&NodeId, Constraint_NodeId);
+		ConstraintInputItem->GetDataByItemName(&DFi, Constraint_DOFVarI);
+		ConstraintInputItem->GetDataByItemName(&Value, Constraint_Value);
+
+		DF = (DOFVar)DFi;
+
+		Constraint* ct = fac->CreateConstraint(id,ConstraintName,NodeId,DF,Value);
+
+		ConstraintMap[id] = ct;
+
+	}
+
+	
 
     delete fac;
 }

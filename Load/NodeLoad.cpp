@@ -2,7 +2,8 @@
 #include "../TopAbstractClass/feminfo.h"
 #include "../Geo/vertex.h"
 
-NodeLoad::NodeLoad(int id) :Load(id)
+NodeLoad::NodeLoad(int id, const Eigen::MatrixXi& NodeId,
+	const Eigen::MatrixXd Value) :Load(id,NodeId,Value)
 {
 
 }
@@ -26,7 +27,7 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 	}
 	else
 	{
-		int id = NodeId(0);
+		int id = NodeId(0,0);
 		Vertex* Ver = FEMInformation->getVertexById(id);
 		vector<int> tmpDOFId;
 

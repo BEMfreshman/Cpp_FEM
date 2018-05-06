@@ -1,6 +1,8 @@
 #include "abstractload.h"
 
-Load::Load(int id_) :id(id_), CoordId(0)
+Load::Load(int id_, const Eigen::MatrixXi& NodeId_,
+	const Eigen::MatrixXd Value_) 
+	:id(id_), CoordId(0), NodeId(NodeId_), Value(Value_)
 {
 	
 }
@@ -15,18 +17,18 @@ int Load::GetId()
 	return id;
 }
 
-void Load::addData(const Eigen::VectorXi& NodeId, const Eigen::VectorXd& Value)
+void Load::addData(const Eigen::MatrixXi& NodeId, const Eigen::MatrixXd& Value)
 {
 	this->NodeId = NodeId;
 	this->Value = Value;
 }
 
-const Eigen::VectorXi Load::getNodeId() const
+const Eigen::MatrixXi Load::getNodeId() const
 {
 	return NodeId;
 }
 
-const Eigen::VectorXd Load::getValue() const
+const Eigen::MatrixXd Load::getValue() const
 {
 	return Value;
 }

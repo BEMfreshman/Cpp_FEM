@@ -5,6 +5,8 @@
 #include "Eigen/SparseCore"
 using namespace std;
 
+typedef Eigen::Triplet<double> T_;
+
 class DOF
 {
 public:
@@ -16,10 +18,17 @@ public:
 	int getVaildTotalDOFId();
 	bool getIsVaild();
 	DOFVar getDOFVar();
+	int getResidualKSize();
 
-	int addresidualK(const Eigen::Triplet<double>& T);
+	int addresidualK(const T_& T);
 
 	void SetVaildTotalDOFId(int VaildTotalDOFId);
+
+	void SetAns(double ans);        //解出来的值
+	double getAns();
+
+
+	T_ getResidualK(int i);
 
 private:
 	int LocalDOFId;
@@ -28,7 +37,9 @@ private:
 
 	DOFVar DF;
 
-	vector<Eigen::Triplet<double>> residualK; //如果此DOF无效，则residualK存在
+	vector<T_> residualK; //如果此DOF无效，则residualK存在
+
+	double ans;
 
 };
 

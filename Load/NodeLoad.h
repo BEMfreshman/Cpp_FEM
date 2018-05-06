@@ -8,7 +8,8 @@
 class NodeLoad :public Load
 {
 public:
-	NodeLoad(int id);
+	NodeLoad(int id, const Eigen::MatrixXi& NodeId_,
+		const Eigen::MatrixXd Value_);
 	~NodeLoad();
 
 	int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList);

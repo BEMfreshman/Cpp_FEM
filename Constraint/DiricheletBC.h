@@ -13,6 +13,8 @@ public:
 	DirichletBC(int id,int NodeId,DOFVar DF,double Value);
 	~DirichletBC();
 
+	int ModifyForceMatrix(FEMinfo* FEMInfomation, std::vector<T_>& tripleList);
+
 	BCType getBCType() const;
 
 };

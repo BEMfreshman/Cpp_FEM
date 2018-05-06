@@ -7,7 +7,7 @@
 
 class FEMinfo;
 
-typedef Eigen::SparseMatrix<double> SpMat;
+typedef Eigen::Triplet<double> T_;
 
 class Constraint
 {
@@ -16,7 +16,7 @@ public:
 	virtual ~Constraint() = 0;
 
 	virtual BCType getBCType() const = 0;
-	virtual void ModifyForceMatrix(FEMinfo* FEMInfomation, SpMat& f) const = 0;
+	virtual int ModifyForceMatrix(FEMinfo* FEMInfomation, std::vector<T_>& tripleList) = 0;
 	//–ﬁ Œ‘ÿ∫…’Û¡–
 
 	int getNodeId();

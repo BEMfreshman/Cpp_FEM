@@ -21,7 +21,7 @@ public:
 
     void addInputItem(InputItem* inputitem);
     size_t sizeofInputCard();
-    InputItem* GetInputItemAccordtoID(int id);
+    InputItem* GetInputItem(int id);
 
 private:
     std::vector<InputItem *> inputcard;

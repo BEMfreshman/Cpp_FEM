@@ -1,8 +1,6 @@
 ﻿#include "abstractfemmodel.h"
 #include "../Geo/vertex.h"
-#include "Dof.h"
-#include "abstractelement.h"
-#include "Eigen/SparseCore"
+
 
 #define EPS 1e-10
 
@@ -58,64 +56,4 @@ int abstractFEMModel::PreProcess()
 	return 1;
 }
 
-int abstractFEMModel::BuildKMatrix()
-{
-	//组建K矩阵
-	typedef Eigen::Triplet<double> T;
-	vector<T> tripleList;
 
-	Eigen::MatrixXd EleStiffnessMatrix;
-	int EleNum = FemInformation->getElementNum();
-	for (int id = 1; id <= EleNum; id++)
-	{
-		Element* Ele = FemInformation->getElementById(id);
-
-		Ele->GetSpecificMatrix(Stiffness, tripleList);
-		//计算单元刚度矩阵
-
-
-		//Eigen::VectorXi ValidTotalDOFIdArray;
-		//Eigen::VectorXi IsValidArray;
-
-		//Ele->GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
-
-		//for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
-		//{
-		//	for (int j = 0; j < ValidTotalDOFIdArray.size(); j++)
-		//	{
-		//		if (abs(IsValidArray(i)) > EPS && abs(IsValidArray(j)) > EPS) 
-		//			//IsValidArray(i) != 0 && IsValidArray(j) != 0
-		//		{
-		//			tripleList.push_back(T(ValidTotalDOFIdArray(i),
-		//				ValidTotalDOFIdArray(j),
-		//				EleStiffnessMatrix(i,j)));
-		//		}
-		//		else if (abs(IsValidArray(i)) < EPS && abs(IsValidArray(j)) > EPS)
-		//			//IsValidArray(i) == 0 && IsValidArray(j) != 0
-		//		{
-		//			Ele->GetDOFInEleByTotalDOFId(ValidTotalDOFIdArray(i))
-		//				->addresidualK(T(IsValidArray(j), 0, EleStiffnessMatrix(i, j)));
-		//		}
-		//		else 
-		//			//IsValidArray(i) == 0 && IsValidArray(j) == 0
-		//			//IsValidArray(i) != 0 && IsValidArray(j) == 0
-		//		{
-		//			continue;
-		//		}
-		//	}
-		//}
-	}
-
-	//组装K
-	K.setFromTriplets(tripleList.begin(), tripleList.end());
-
-	cout << "KMatrix" << endl;
-	cout << K << endl;
-	return 1;
-}
-
-int abstractFEMModel::BuildfMatrix()
-{
-	//组建f矩阵
-	return 0;
-}

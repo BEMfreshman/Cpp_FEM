@@ -176,6 +176,16 @@ int InputItem::GetDataByItemName(std::string& Data,InputItemName inputitemname)
             Data = GetDataStr(2);
             return 1;
         }
+		case Load_Name:
+		{
+			Data = GetDataStr(2);
+			return 1;
+		}
+		case Constraint_Name:
+		{
+			Data = GetDataStr(2);
+			return 1;
+		}
 		default:
 		{
 			return 0;
@@ -291,6 +301,21 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
             (*Data) = GetDataI(1);
             return 1;
         }
+		case Constraint_Id:
+		{
+			(*Data) = GetDataI(1);
+			return 1;
+		}
+		case Constraint_DOFVarI:
+		{
+			(*Data) = GetDataI(4);
+			return 1;
+		}
+		case Constraint_NodeId:
+		{
+			(*Data) = GetDataI(3);
+			return 1;
+		}
         default:
         {
             (*Data) = 0;
@@ -352,6 +377,11 @@ int InputItem::GetDataByItemName(double* Data,InputItemName inputitemname)
 			}
 			
         }
+		case Constraint_Value:
+		{
+			(*Data) = GetDataD(5);
+			return 1;
+		}
 		default:
 		{
 				(*Data) = 0.0;
@@ -445,20 +475,67 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
             else
             {
                 Data.resize(1,1);
+				Data(0, 0) = 0;
                 return 0;
             }
 
         }
+		case Load_NodeId:
+		{
+			std::string LoadName;
+			GetDataByItemName(LoadName, Load_Name);
+			if (LoadName == "NodeLoad")
+			{
+				//集中载荷
+				Data.resize(1, 1);
+				Data(0, 0) = GetDataI(3);
+
+			}
+			else if (LoadName == "Pressure")
+			{
+				//分布载荷
+			}
+		}
 		default:
 		{
-				Data.resize(1, 1);
-				return 0;
+			Data.resize(1, 1);
+			Data(0, 0) = 0;
+			return 0;
 		}
     }
 }
 
 int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemname)
 {
+	switch (inputitemname)
+	{
+		case Load_Value:
+		{
+			std::string LoadName;
+			GetDataByItemName(LoadName, Load_Name);
+			if (LoadName == "NodeLoad")
+			{
+				//集中载荷
+				std::vector<double> tmp;
+				for (int i = 4; i < splitstr.size(); i++)
+				{
+					tmp.push_back(GetDataD(i));
+				}
+
+				Data.resize(1, tmp.size());
+				for (int i = 0; i < tmp.size(); i++)
+				{
+					Data(0, i) = tmp[i];
+				}
+
+			}
+			else if (LoadName == "Pressure")
+			{
+				//分布载荷
+			}
+		}
+	}
+
 	return 0;
 }
 

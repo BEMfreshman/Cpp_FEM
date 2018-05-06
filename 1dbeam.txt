@@ -13,3 +13,5 @@
 *Constraint
 1,Dirichelet,1,1,0.0
 2,Dirichelet,1,4,0.0
+*Load
+1,NodeLoad,1,0,10.0,0

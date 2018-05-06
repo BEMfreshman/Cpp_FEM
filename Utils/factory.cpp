@@ -7,6 +7,8 @@
 #include "../MaterialProp/orthlinearstrumat.h"
 #include "../EleProp/beamprop.h"
 #include "../EleProp/trussprop.h"
+#include "../Load/NodeLoad.h"
+#include "../Constraint/DiricheletBC.h"
 
 
 Factory::Factory()
@@ -158,4 +160,28 @@ EProp* Factory::CreateEProp(int EPropId, const string& ElementPropName,
 	EP->SetValue(PropNameAndPropValue);
 
 	return EP;
+}
+
+Load* Factory::CreateLoad(int LoadId, const std::string& LoadName,
+	const Eigen::MatrixXi& NodeId,
+	const Eigen::MatrixXd& Value)
+{
+
+	if (LoadName == "NodeLoad")
+	{
+		return new NodeLoad(LoadId,NodeId,Value);
+	}
+	else if (LoadName == "Pressure")
+	{
+
+	}
+}
+
+Constraint* Factory::CreateConstraint(int ConstraintId, const std::string& ConstraintName,
+	int NodeId, DOFVar DF, double Value)
+{
+	if (ConstraintName == "Dirichelet")
+	{
+		return new DirichletBC(ConstraintId, NodeId, DF, Value);
+	}
 }

@@ -55,10 +55,13 @@ public:
 		const std::map<std::string,double>& PropNameAndPropValue);
     //创建一个单元截面属性
 
-    Load* CreateLoad(int LoadId);
+    Load* CreateLoad(int LoadId,const std::string& LoadName,
+		const Eigen::MatrixXi& NodeId,
+		const Eigen::MatrixXd& Value);
     //创建一个载荷
 
-    Constraint* CreateConstraint(int ConstraintId);
+    Constraint* CreateConstraint(int ConstraintId,const std::string& ConstraintName,
+		int NodeId,DOFVar DF,double Value);
     //创建一个约束
 private:
 

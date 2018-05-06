@@ -32,7 +32,7 @@ size_t InputCard::sizeofInputCard()
     return inputcard.size();
 }
 
-InputItem* InputCard::GetInputItemAccordtoID(int id)
+InputItem* InputCard::GetInputItem(int id)
 {
     return inputcard[id];
 }

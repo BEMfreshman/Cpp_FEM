@@ -19,6 +19,11 @@ public:
 
     void Solve();
 
+protected:
+	int BuildKMatrix();
+	int BuildMMatrix();
+	int BuildfMatrix();
+
 	
 
 

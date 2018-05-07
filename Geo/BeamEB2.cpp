@@ -126,7 +126,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 				matReturn(0, 0) = 12.0;
 				matReturn(0, 1) = 6 * ElementLength;
 				matReturn(0, 2) = -12.0;
-				matReturn(0, 3) = -6 * ElementLength;
+				matReturn(0, 3) = 6 * ElementLength;
 
 				matReturn(1, 0) = matReturn(0, 1);
 				matReturn(1, 1) = 4 * pow(ElementLength, 2);

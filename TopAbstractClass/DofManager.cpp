@@ -13,7 +13,7 @@ DofManager::DofManager(int id_, int SPCsNum_) :id(id_), SPCsNum(SPCsNum_)
 		int tmp = SPCsNum;
 		while (tmp != 0)
 		{
-			SPCDOF.push_back((tmp % 10) - 1);
+			SPCDOF.push_back((tmp % 10));
 			tmp = tmp / 10;
 		}
 
@@ -132,7 +132,7 @@ bool DofManager::findSPCValid(DOFVar DF)
 	}
 	else
 	{
-		return !(find(SPCDOF.begin(), SPCDOF.end(), (int)DF) == SPCDOF.end());
+		return find(SPCDOF.begin(), SPCDOF.end(), (int)DF) == SPCDOF.end();
 	}
 }
 

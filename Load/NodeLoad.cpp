@@ -37,10 +37,11 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 			tmpDOFId.push_back(dof->getVaildTotalDOFId());
 		}
 
-		for (size_t i = 0; i < tmpDOFId.size(); i++)
+		for (size_t i = 0; i < Value.cols(); i++)
 		{
-			tripleList.push_back(T_(tmpDOFId[i], 0, Value[i]));
+			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, i)));
 		}
+
 		return 1;
 	}
 }

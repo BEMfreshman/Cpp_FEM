@@ -3,6 +3,7 @@
 #include <Eigen/Eigen>
 #include <map>
 #include "../TopAbstractClass/abstractelement.h"
+#include "../TopAbstractClass/DOFVar.h"
 
 //class Vertex;
 //class Element;

@@ -301,6 +301,11 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
             (*Data) = GetDataI(1);
             return 1;
         }
+		case Load_Id:
+		{
+			(*Data) = GetDataI(1);
+			return 1;
+		}
 		case Constraint_Id:
 		{
 			(*Data) = GetDataI(1);
@@ -489,11 +494,13 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
 				//集中载荷
 				Data.resize(1, 1);
 				Data(0, 0) = GetDataI(3);
+				return 1;
 
 			}
 			else if (LoadName == "Pressure")
 			{
 				//分布载荷
+				return 0;
 			}
 		}
 		default:

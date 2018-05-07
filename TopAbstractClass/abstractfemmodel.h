@@ -57,6 +57,8 @@ protected:
 	SpMat K;     //总体刚度矩阵
 	SpMat M;     //总体质量矩阵
 	SpMat f;     //总体载荷矩阵
+
+	Eigen::VectorXd ansVector; //解
     
 
 };

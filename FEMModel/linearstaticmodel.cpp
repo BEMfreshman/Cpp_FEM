@@ -21,6 +21,24 @@ void LinearStaticModel::Solve()
 	BuildKMatrix();
 	BuildfMatrix();
 
+	Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+	solver.compute(K);
+	if (solver.info() != Eigen::Success)
+	{
+		printf("求解(分解时)失败\n");
+		return;
+	}
+
+	ansVector = solver.solve(f);
+	if (solver.info() != Eigen::Success)
+	{
+		printf("求解(计算时)失败\n");
+		return;
+	}
+
+	cout << "ansVector" << endl;
+	cout << ansVector << endl;
+
 }
 
 int LinearStaticModel::BuildKMatrix()
@@ -107,4 +125,9 @@ int LinearStaticModel::BuildfMatrix()
 
 
 	return 1;
+}
+
+int LinearStaticModel::BuildMMatrix()
+{
+	return 0;
 }

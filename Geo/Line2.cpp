@@ -172,7 +172,7 @@ int Line2::ComputeElementLength()
 		tmp(2) = FirstZCoord - SecondZCoord;
 
 		
-		ElementLength = tmp.squaredNorm();
+		ElementLength = tmp.norm();
 
 		return 1;
 	}

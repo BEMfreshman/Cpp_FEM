@@ -41,6 +41,11 @@ protected:
 	int ComputeMassMatrix(vector<T_>& ReturnValue);
 
 
+protected:
+	
+
+
+
 	
 };
 

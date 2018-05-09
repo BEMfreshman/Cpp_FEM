@@ -32,8 +32,11 @@ protected:
 
 	int ComputeElementLength();
 
+	int ComputeTMatrix(int dim);
+
 protected:
 	double ElementLength;
+	Eigen::MatrixXd T;             //代表局部坐标轴和全局坐标轴的旋转矩阵
 };
 
 

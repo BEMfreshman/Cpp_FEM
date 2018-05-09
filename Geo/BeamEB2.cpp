@@ -1,7 +1,10 @@
 #include "BeamEB2.h"
+#include "../Geo/vertex.h"
 #include "../TopAbstractClass/Dof.h"
 #include "../TopAbstractClass/abastractelementprop.h"
 #include "../TopAbstractClass/abstractmaterial.h"
+
+#include <math.h>
 
 BeamEB2::BeamEB2()
 {
@@ -74,6 +77,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	//通过点的自由度，确定刚度矩阵的大小
 
 	Eigen::MatrixXd matReturn;
+	Eigen::MatrixXd TmatReturnT;
 	
 	if (GetDOFNumofEle() == 0)
 	{
@@ -83,6 +87,9 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 	matReturn.resize(DOFNumofEle, DOFNumofEle);
 	matReturn.setZero();
+
+	TmatReturnT.resize(DOFNumofEle, DOFNumofEle);
+	TmatReturnT.setZero();
 
 
 	if (DOFNumofEle == 4)
@@ -145,9 +152,13 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 				matReturn *= Coeff;
 
+				ComputeTMatrix(1);
+
+				TmatReturnT = T.transpose()*matReturn*T;
 
 
-				ProduceValidTriple(matReturn, tripleList);
+
+				ProduceValidTriple(TmatReturnT, tripleList);
 
 			}
 		}
@@ -223,7 +234,11 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 				matReturn(5, 4) = matReturn(4, 5);
 				matReturn(5, 5) = 4 * EVal*IzVal / ElementLength;
 
-				ProduceValidTriple(matReturn, tripleList);
+				ComputeTMatrix(2);
+
+				TmatReturnT = T.transpose()*matReturn*T;
+
+				ProduceValidTriple(TmatReturnT, tripleList);
 
 			}
 		}
@@ -245,9 +260,15 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 	}
 
 	Eigen::MatrixXd matReturn;
+	Eigen::MatrixXd TmatReturnT;
 
 	matReturn.resize(DOFNumofEle, DOFNumofEle);
 	matReturn.setZero();
+
+	TmatReturnT.resize(DOFNumofEle, DOFNumofEle);
+	TmatReturnT.setZero();
+
+
 
 	if (DOFNumofEle == 4)
 	{
@@ -305,7 +326,12 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		matReturn *= Coeff;
 
-		ProduceValidTriple(matReturn, tripleList);
+		ComputeTMatrix(1);
+
+		TmatReturnT = T.transpose()*matReturn*T;
+
+
+		ProduceValidTriple(TmatReturnT, tripleList);
 	}
 	else if (DOFNumofEle == 6)
 	{
@@ -368,6 +394,11 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 		matReturn(5, 5) = 4 * pow(ElementLength, 2);
 
 		matReturn *= Coeff;
+
+		ComputeTMatrix(2);
+
+		TmatReturnT = T.transpose()*matReturn*T;
+
 
 		ProduceValidTriple(matReturn, tripleList);
 	}

@@ -1,11 +1,14 @@
 ﻿#include "core.h"
 #include <iostream>
+#include <math.h>
 
 
 int main()
 {
+
+
     std::string InputFilePath = "F:\\FEMCode_CPP\\Cpp_FEM";
-    std::string InputFileName = "1dbeam.txt";
+    std::string InputFileName = "1dbeam_G.txt";
     AbstractFileReader* FileReader = new BuildInFileReader(InputFilePath,
                                                            InputFileName);
 

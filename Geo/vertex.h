@@ -5,7 +5,7 @@
  */
 
 #include "../TopAbstractClass/DofManager.h"
-#include "../TopAbstractClass/elementtype.h"
+
 using namespace std;
 
 class Vertex:public DofManager
@@ -26,7 +26,6 @@ public:
     double GetY() const;
     double GetZ() const;
 
-	int SetDOF(int dim, ElementType ET);
 
 private:
     int Id;

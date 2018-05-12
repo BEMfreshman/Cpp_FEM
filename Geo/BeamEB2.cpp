@@ -130,6 +130,10 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 				double Coeff = EVal*IzVal / (pow(ElementLength, 3));
 
+
+				//有限元方法基础教程（第三版）P180
+
+
 				matReturn(0, 0) = 12.0;
 				matReturn(0, 1) = 6 * ElementLength;
 				matReturn(0, 2) = -12.0;

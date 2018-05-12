@@ -13,6 +13,7 @@
 #include <map>
 #include <vector>
 #include "DOFVar.h"
+#include "../TopAbstractClass/elementtype.h"
 using namespace std;
 
 class DOF;
@@ -37,6 +38,7 @@ public:
 
 	int getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int>& ValidArray) const;
 
+	int SetDOF(int dim, ElementType ET);
 protected:
 
 	int id;

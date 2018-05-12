@@ -50,32 +50,4 @@ double Vertex::GetZ() const
     return z;
 }
 
-int Vertex::SetDOF(int dim, ElementType ET)
-{
-	
-	if (dim == 1)
-	{
-		if (ET == BEAMEB2)
-		{
-			DOF* dof_v = new DOF(1, findSPCValid(v), v);
-			DOF* dof_tx = new DOF(2, findSPCValid(tx), tx);
 
-			addDOF(dof_v);
-			addDOF(dof_tx);
-		}
-	}
-	else
-	{
-		if (ET == BEAMEB2)
-		{
-			DOF* dof_u = new DOF(1, findSPCValid(u), u);
-			DOF* dof_v = new DOF(2, findSPCValid(v), v);
-			DOF* dof_tx = new DOF(3, findSPCValid(tx), tx);
-
-			addDOF(dof_u);
-			addDOF(dof_v);
-			addDOF(dof_tx);
-		}
-	}
-	return 1;
-}

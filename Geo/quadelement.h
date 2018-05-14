@@ -29,12 +29,17 @@ public:
 	virtual ElementType GetElementType();
 
 protected:
-	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
+	virtual int ComputeStiffnessMatrix(vector<T_>& ReturnValue);
+	int ComputeMassMatrix(vector<T_>& ReturnValue);
 
 	void GenerateLoacalGaussPointAndWeight(int Order);
 	int ComputeShapeFunction(ShapeFunType SFT);
 
+	int ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat);
 
+	void ComputeJacMatrix(int GaussPointId,Eigen::MatrixXd& Jac);
+
+	void ComputeDMatrix(Eigen::MatrixXd& Dmat);
 };
 
 #endif // QUADELEMENT_H

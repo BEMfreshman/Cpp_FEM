@@ -8,7 +8,7 @@ int main()
 
 
     std::string InputFilePath = "F:\\FEMCode_CPP\\Cpp_FEM";
-    std::string InputFileName = "1dbeam_G.txt";
+    std::string InputFileName = "1dbeam.txt";
     AbstractFileReader* FileReader = new BuildInFileReader(InputFilePath,
                                                            InputFileName);
 

@@ -198,7 +198,7 @@ int DofManager::SetDOF(int dim, ElementType ET)
 		if (ET == BEAMEB2)
 		{
 			DOF* dof_v = new DOF(1, findSPCValid(v), v);
-			DOF* dof_tx = new DOF(2, findSPCValid(ty), ty);
+			DOF* dof_tx = new DOF(2, findSPCValid(tz), tz);
 
 			addDOF(dof_v);
 			addDOF(dof_tx);
@@ -210,7 +210,7 @@ int DofManager::SetDOF(int dim, ElementType ET)
 		{
 			DOF* dof_u = new DOF(1, findSPCValid(u), u);
 			DOF* dof_v = new DOF(2, findSPCValid(v), v);
-			DOF* dof_tx = new DOF(3, findSPCValid(ty), ty);
+			DOF* dof_tx = new DOF(3, findSPCValid(tz), tz);
 
 			addDOF(dof_u);
 			addDOF(dof_v);

@@ -204,7 +204,7 @@ int DofManager::SetDOF(int dim, ElementType ET)
 			addDOF(dof_tx);
 		}
 	}
-	else
+	else if (dim == 2)
 	{
 		if (ET == BEAMEB2)
 		{
@@ -216,6 +216,30 @@ int DofManager::SetDOF(int dim, ElementType ET)
 			addDOF(dof_v);
 			addDOF(dof_tx);
 		}
+		else if (ET == QUADRILATERAL4 || ET == QUADRILATERAL8 ||
+			ET == QUADRILATERAL9)
+		{
+			DOF* dof_u = new DOF(1, findSPCValid(u), u);
+			DOF* dof_v = new DOF(2, findSPCValid(v), v);
+
+			addDOF(dof_u);
+			addDOF(dof_v);
+		}
 	}
 	return 1;
+}
+
+void DofManager::getAnsVec(vector<double>& ansVec)
+{
+	map<DOFVar, DOF*>::iterator it;
+	vector<DOFVar> DFVec = { u, v, w, tx, ty, tz };
+
+	for (int i = 0; i < DFVec.size(); i++)
+	{
+		it = DOFMap.find(DFVec[i]);
+		if (it != DOFMap.end())
+		{
+			ansVec.push_back(it->second->getAns());
+		}
+	}
 }

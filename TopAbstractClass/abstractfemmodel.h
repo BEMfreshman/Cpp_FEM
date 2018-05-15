@@ -29,6 +29,8 @@ public:
     virtual void Solve() = 0;
     //在Solve方法中指定OutputFilePath和OutputFileName
 
+	void ShowAns();
+
 protected:
 
 	int PreProcess();

@@ -161,6 +161,7 @@ int QuadElement::ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat)
 		Bmat(1, i * 2 + 1) = dNdxi(GaussPointId * 2 + 1, i * 2);
 		Bmat(2, i * 2) = dNdxi(GaussPointId * 2 + 1, i * 2);
 	}
+	return 1;
 }
 
 void QuadElement::ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac)
@@ -185,6 +186,6 @@ void QuadElement::ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac)
 
 int QuadElement::ComputeMassMatrix(vector<T_>& ReturnValue)
 {
-
+	return 0;
 }
 

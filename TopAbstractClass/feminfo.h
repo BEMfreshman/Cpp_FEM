@@ -15,6 +15,7 @@ class Mat;
 class EProp;
 class Load;
 class Constraint;
+class DOF;
 /*
  * 用于管理FEM的所有的输入信息
  * 包括
@@ -64,6 +65,8 @@ public:
 	Constraint* getConstraintById(int id) const;
 
 	int getdim() const;
+
+	DOF* getDOFByTotalDOFId(int TotalDOFId) const;
 
 protected:
     //AbstractFileReader *FileReader;

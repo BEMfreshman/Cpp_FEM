@@ -474,6 +474,32 @@ int FEMinfo::getdim() const
 	return dim;
 }
 
+DOF* FEMinfo::getDOFByTotalDOFId(int TotalDOFId) const
+{
+	for (int i = 1; i <= VertexMap.size(); i++)
+	{
+		map<int, Vertex*>::const_iterator it;
+		it = VertexMap.find(i);
+		if (it != VertexMap.end())
+		{
+			Vertex* Ver = it->second;
+			for (int j = 0; j < Ver->getDOFSize(); j++)
+			{
+				if (Ver->getDOF(j)->getVaildTotalDOFId() == TotalDOFId)
+				{
+					return Ver->getDOF(j);
+				}
+			}
+		}
+		else
+		{
+			return NULL;
+		}
+
+	}
+	return NULL;
+}
+
 
 
 

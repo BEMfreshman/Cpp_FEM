@@ -3,6 +3,7 @@
 #include "../TopAbstractClass/abstractelement.h"
 #include "../TopAbstractClass/abstractload.h"
 #include "../TopAbstractClass/abstractconstraint.h"
+#include "../Geo/vertex.h"
 
 LinearStaticModel::LinearStaticModel(FEMinfo* FEMInformation)
 :abstractFEMModel(FEMInformation)
@@ -36,9 +37,41 @@ void LinearStaticModel::Solve()
 		return;
 	}
 
-	cout << "ansVector" << endl;
-	cout << ansVector << endl;
+	/*-----------将解存入自由度的ans变量中-----------------*/
+	for (int i = 0; i < ValidDOFNum; i++)
+	{
+		DOF* dof = FemInformation->getDOFByTotalDOFId(i);
+		dof->SetAns(ansVector(i));
+	}
 
+	for (int i = 1; i <= FemInformation->getConstraintNum(); i++)
+	{
+		Constraint* ct = FemInformation->getConstraintById(i);
+		if (ct->getBCType() == Dirichelet)
+		{
+			int NodeId = ct->getNodeId();
+			DOFVar DFV = ct->getDOFVar();
+			double Value = ct->getValue();
+
+			Vertex* Ver = FemInformation->getVertexById(NodeId);
+			DOF* dof = Ver->getDOFById(DFV);
+			dof->SetAns(Value);
+		}
+	}
+
+	vector<double> ansVec;
+	for (int i = 1; i <= FemInformation->getVertexNum(); i++)
+	{
+		Vertex* Ver = FemInformation->getVertexById(i);
+		Ver->getAnsVec(ansVec);
+	}
+
+	ansVector.resize(ansVec.size());
+
+	for (int i = 0; i < ansVec.size(); i++)
+	{
+		ansVector(i) = ansVec[i];
+	}
 }
 
 int LinearStaticModel::BuildKMatrix()

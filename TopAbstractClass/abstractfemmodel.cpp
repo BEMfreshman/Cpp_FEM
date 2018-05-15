@@ -56,4 +56,10 @@ int abstractFEMModel::PreProcess()
 	return 1;
 }
 
+void abstractFEMModel::ShowAns()
+{
+	cout << "ansVector" << endl;
+	cout << ansVector << endl;
+}
+
 

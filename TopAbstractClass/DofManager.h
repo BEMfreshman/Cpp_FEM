@@ -39,6 +39,8 @@ public:
 	int getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int>& ValidArray) const;
 
 	int SetDOF(int dim, ElementType ET);
+
+	void getAnsVec(vector<double>& ansVec);
 protected:
 
 	int id;

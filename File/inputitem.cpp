@@ -306,6 +306,11 @@ int InputItem::GetDataByItemName(int* Data,InputItemName inputitemname)
 			(*Data) = GetDataI(1);
 			return 1;
 		}
+		case Load_Pressure_ElementId:
+		{
+			(*Data) = GetDataI(3);
+			return 1;
+		}
 		case Constraint_Id:
 		{
 			(*Data) = GetDataI(1);
@@ -487,20 +492,21 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
         }
 		case Load_NodeId:
 		{
+			//集中载荷
+			Data.resize(1, 1);
+			Data(0, 0) = GetDataI(3);
+			return 1;
+		}
+		case Load_Pressure_NodeId:
+		{
 			std::string LoadName;
 			GetDataByItemName(LoadName, Load_Name);
-			if (LoadName == "NodeLoad")
+			if (LoadName.find("2") != std::string::npos)
 			{
-				//集中载荷
-				Data.resize(1, 1);
-				Data(0, 0) = GetDataI(3);
+				Data.resize(2, 1);
+				Data(0, 0) = GetDataI(4);
+				Data(1, 0) = GetDataI(5);
 				return 1;
-
-			}
-			else if (LoadName == "Pressure")
-			{
-				//分布载荷
-				return 0;
 			}
 		}
 		default:
@@ -520,11 +526,31 @@ int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemna
 		{
 			std::string LoadName;
 			GetDataByItemName(LoadName, Load_Name);
-			if (LoadName == "NodeLoad")
+			
+			//集中载荷
+			std::vector<double> tmp;
+			for (int i = 4; i < splitstr.size(); i++)
 			{
-				//集中载荷
+				tmp.push_back(GetDataD(i));
+			}
+
+			Data.resize(1, tmp.size());
+			for (int i = 0; i < tmp.size(); i++)
+			{
+				Data(0, i) = tmp[i];
+			}
+			return 1;
+		}
+		case Load_Pressure_Value:
+		{
+			std::string LoadName;
+			GetDataByItemName(LoadName, Load_Name);
+			if (LoadName.find("2") != std::string::npos)
+			{
+				//有两个点
+				//从第6个值开始
 				std::vector<double> tmp;
-				for (int i = 4; i < splitstr.size(); i++)
+				for (int i = 6; i < splitstr.size(); i++)
 				{
 					tmp.push_back(GetDataD(i));
 				}
@@ -534,12 +560,13 @@ int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemna
 				{
 					Data(0, i) = tmp[i];
 				}
+				return 1;
 
 			}
-			else if (LoadName == "Pressure")
+			/*else if (LoadName.find("3") != std::string::npos)
 			{
-				//分布载荷
-			}
+
+			}*/
 		}
 	}
 

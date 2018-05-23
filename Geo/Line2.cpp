@@ -58,7 +58,7 @@ int Line2::SetDOF(int dim)
 	return 0;
 }
 
-int Line2::ComputeShapeFunction(ShapeFunType SFT)
+int Line2::ComputeShapeFunction()
 {
 	int VertexNum = VertexIdArray.rows();
 	//单元上顶点的个数
@@ -66,45 +66,33 @@ int Line2::ComputeShapeFunction(ShapeFunType SFT)
 	int GaussPointNum = LocalGaussPoint.rows();
 	//高斯点的个数
 
-	if (SFT == Lagrange)
+	//拉格朗日形状函数
+
+	N.resize(GaussPointNum, VertexNum);
+	dNdxi.resize(GaussPointNum * 1/*线单元只有*/, VertexNum);
+
+
+	for (int i = 0; i < GaussPointNum; i++)
 	{
-		//拉格朗日形状函数
+		Eigen::MatrixXd EachGaussPoint(1, 1);
+		Eigen::MatrixXd EachGaussPointShapeFunction(1, VertexNum);
 
-		N.resize(GaussPointNum, VertexNum);
-		dNdxi.resize(GaussPointNum * 1/*线单元只有*/, VertexNum);
+		EachGaussPoint = LocalGaussPoint.row(i);
 
-
-		for (int i = 0; i < GaussPointNum; i++)
-		{
-			Eigen::MatrixXd EachGaussPoint(1, 1);
-			Eigen::MatrixXd EachGaussPointShapeFunction(1, VertexNum);
-
-			EachGaussPoint = LocalGaussPoint.row(i);
-
-			double xi = EachGaussPoint(0, 0);
-			EachGaussPointShapeFunction(0, 0) = (1 - xi) / 2.0;
-			EachGaussPointShapeFunction(0, 1) = (1 + xi) / 2.0;
-			N.row(i) = EachGaussPointShapeFunction;
+		double xi = EachGaussPoint(0, 0);
+		EachGaussPointShapeFunction(0, 0) = (1 - xi) / 2.0;
+		EachGaussPointShapeFunction(0, 1) = (1 + xi) / 2.0;
+		N.row(i) = EachGaussPointShapeFunction;
 
 
-			Eigen::MatrixXd EachGaussPointdNdxi(1, VertexNum);
+		Eigen::MatrixXd EachGaussPointdNdxi(1, VertexNum);
 
-			EachGaussPointdNdxi(0, 0) = -1.0 / 2.0;
-			EachGaussPointdNdxi(0, 1) = 1.0 / 2.0;
-			dNdxi.row(i) = EachGaussPointdNdxi;
+		EachGaussPointdNdxi(0, 0) = -1.0 / 2.0;
+		EachGaussPointdNdxi(0, 1) = 1.0 / 2.0;
+		dNdxi.row(i) = EachGaussPointdNdxi;
 
-		}
-		return 1;
 	}
-	else if (SFT == Hermite)
-	{
-		//Hermite形状函数
-		return 0;
-	}
-	else
-	{
-		return 0;
-	}
+	return 1;
 }
 
 
@@ -251,4 +239,9 @@ int Line2::ComputeTMatrix(int dim)
 	{
 		return 0;
 	}
+}
+
+int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+{
+	return 0;
 }

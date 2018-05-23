@@ -3,6 +3,7 @@
 #include "../TopAbstractClass/Dof.h"
 #include "../TopAbstractClass/abastractelementprop.h"
 #include "../TopAbstractClass/abstractmaterial.h"
+#include "../Load/PressureLoadOnLine.h"
 
 #include <math.h>
 
@@ -274,7 +275,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 
 
-	if (DOFNumofEle == 4)
+	if (dim == 1)
 	{
 		//一维梁单元
 
@@ -337,7 +338,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		ProduceValidTriple(TmatReturnT, tripleList);
 	}
-	else if (DOFNumofEle == 6)
+	else if (dim == 2)
 	{
 		//二维梁单元
 
@@ -406,7 +407,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		ProduceValidTriple(matReturn, tripleList);
 	}
-	else if (DOFNumofEle == 12)
+	else if (dim == 3)
 	{
 		//三维梁单元
 	}
@@ -422,5 +423,117 @@ int BeamEB2::SetDOF(int dim)
 ElementType BeamEB2::GetElementType()
 {
 	return BEAMEB2;
+}
+
+int BeamEB2::ComputeShapeFunction()
+{
+	//Hermite形函数
+	ComputeElementLength();
+
+	Line2::ComputeShapeFunction();
+	//主要为了形函数
+	dNdxi.setZero();
+
+	Eigen::MatrixXd GlobalGaussPoint(LocalGaussPoint.rows(), LocalGaussPoint.cols());
+
+	Eigen::MatrixXd ElementCoord(2, 1);
+	ElementCoord << 0, ElementLength;
+	for (int i = 0; i < LocalGaussPoint.rows(); i++)
+	{
+		GlobalGaussPoint.row(i) = N.row(i)* ElementCoord;
+	}
+
+	N.setZero();
+	N.resize(GlobalGaussPoint.rows(),4);
+
+	
+	for (int i = 0; i < GlobalGaussPoint.rows(); i++)
+	{
+		double epsilon = (GlobalGaussPoint(i, 0) - 0) / ElementLength;
+		N(i, 0) = 1 - 3 * pow(epsilon, 2) + 2 * pow(epsilon, 2);
+		N(i, 1) = (epsilon - 2 * pow(epsilon, 2) + pow(epsilon, 3))*ElementLength;
+		N(i, 2) = 3 * pow(epsilon, 2) - 2 * pow(epsilon, 3);
+		N(i, 3) = (-pow(epsilon, 2) + pow(epsilon, 3))*ElementLength;
+	}
+	
+	return 1;
+
+}
+
+int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+{
+	if (GetDOFNumofEle() == 0)
+	{
+		printf("该单元未设置单元节点\n");
+		return 0;
+	}
+	
+	int Order = 6;
+	GenerateLoacalGaussPointAndWeight(Order);
+	
+	int GaussPointNum = LocalGaussPoint.rows();
+
+	ComputeShapeFunction();
+	ComputeElementLength();
+
+	Eigen::MatrixXd ForceMatrix(DOFNumofEle, 1);
+	ForceMatrix.setZero();
+
+	if (dim == 1)
+	{
+		//一维单元
+		double FP_y = 0, SP_y = 0;
+
+		map<int, Eigen::MatrixXd>::const_iterator it;
+
+		it = Pressure.find(VertexVec[0]->getid());
+		if (it == Pressure.end())
+		{
+			return 0;
+		}
+		else
+		{
+			FP_y = (it->second)(0, 1);
+		}
+
+		it = Pressure.find(VertexVec[1]->getid());
+		if (it == Pressure.end())
+		{
+			return 0;
+		}
+		else
+		{
+			SP_y = (it->second)(0, 1);
+		}
+
+		
+		if (abs(FP_y - SP_y) < EPS)
+		{
+			//均布荷载
+			double EachGaussLoad = FP_y;
+
+			for (int i = 0; i < GaussPointNum; i++)
+			{
+				ForceMatrix += EachGaussLoad * N.col(i).transpose() *	GaussWeight[i];
+			}
+
+			ForceMatrix *= (ElementLength - 0) / 2.0;
+			
+		}
+		else
+		{
+			//线性荷载
+		}
+		
+
+	}
+	else if (dim == 2)
+	{
+		//二维单元
+	}
+	else if (dim == 3)
+	{
+		//三维单元
+	}
 }
 

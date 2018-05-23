@@ -28,12 +28,14 @@ public:
 
 	virtual ElementType GetElementType();
 
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+
 protected:
 	virtual int ComputeStiffnessMatrix(vector<T_>& ReturnValue);
 	int ComputeMassMatrix(vector<T_>& ReturnValue);
 
 	void GenerateLoacalGaussPointAndWeight(int Order);
-	int ComputeShapeFunction(ShapeFunType SFT);
+	int ComputeShapeFunction();
 
 	int ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat);
 

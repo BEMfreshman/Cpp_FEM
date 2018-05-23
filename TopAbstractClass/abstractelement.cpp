@@ -150,6 +150,11 @@ void Element::SetMat(Mat *Material)
     this->Material = Material;
 }
 
+void Element::Setdim(int dim)
+{
+	this->dim = dim;
+}
+
 void Element::SetVertex(Vertex* vertex)
 {
 	this->VertexVec.push_back(vertex);

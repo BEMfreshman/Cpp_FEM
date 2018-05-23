@@ -8,6 +8,7 @@
 #include "../EleProp/beamprop.h"
 #include "../EleProp/trussprop.h"
 #include "../Load/NodeLoad.h"
+#include "../Load/PressureLoadOnLine.h"
 #include "../Constraint/DiricheletBC.h"
 
 
@@ -162,16 +163,25 @@ EProp* Factory::CreateEProp(int EPropId, const string& ElementPropName,
 	return EP;
 }
 
-Load* Factory::CreateLoad(int LoadId, const std::string& LoadName,
+Load* Factory::CreateLoad(int LoadId,
 	const Eigen::MatrixXi& NodeId,
 	const Eigen::MatrixXd& Value)
 {
 
-	if (LoadName == "NodeLoad")
+	int NodeId_ = NodeId(0, 0);
+	return new NodeLoad(LoadId,NodeId_,Value);
+}
+
+Load* Factory::CreateLoad(int LoadId,const std::string& LoadName,
+	int ElementId,
+	const Eigen::VectorXi& NodeId,
+	const Eigen::MatrixXd& Value)
+{
+	if (LoadName == "PressureOnLine")
 	{
-		return new NodeLoad(LoadId,NodeId,Value);
+		return new PressureLoadOnLine(LoadId, ElementId, NodeId, Value);
 	}
-	else if (LoadName == "Pressure")
+	else
 	{
 
 	}

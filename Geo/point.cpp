@@ -60,7 +60,7 @@ void Point::GenerateLoacalGaussPointAndWeight(int Order)
 	
 }
 
-int Point::ComputeShapeFunction(ShapeFunType SFT)
+int Point::ComputeShapeFunction()
 {
 	return 0;
 }

@@ -250,12 +250,32 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 
 		LoadInputItem->GetDataByItemName(&id, Load_Id);
 		LoadInputItem->GetDataByItemName(LoadName, Load_Name);
-		LoadInputItem->GetDataByItemName(NodeId, Load_NodeId);
-		LoadInputItem->GetDataByItemName(Value, Load_Value);
+		if (LoadName == "NodeLoad")
+		{
+			
+			LoadInputItem->GetDataByItemName(NodeId, Load_NodeId);
+			LoadInputItem->GetDataByItemName(Value, Load_Value);
+			Load* ld = fac->CreateLoad(id, NodeId, Value);
+			LoadMap[id] = ld;
+		}
+		else
+		{
+			int ElementId;
+			
+			LoadInputItem->GetDataByItemName(&ElementId, Load_Pressure_ElementId);
+			LoadInputItem->GetDataByItemName(NodeId, Load_NodeId);
+			LoadInputItem->GetDataByItemName(Value, Load_Value);
 
-		Load* ld = fac->CreateLoad(id, LoadName, NodeId, Value);
-		
-		LoadMap[id] = ld;
+			Eigen::VectorXi NodeId_(NodeId.rows());
+
+			for (int i = 0; i < NodeId.rows(); i++)
+			{
+				NodeId_(i) = NodeId(i, 0);
+			}
+
+			Load* ld = fac->CreateLoad(id, LoadName, ElementId, NodeId_, Value);
+		}
+
 	}
 
 	//实例化Constraint类
@@ -376,7 +396,6 @@ int FEMinfo::FinallyCompulsorySet()
     for(size_t i = 1 ; i <= EleMap.size();i++)
     {
         Element* Ele = EleMap.find(i)->second;
-
 		const Eigen::MatrixXi VertexIdArray = Ele->GetVertexIdArray();
 		int row = VertexIdArray.rows();
 		int col = VertexIdArray.cols();
@@ -411,6 +430,8 @@ int FEMinfo::FinallyCompulsorySet()
             EProp* eprop = EPropMap.find(EPropId)->second;
             Ele->SetEProp(eprop);
         }
+
+		Ele->Setdim(dim);               //设置维度
 
     }
 

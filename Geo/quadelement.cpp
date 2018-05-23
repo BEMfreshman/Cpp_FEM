@@ -8,7 +8,7 @@ QuadElement::QuadElement(int ElementId,
 						 const Eigen::MatrixXi& VertexIdArray) :
     Element(ElementId,MaterialId,eletype,VertexIdArray)
 {
-
+	ComputeShapeFunction();
 }
 
 QuadElement::QuadElement()
@@ -50,7 +50,7 @@ int QuadElement::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 	return 0;
 }
 
-int QuadElement::ComputeShapeFunction(ShapeFunType SFT)
+int QuadElement::ComputeShapeFunction()
 {
 	int VertexNum = VertexIdArray.rows();
 	//单元顶点的个数
@@ -58,54 +58,79 @@ int QuadElement::ComputeShapeFunction(ShapeFunType SFT)
 	int GaussPointNum = LocalGaussPoint.rows();
 	//高斯点的个数
 
-	if (SFT == Lagrange)
-	{
-		//拉格朗日形函数
-		N.resize(GaussPointNum, VertexNum);
-		dNdxi.resize(GaussPointNum * 2/*平面单元，2个自由度*/,
-			VertexNum);
+	
+	//拉格朗日形函数
+	N.resize(GaussPointNum, VertexNum);
+	dNdxi.resize(GaussPointNum * 2/*平面单元，2个自由度*/,
+		VertexNum);
 		
-		for (int i = 0; i < GaussPointNum; i++)
-		{
-			Eigen::MatrixXd EachGaussPoint(1, 2);
-			Eigen::MatrixXd EachGaussPointShapeFunction(1, VertexNum);
+	for (int i = 0; i < GaussPointNum; i++)
+	{
+		Eigen::MatrixXd EachGaussPoint(1, 2);
+		Eigen::MatrixXd EachGaussPointShapeFunction(1, VertexNum);
 
-			EachGaussPoint = LocalGaussPoint.row(i);
+		EachGaussPoint = LocalGaussPoint.row(i);
 
-			double xi = EachGaussPoint(0, 0);
-			double eta = EachGaussPoint(0, 1);
+		double xi = EachGaussPoint(0, 0);
+		double eta = EachGaussPoint(0, 1);
 
-			EachGaussPointShapeFunction(0, 0) = 0.25*(1 - xi)*(1 - eta);
-			EachGaussPointShapeFunction(0, 1) = 0.25*(1 + xi)*(1 - eta);
-			EachGaussPointShapeFunction(0, 2) = 0.25*(1 + xi)*(1 + eta);
-			EachGaussPointShapeFunction(0, 3) = 0.25*(1 - xi)*(1 + eta);
+		EachGaussPointShapeFunction(0, 0) = 0.25*(1 - xi)*(1 - eta);
+		EachGaussPointShapeFunction(0, 1) = 0.25*(1 + xi)*(1 - eta);
+		EachGaussPointShapeFunction(0, 2) = 0.25*(1 + xi)*(1 + eta);
+		EachGaussPointShapeFunction(0, 3) = 0.25*(1 - xi)*(1 + eta);
 
-			N.row(i) = EachGaussPointShapeFunction;
+		N.row(i) = EachGaussPointShapeFunction;
 
-			Eigen::MatrixXd EachGaussPointdNdxi(2, VertexNum);
+		Eigen::MatrixXd EachGaussPointdNdxi(2, VertexNum);
 
-			EachGaussPointdNdxi(0, 0) = 0.25*(-(1 - eta));
-			EachGaussPointdNdxi(0, 1) = 0.25*(1 - eta);
-			EachGaussPointdNdxi(0, 2) = 0.25*(1 + eta);
-			EachGaussPointdNdxi(0, 3) = 0.25*(-(1 + eta));
+		EachGaussPointdNdxi(0, 0) = 0.25*(-(1 - eta));
+		EachGaussPointdNdxi(0, 1) = 0.25*(1 - eta);
+		EachGaussPointdNdxi(0, 2) = 0.25*(1 + eta);
+		EachGaussPointdNdxi(0, 3) = 0.25*(-(1 + eta));
 
-			EachGaussPointdNdxi(1, 0) = 0.25*(-(1 - xi));
-			EachGaussPointdNdxi(1, 1) = 0.25*(-(1 + xi));
-			EachGaussPointdNdxi(1, 2) = 0.25*(1 + xi);
-			EachGaussPointdNdxi(1, 3) = 0.25*(1 - xi);
+		EachGaussPointdNdxi(1, 0) = 0.25*(-(1 - xi));
+		EachGaussPointdNdxi(1, 1) = 0.25*(-(1 + xi));
+		EachGaussPointdNdxi(1, 2) = 0.25*(1 + xi);
+		EachGaussPointdNdxi(1, 3) = 0.25*(1 - xi);
 
-			dNdxi.row(i * 2) = EachGaussPointdNdxi.row(0);
-			dNdxi.row(i * 2 + 1) = EachGaussPointdNdxi.row(1);
-		}
-
+		dNdxi.row(i * 2) = EachGaussPointdNdxi.row(0);
+		dNdxi.row(i * 2 + 1) = EachGaussPointdNdxi.row(1);
 	}
-
 	return 0;
 }
 
 void QuadElement::GenerateLoacalGaussPointAndWeight(int Order)
 {
+	int dim = 2;
+	LocalGaussPoint.resize(Order*Order, dim);
+	GaussWeight.reserve(Order*Order);
+	int i, j;
+	int counter = 0;
 
+	double xCoord = 0.0;
+	double yCoord = 0.0;
+
+	Eigen::MatrixXd EachGaussPoint(1, dim);
+	EachGaussPoint.setZero(1, dim);
+
+	double EachGaussWeight;
+
+	for (i = 0; i < Order; i++)
+	{
+		xCoord = GaussPointOneDimension[i];
+		EachGaussPoint(0, 0) = xCoord;
+		for (j = 0; j < Order; j++)
+		{
+			yCoord = GaussPointOneDimension[j];
+			EachGaussPoint(0, 1) = yCoord;
+
+			LocalGaussPoint.row(counter) = EachGaussPoint;
+			counter++;
+
+			EachGaussWeight = WeightOneDimension[i] * WeightOneDimension[j];
+			GaussWeight.push_back(EachGaussWeight);
+		}
+	}
 }
 
 int QuadElement::ComputeStiffnessMatrix(vector<T_>& ReturnValue)
@@ -124,7 +149,7 @@ int QuadElement::ComputeStiffnessMatrix(vector<T_>& ReturnValue)
 	{
 		ComputeBMatrix(i, Bmat);
 		ComputeJacMatrix(i, Jac);
-		Ke += Bmat.transpose()*Dmat*Bmat*Jac.determinant();
+		Ke += Bmat.transpose()*Dmat*Bmat*Jac.determinant()*GaussWeight[i];
 	}
 
 	ProduceValidTriple(Ke, ReturnValue);
@@ -185,6 +210,11 @@ void QuadElement::ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac)
 }
 
 int QuadElement::ComputeMassMatrix(vector<T_>& ReturnValue)
+{
+	return 0;
+}
+
+int QuadElement::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
 {
 	return 0;
 }

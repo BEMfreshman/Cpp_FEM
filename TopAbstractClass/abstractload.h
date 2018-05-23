@@ -23,27 +23,20 @@ typedef Eigen::Triplet<double> T_;
 class Load
 {
 public:
-	Load(int id,const Eigen::MatrixXi& NodeId,const Eigen::MatrixXd Value);
+	Load(int id);
 	virtual ~Load() = 0;
 
 	int GetId();
 
 	virtual int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList) = 0;
 
-	void addData(const Eigen::MatrixXi& NodeId, const Eigen::MatrixXd& Value);
 	void setCoordId(int CoordId);
-
-	const Eigen::MatrixXi getNodeId() const;
-	const Eigen::MatrixXd getValue() const;
 	int getCoordId() const;          //获得坐标轴编号
+
 protected:
 	int id;                        //该载荷的ID
 	int CoordId;                   //坐标轴编号
-	Eigen::MatrixXi NodeId;        //点的Id合集
-	Eigen::MatrixXd Value;         //Load值得大小
 
-protected:
-	
 
 };
 

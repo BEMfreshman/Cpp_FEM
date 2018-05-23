@@ -33,7 +33,7 @@ protected:
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
 
 	void GenerateLoacalGaussPointAndWeight(int Order);
-	int ComputeShapeFunction(ShapeFunType SFT);
+	int ComputeShapeFunction();
 
 };
 

@@ -34,9 +34,13 @@ public:
 
 	int SetDOF(int dim);
 
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+
 	ElementType GetElementType();
 protected:
 
+
+	int ComputeShapeFunction();
 	int ComputeStiffnessMatrix(vector<T_>& ReturnValue);
 	int ComputeMassMatrix(vector<T_>& ReturnValue);
 

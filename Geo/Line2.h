@@ -18,6 +18,10 @@ public:
 
 	Element* Clone() const;
 
+
+	virtual int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+
+public:
 	virtual int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& ReturnValue);
 
 	virtual int SetDOF(int dim);
@@ -25,13 +29,13 @@ public:
 	virtual ElementType GetElementType();
 
 protected:
-	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
+	
 
+	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
 	void GenerateLoacalGaussPointAndWeight(int Order);
-	int ComputeShapeFunction(ShapeFunType SFT);
+	virtual int ComputeShapeFunction();
 
 	int ComputeElementLength();
-
 	int ComputeTMatrix(int dim);
 
 protected:

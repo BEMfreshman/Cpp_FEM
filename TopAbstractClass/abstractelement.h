@@ -27,6 +27,7 @@ class Vertex;
 class EProp;
 class Mat;
 class DOF;
+class Load;
 
 typedef Eigen::Triplet<double> T_;
 
@@ -63,6 +64,7 @@ public:
 	//const Eigen::MatrixXi GetAllDOF();
 
 
+	void Setdim(int dim);
     void SetVertex(Vertex* vertex);
     void SetEProp(EProp* EleProp);
     void SetMat(Mat* Material);
@@ -91,7 +93,11 @@ public:
     void GetBoundaryLoad();
 */
 
+	virtual int ComputeForceMatrixOnEle(const map<int,Eigen::MatrixXd>& Pressure,vector<T_>& tripList) = 0;
+	//当分布力作用在单元上的时候，就采用此函数计算
+
 protected:
+	int dim;              //维度
     int ElementId;
     int EPropId;         //单元属性Id
     int MatId;           //材料Id
@@ -226,7 +232,7 @@ protected:
 
 protected:
     virtual void GenerateLoacalGaussPointAndWeight(int Order) = 0;
-    virtual int ComputeShapeFunction(ShapeFunType SFT) = 0;
+    virtual int ComputeShapeFunction() = 0;
     //计算形函数
 
 protected:

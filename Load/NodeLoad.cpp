@@ -2,8 +2,8 @@
 #include "../TopAbstractClass/feminfo.h"
 #include "../Geo/vertex.h"
 
-NodeLoad::NodeLoad(int id, const Eigen::MatrixXi& NodeId,
-	const Eigen::MatrixXd Value) :Load(id,NodeId,Value)
+NodeLoad::NodeLoad(int id, int NodeId_,
+	const Eigen::MatrixXd Value_) :Load(id), NodeId(NodeId_), Value(Value_)
 {
 
 }
@@ -15,20 +15,14 @@ NodeLoad::~NodeLoad()
 
 int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 {
-	if (NodeId.size() == 0 || Value.size() == 0)
+	if (NodeId == 0 || Value.size() == 0)
 	{
 		//无载荷
-		return 1;
-	}
-	else if (NodeId.size() != 1)
-	{
-		printf("数据体不正常\n");
 		return 0;
 	}
 	else
 	{
-		int id = NodeId(0,0);
-		Vertex* Ver = FEMInformation->getVertexById(id);
+		Vertex* Ver = FEMInformation->getVertexById(NodeId);
 		vector<int> tmpDOFId;
 
 		for (int i = 0; i < Ver->getDOFSize(); i++)
@@ -37,9 +31,10 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 			tmpDOFId.push_back(dof->getVaildTotalDOFId());
 		}
 
-		for (size_t i = 0; i < Value.cols(); i++)
+		for (size_t i = 0; i < tmpDOFId.size(); i++)
 		{
-			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, i)));
+			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, (int)tmpDOFId[i]-1)));
+			//自由度从1开始计算，所以要-1
 		}
 
 		return 1;

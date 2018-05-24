@@ -51,3 +51,7 @@ double Vertex::GetZ() const
 }
 
 
+int Vertex::GetId() const
+{
+	return Id;
+}

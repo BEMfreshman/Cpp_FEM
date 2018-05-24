@@ -423,62 +423,62 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
             if(EleType == "LINE2" || EleType == "BEAMEB2" || EleType == "BEAMT2")
             {
 
-                Data.resize(1,2);
+                Data.resize(2,1);
 
                 for(int i = 3,tmp = 0; i < 5;i++,tmp++)
                 {
                     //取第3个和第4个数据
                     VertexId = GetDataI(i);
-                    Data(0,tmp) =  VertexId;
+                    Data(tmp,0) =  VertexId;
                 }
                 return 1;
             }
             else if(EleType == "LINE3" || EleType == "TRIANGLE3" || EleType == "BEAMEB3" ||
 				EleType == "BEAMT3")
             {
-                Data.resize(1,3);
+                Data.resize(3,1);
 
                 for(int i = 3,tmp = 0; i < 6;i++,tmp++)
                 {
                     //取第4,5,6个数据
                     VertexId = GetDataI(i);
-                    Data(0,tmp) = VertexId;
+                    Data(tmp,0) = VertexId;
                 }
                 return 1;
             }
             else if(EleType == "TRIANGLE4" || EleType == "QUQD4" ||
 				EleType == "TET4")
             {
-                Data.resize(1,4);
+                Data.resize(4,1);
 
                 for(int i = 3,tmp = 0; i < 7;i++,tmp++)
                 {
                     //取第3,4,5,6个数据
                     VertexId = GetDataI(i);
-                    Data(0,tmp) =  VertexId;
+                    Data(tmp,0) =  VertexId;
                 }
                 return 1;
             }
             else if(EleType == "TRIANGLE6")
             {
-                Data.resize(1,6);
+                Data.resize(6,1);
 
                 for(int i = 3,tmp = 0; i < 9;i++,tmp++)
                 {
                     //取第3,4,5,6,7,8个数据
                     VertexId = GetDataI(i);
-                    Data(0,tmp) = VertexId;
+                    Data(tmp,0) = VertexId;
                 }
                 return 1;
             }
             else if(EleType == "QUAD8" || EleType == "HEX8")
             {
-                Data.resize(1,8);
+                Data.resize(8,1);
                 for(int i = 3,tmp = 0; i < 11;i++,tmp++)
                 {
                     //取第3,4,5,6,7,8,9,10个数据
                     VertexId = GetDataI(i);
-                    Data(0,tmp) = VertexId;
+                    Data(tmp,0) = VertexId;
                 }
                 return 1;
             }
@@ -555,10 +555,15 @@ int InputItem::GetDataByItemName(Eigen::MatrixXd &Data,InputItemName inputitemna
 					tmp.push_back(GetDataD(i));
 				}
 
-				Data.resize(1, tmp.size());
-				for (int i = 0; i < tmp.size(); i++)
+				Data.resize(2, tmp.size()/2);
+				int Counter = 0;
+				for (int i = 0; i < 2; i++)
 				{
-					Data(0, i) = tmp[i];
+					for (int j = 0; j < tmp.size() / 2; j++)
+					{
+						Data(i, j) = tmp[Counter++];
+					}
+					
 				}
 				return 1;
 

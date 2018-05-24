@@ -241,6 +241,9 @@ protected:
 	void ProduceValidTriple(const Eigen::MatrixXd& mat,
 		vector<T_>& TripleList);
 
+	void ProduceValidTripleForF(const Eigen::MatrixXd& mat,
+		vector<T_>& TripleList);
+
 
 
 };

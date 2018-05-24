@@ -26,6 +26,8 @@ public:
     double GetY() const;
     double GetZ() const;
 
+	int GetId() const;
+
 
 private:
     int Id;

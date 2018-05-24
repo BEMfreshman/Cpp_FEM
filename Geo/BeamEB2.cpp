@@ -434,22 +434,23 @@ int BeamEB2::ComputeShapeFunction()
 	//主要为了形函数
 	dNdxi.setZero();
 
-	Eigen::MatrixXd GlobalGaussPoint(LocalGaussPoint.rows(), LocalGaussPoint.cols());
+	Eigen::MatrixXd GaussPoint(LocalGaussPoint.rows(), LocalGaussPoint.cols());
+	//此处的GaussPoint是在[0，ElementLength]这条直线上的高斯点分布
 
 	Eigen::MatrixXd ElementCoord(2, 1);
 	ElementCoord << 0, ElementLength;
 	for (int i = 0; i < LocalGaussPoint.rows(); i++)
 	{
-		GlobalGaussPoint.row(i) = N.row(i)* ElementCoord;
+		GaussPoint.row(i) = N.row(i)* ElementCoord;
 	}
 
 	N.setZero();
-	N.resize(GlobalGaussPoint.rows(),4);
+	N.resize(GaussPoint.rows(),4);
 
 	
-	for (int i = 0; i < GlobalGaussPoint.rows(); i++)
+	for (int i = 0; i < GaussPoint.rows(); i++)
 	{
-		double epsilon = (GlobalGaussPoint(i, 0) - 0) / ElementLength;
+		double epsilon = (GaussPoint(i, 0) - 0) / ElementLength;
 		N(i, 0) = 1 - 3 * pow(epsilon, 2) + 2 * pow(epsilon, 2);
 		N(i, 1) = (epsilon - 2 * pow(epsilon, 2) + pow(epsilon, 3))*ElementLength;
 		N(i, 2) = 3 * pow(epsilon, 2) - 2 * pow(epsilon, 3);
@@ -477,7 +478,10 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, 
 	ComputeElementLength();
 
 	Eigen::MatrixXd ForceMatrix(DOFNumofEle, 1);
+	Eigen::MatrixXd TForceMatrix(DOFNumofEle, 1);
+
 	ForceMatrix.setZero();
+	TForceMatrix.setZero();
 
 	if (dim == 1)
 	{
@@ -486,7 +490,7 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, 
 
 		map<int, Eigen::MatrixXd>::const_iterator it;
 
-		it = Pressure.find(VertexVec[0]->getid());
+		it = Pressure.find(VertexVec[0]->GetId());
 		if (it == Pressure.end())
 		{
 			return 0;
@@ -496,7 +500,7 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, 
 			FP_y = (it->second)(0, 1);
 		}
 
-		it = Pressure.find(VertexVec[1]->getid());
+		it = Pressure.find(VertexVec[1]->GetId());
 		if (it == Pressure.end())
 		{
 			return 0;
@@ -514,17 +518,24 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, 
 
 			for (int i = 0; i < GaussPointNum; i++)
 			{
-				ForceMatrix += EachGaussLoad * N.col(i).transpose() *	GaussWeight[i];
+				ForceMatrix += EachGaussLoad * N.row(i).transpose() *	GaussWeight[i];
 			}
 
 			ForceMatrix *= (ElementLength - 0) / 2.0;
+
+			cout << "ForceMatrix is " << endl;
+			cout << ForceMatrix << endl;
 			
 		}
 		else
 		{
 			//线性荷载
 		}
-		
+
+		ComputeTMatrix(dim);
+		TForceMatrix = T.transpose()*ForceMatrix;
+
+		ProduceValidTripleForF(TForceMatrix, tripList);
 
 	}
 	else if (dim == 2)

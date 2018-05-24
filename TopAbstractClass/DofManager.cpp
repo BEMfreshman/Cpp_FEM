@@ -33,7 +33,7 @@ DofManager::~DofManager()
 	}
 }
 
-int DofManager::getid() const
+int DofManager::getDofManagerid() const
 {
 	return id;
 }
@@ -136,21 +136,41 @@ bool DofManager::findSPCValid(DOFVar DF)
 	}
 }
 
-int DofManager::SetVaildDOFId(int& ValidDOFNum, int PerscribedDOFNum)
+int DofManager::SetVaildDOFId(int& ValidDOFNum, int& PerscribedDOFNum)
 {
-	for (map<DOFVar, DOF*>::iterator it = DOFMap.begin();
-		it != DOFMap.end(); it++)
+	//for (map<DOFVar, DOF*>::iterator it = DOFMap.begin();
+	//	it != DOFMap.end(); it++)
+	//{
+	//	DOF* dof = it->second;
+	//	if (dof->getIsVaild() == true)
+	//	{
+	//		dof->SetVaildTotalDOFId(ValidDOFNum++);
+	//	}
+	//	else
+	//	{
+	//		dof->SetVaildTotalDOFId(--PerscribedDOFNum);
+	//	}
+	//}
+
+	vector<DOFVar> DOFVarVec = { u, v, w, tx, ty, tz };
+	for (int i = 0; i < DOFVarVec.size(); i++)
 	{
-		DOF* dof = it->second;
-		if (dof->getIsVaild() == true)
+		DOFVar EachDF = DOFVarVec[i];
+		map<DOFVar, DOF*>::iterator it = DOFMap.find(EachDF);
+		if (it != DOFMap.end())
 		{
-			dof->SetVaildTotalDOFId(ValidDOFNum++);
-		}
-		else
-		{
-			dof->SetVaildTotalDOFId(--PerscribedDOFNum);
+			DOF* dof = it->second;
+			if (dof->getIsVaild() == true)
+			{
+				dof->SetVaildTotalDOFId(ValidDOFNum++);
+			}
+			else
+			{
+				dof->SetVaildTotalDOFId(--PerscribedDOFNum);
+			}
 		}
 	}
+
 	return 1;
 }
 
@@ -166,6 +186,33 @@ int DofManager::getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int
 	}
 	return 1;
 }
+
+
+int DofManager::getGlobalValidDOFId(vector<int>& GlobalValidDOFId)
+{
+	for (map<DOFVar, DOF*>::const_iterator it = DOFMap.begin();
+		it != DOFMap.end();
+		it++)
+	{
+		DOF* dof = it->second;
+		dof->getIsVaild() ? GlobalValidDOFId.push_back(dof->getVaildTotalDOFId()) : 1;
+	}
+	return 1;
+}
+
+int DofManager::getLocalDOFVarId(vector<int>& LocalValidDOFId)
+{
+	for (map<DOFVar, DOF*>::const_iterator it = DOFMap.begin();
+		it != DOFMap.end();
+		it++)
+	{
+		DOF* dof = it->second;
+		dof->getIsVaild() ? LocalValidDOFId.push_back((int)dof->getDOFVar()) : 1;
+	}
+	return 1;
+}
+
+
 //int DofManager::SetSPC()
 //{
 //	if (DOFMap.size() == 0)

@@ -263,8 +263,8 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 			int ElementId;
 			
 			LoadInputItem->GetDataByItemName(&ElementId, Load_Pressure_ElementId);
-			LoadInputItem->GetDataByItemName(NodeId, Load_NodeId);
-			LoadInputItem->GetDataByItemName(Value, Load_Value);
+			LoadInputItem->GetDataByItemName(NodeId, Load_Pressure_NodeId);
+			LoadInputItem->GetDataByItemName(Value, Load_Pressure_Value);
 
 			Eigen::VectorXi NodeId_(NodeId.rows());
 
@@ -274,6 +274,7 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
 			}
 
 			Load* ld = fac->CreateLoad(id, LoadName, ElementId, NodeId_, Value);
+			LoadMap[id] = ld;
 		}
 
 	}
@@ -364,7 +365,7 @@ FEMinfo* FEMinfo::CreateCopy(int NewId)
 	for (size_t id = 1; id <= VertexMap.size(); id++)
     {
         Vertex* NewVertex = new Vertex(*(VertexMap.find(id)->second));
-        feminfo->VertexMap[NewVertex->getid()] = NewVertex;
+        feminfo->VertexMap[NewVertex->GetId()] = NewVertex;
     }
 
 	for (size_t id = 1; id <= EleMap.size(); id++)

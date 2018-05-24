@@ -23,17 +23,15 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 	else
 	{
 		Vertex* Ver = FEMInformation->getVertexById(NodeId);
-		vector<int> tmpDOFId;
+		vector<int> tmpDOFId;         //记录全局DOFId
+		vector<int> tmpDOFVarId;     //记录局部DOFId
 
-		for (int i = 0; i < Ver->getDOFSize(); i++)
-		{
-			DOF* dof = Ver->getDOF(i);
-			tmpDOFId.push_back(dof->getVaildTotalDOFId());
-		}
+		Ver->getGlobalValidDOFId(tmpDOFId);
+		Ver->getLocalDOFVarId(tmpDOFVarId);
 
 		for (size_t i = 0; i < tmpDOFId.size(); i++)
 		{
-			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, (int)tmpDOFId[i]-1)));
+			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, tmpDOFVarId[i] - 1)));
 			//自由度从1开始计算，所以要-1
 		}
 

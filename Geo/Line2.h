@@ -41,6 +41,8 @@ protected:
 protected:
 	double ElementLength;
 	Eigen::MatrixXd T;             //代表局部坐标轴和全局坐标轴的旋转矩阵
+
+	// displacement_Local = T * displacement_Global
 };
 
 

@@ -26,7 +26,7 @@ public:
 
 	virtual ~DofManager();
 
-	int getid() const;
+	int getDofManagerid() const;
 	DOF* getDOF(int i) const; //返回排在DOFVec中的第i个元素
 	DOF* getDOFById(DOFVar DF) const;
 	int getDOFSize() const;        //返回DOF的个数
@@ -34,9 +34,12 @@ public:
 	int addDOF(DOF* dof);         //增加一个DOF（添加到vec的末尾）
 	int deleteDOF(DOF* dof);    //删除一个DOF
 
-	int SetVaildDOFId(int& ValidDOFNum,int PerscribedDOFNum);
+	int SetVaildDOFId(int& ValidDOFNum,int& PerscribedDOFNum);
 
 	int getValidDOFIdAndIsValidArray(vector<int>& ValidDOFId, vector<int>& ValidArray) const;
+
+	int getGlobalValidDOFId(vector<int>& GlobalValidDOFId);
+	int getLocalDOFVarId(vector<int>& LocalDOFVarId);
 
 	int SetDOF(int dim, ElementType ET);
 

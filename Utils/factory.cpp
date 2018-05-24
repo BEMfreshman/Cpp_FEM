@@ -177,7 +177,7 @@ Load* Factory::CreateLoad(int LoadId,const std::string& LoadName,
 	const Eigen::VectorXi& NodeId,
 	const Eigen::MatrixXd& Value)
 {
-	if (LoadName == "PressureOnLine")
+	if (LoadName.find("PressureOnLine") != std::string::npos)
 	{
 		return new PressureLoadOnLine(LoadId, ElementId, NodeId, Value);
 	}

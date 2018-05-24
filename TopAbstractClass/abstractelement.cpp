@@ -327,6 +327,12 @@ void Element::ProduceValidTriple(const Eigen::MatrixXd& mat,
 
 	GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
 
+	cout << "ValidTotalDofIdArray is " << endl;
+	cout << ValidTotalDOFIdArray << endl;
+
+	cout << "IsValidArray is " << endl;
+	cout << IsValidArray << endl;
+
 	for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
 	{
 		for (int j = 0; j < ValidTotalDOFIdArray.size(); j++)
@@ -352,6 +358,39 @@ void Element::ProduceValidTriple(const Eigen::MatrixXd& mat,
 				continue;
 			}
 		}
+	}
+}
+
+void Element::ProduceValidTripleForF(const Eigen::MatrixXd& mat,
+	vector<T_>& TripleList)
+{
+	Eigen::VectorXi ValidTotalDOFIdArray;
+	Eigen::VectorXi IsValidArray;
+
+	GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
+
+	cout << "ValidTotalDofIdArray is " << endl;
+	cout << ValidTotalDOFIdArray << endl;
+
+	cout << "IsValidArray is " << endl;
+	cout << IsValidArray << endl;
+
+	for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
+	{
+		if (abs(IsValidArray(i)) > EPS)
+			//IsValidArray(i) != 0 && IsValidArray(j) != 0
+		{
+			TripleList.push_back(T_(ValidTotalDOFIdArray(i),
+				0,
+				mat(i, 0)));
+		}
+		else
+			//IsValidArray(i) == 0 && IsValidArray(j) == 0
+			//IsValidArray(i) != 0 && IsValidArray(j) == 0
+		{
+			continue;
+		}
+		
 	}
 }
 

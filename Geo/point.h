@@ -27,7 +27,10 @@ public:
 	int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList);
 	int SetDOF(int dim);
 
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+	
 	virtual ElementType GetElementType();
+
 
 protected:
 	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);

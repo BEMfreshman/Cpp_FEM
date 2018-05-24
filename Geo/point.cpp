@@ -69,3 +69,8 @@ ElementType Point::GetElementType()
 {
 	return POINT;
 }
+
+int Point::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+{
+	return 0;
+}

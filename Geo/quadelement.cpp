@@ -1,13 +1,18 @@
 ﻿#include "quadelement.h"
+#include "Line2.h"
 #include "vertex.h"
 #include "../TopAbstractClass/abstractmaterial.h"
+#include <iostream>
 
 QuadElement::QuadElement(int ElementId,
                          int MaterialId,
                          ElementType eletype,
+						 int dim,
 						 const Eigen::MatrixXi& VertexIdArray) :
-    Element(ElementId,MaterialId,eletype,VertexIdArray)
+    Element(ElementId,MaterialId,eletype,dim,VertexIdArray)
 {
+	int Order = 2;
+	GenerateLoacalGaussPointAndWeight(Order);
 	ComputeShapeFunction();
 }
 
@@ -47,7 +52,19 @@ Element* QuadElement::Clone() const
 
 int QuadElement::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
 {
-	return 0;
+	if (SMT == Stiffness)
+	{
+		ComputeStiffnessMatrix(tripleList);
+		return 1;
+	}
+	else if (SMT == Mass)
+	{
+		ComputeMassMatrix(tripleList);
+		return 1;
+	}
+
+	printf("不可识别的SparseMatrixType\n");
+	return 1;
 }
 
 int QuadElement::ComputeShapeFunction()
@@ -96,14 +113,17 @@ int QuadElement::ComputeShapeFunction()
 		dNdxi.row(i * 2) = EachGaussPointdNdxi.row(0);
 		dNdxi.row(i * 2 + 1) = EachGaussPointdNdxi.row(1);
 	}
-	return 0;
+	return 1;
 }
 
 void QuadElement::GenerateLoacalGaussPointAndWeight(int Order)
 {
-	int dim = 2;
+
 	LocalGaussPoint.resize(Order*Order, dim);
 	GaussWeight.reserve(Order*Order);
+	OneDimensionGPAndWeight(Order);
+
+
 	int i, j;
 	int counter = 0;
 
@@ -114,7 +134,6 @@ void QuadElement::GenerateLoacalGaussPointAndWeight(int Order)
 	EachGaussPoint.setZero(1, dim);
 
 	double EachGaussWeight;
-
 	for (i = 0; i < Order; i++)
 	{
 		xCoord = GaussPointOneDimension[i];
@@ -142,14 +161,42 @@ int QuadElement::ComputeStiffnessMatrix(vector<T_>& ReturnValue)
 	Eigen::MatrixXd Dmat;
 
 	Eigen::MatrixXd Ke(8,8);
+	Ke.setZero();
 
 	Material->ComputeMatrix(DMatrix, Dmat);
 
-	for (int i = 0; i < LocalGaussPoint.size(); i++)
+
+	
+
+	for (int i = 0; i < LocalGaussPoint.rows(); i++)
 	{
+		cout << "LoadGaussPoint" << endl;
+		cout << LocalGaussPoint.row(i) << endl;
+
 		ComputeBMatrix(i, Bmat);
 		ComputeJacMatrix(i, Jac);
 		Ke += Bmat.transpose()*Dmat*Bmat*Jac.determinant()*GaussWeight[i];
+
+		cout << "Bmat" << endl;
+		cout << Bmat << endl;
+
+		cout << "Dmat" << endl;
+		cout << Dmat << endl;
+
+		cout << "Jac" << endl;
+		cout << Jac << endl;
+
+		
+
+		cout << "Bmat.transpose()*Dmat*Bmat*Jac.determinant()*GaussWeight[i]" << endl;
+		cout << Bmat.transpose()*Dmat*Bmat*Jac.determinant()*GaussWeight[i] << endl;
+
+		cout << "Ke" << endl;
+		cout << Ke << endl;
+
+		cout << endl;
+		cout << endl;
+		cout << endl;
 	}
 
 	ProduceValidTriple(Ke, ReturnValue);
@@ -177,14 +224,15 @@ int QuadElement::ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat)
 	//单元顶点的个数
 
 	Bmat.resize(3, 2 * VertexNum);
+	Bmat.setZero();
 
 	for (int i = 0; i < VertexNum; i++)
 	{
-		Bmat(0, i * 2) = dNdxi(GaussPointId*2, i * 2);
-		Bmat(2, i * 2 + 1) = dNdxi(GaussPointId * 2, i * 2);
+		Bmat(0, i * 2) = dNdxi(GaussPointId*2, i);
+		Bmat(2, i * 2 + 1) = dNdxi(GaussPointId * 2, i);
 
-		Bmat(1, i * 2 + 1) = dNdxi(GaussPointId * 2 + 1, i * 2);
-		Bmat(2, i * 2) = dNdxi(GaussPointId * 2 + 1, i * 2);
+		Bmat(1, i * 2 + 1) = dNdxi(GaussPointId * 2 + 1, i);
+		Bmat(2, i * 2) = dNdxi(GaussPointId * 2 + 1, i);
 	}
 	return 1;
 }
@@ -214,8 +262,59 @@ int QuadElement::ComputeMassMatrix(vector<T_>& ReturnValue)
 	return 0;
 }
 
-int QuadElement::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+int QuadElement::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+	const LoadType LT,
+	vector<T_>& tripList)
 {
-	return 0;
+	//《有限元方法基础教程》第三版 P314
+
+	if (GetDOFNumofEle() == 0)
+	{
+		printf("该单元未设置单元节点\n");
+		return 0;
+	}
+
+	int Order = 6;
+
+	if (LT == LoadOnLine)
+	{
+		Eigen::MatrixXi LineVertexIdArray(Pressure.size(), 1);
+
+		int Counter = 0;
+		vector<Vertex*> VertextmpVec;
+		for (map<int, Eigen::MatrixXd>::const_iterator it = Pressure.begin();
+			it != Pressure.end();
+			it++)
+		{
+			int NodeId = it->first;
+			LineVertexIdArray(Counter, 0) = NodeId;
+
+
+			for (int i = 0; i != VertexVec.size(); i++)
+			{
+				if (VertexVec[i]->GetId() == NodeId)
+				{
+					VertextmpVec.push_back(VertexVec[i]);
+					break;
+				}
+			}
+
+			Counter++;
+		}
+
+
+		Line2* LineEle = new Line2(1, 1, LINE2, dim,LineVertexIdArray);
+
+		for (int i = 0; i < VertextmpVec.size(); i++)
+		{
+			LineEle->SetVertex(VertextmpVec[i]);
+		}
+
+
+		LineEle->ComputeForceMatrixOnEle(Pressure, LT, tripList);
+		delete LineEle;
+	}
+
+	return 1;
 }
 

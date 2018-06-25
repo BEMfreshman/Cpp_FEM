@@ -2,6 +2,7 @@
 #define ABSTRACTELEMENT_H
 #include <Eigen/Eigen>
 #include "elementtype.h"
+#include "LoadType.h"
 #include "sparsematrixtype.h"
 #include "ShapeFunction.h"
 
@@ -41,11 +42,13 @@ public:
     Element(int ElementId,
             int MaterialId,
             ElementType eletype,
+			int dim,
             const Eigen::MatrixXi& VertexIdArray);
     Element(int ElementId,
             int MaterialId,
             int EPropId,
             ElementType eletype,
+			int dim,
             const Eigen::MatrixXi& VertexIdArray);
 
     Element(const Element& that);
@@ -93,7 +96,9 @@ public:
     void GetBoundaryLoad();
 */
 
-	virtual int ComputeForceMatrixOnEle(const map<int,Eigen::MatrixXd>& Pressure,vector<T_>& tripList) = 0;
+	virtual int ComputeForceMatrixOnEle(const map<int,Eigen::MatrixXd>& Pressure,
+		const LoadType LT,
+		vector<T_>& tripList) = 0;
 	//当分布力作用在单元上的时候，就采用此函数计算
 
 protected:

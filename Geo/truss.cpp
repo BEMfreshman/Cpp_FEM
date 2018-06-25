@@ -4,9 +4,10 @@ Truss::Truss(int ElementId,
              int MaterialId,
              int EPropId,
              ElementType eletype,
+			 int dim,
 			 const Eigen::MatrixXi& VertexIdArray)
             :Line2(ElementId,MaterialId,
-                     eletype,VertexIdArray)
+                     eletype,dim,VertexIdArray)
 {
 	this->EPropId = EPropId;
 }
@@ -50,7 +51,9 @@ int Truss::SetDOF(int dim)
 	return 0;
 }
 
-int Truss::GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList)
+int Truss::GetSpecificMatrix(SparseMatrixType SMT,
+	const LoadType LT, 
+	vector<T_>& tripleList)
 {
 	return 0;
 }

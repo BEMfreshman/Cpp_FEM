@@ -13,6 +13,7 @@ public:
 	~PressureLoadOnLine();
 
 	int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList);
+	LoadType getLoadType() const;
 
 protected:
 

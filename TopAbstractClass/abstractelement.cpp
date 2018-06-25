@@ -15,6 +15,7 @@ EPropId(0), DOFNumofEle(0)
 Element::Element(int ElementId,
                  int MaterialId,
                  ElementType eletype,
+				 int dim,
                  const Eigen::MatrixXi& VertexIdArray)
 {
     this->ElementId = ElementId;
@@ -23,6 +24,7 @@ Element::Element(int ElementId,
     this->VertexIdArray = VertexIdArray;
 	this->DOFNumofEle = 0;
     this->EPropId = 0;
+	this->dim = dim;
 
     EleProp = NULL;
     Material = NULL;
@@ -33,6 +35,7 @@ Element::Element(int ElementId,
                  int MaterialId,
                  int EPropId,
                  ElementType eletype,
+				 int dim,
                  const Eigen::MatrixXi& VertexIdArray)
 {
     this->ElementId = ElementId;
@@ -41,6 +44,8 @@ Element::Element(int ElementId,
     this->EleType = eletype;
     this->VertexIdArray = VertexIdArray;
 	this->DOFNumofEle = 0;
+	this->dim = dim;
+
     EleProp = NULL;
     Material = NULL;
 }
@@ -327,11 +332,11 @@ void Element::ProduceValidTriple(const Eigen::MatrixXd& mat,
 
 	GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
 
-	cout << "ValidTotalDofIdArray is " << endl;
+	/*cout << "ValidTotalDofIdArray is " << endl;
 	cout << ValidTotalDOFIdArray << endl;
 
 	cout << "IsValidArray is " << endl;
-	cout << IsValidArray << endl;
+	cout << IsValidArray << endl;*/
 
 	for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
 	{
@@ -369,11 +374,11 @@ void Element::ProduceValidTripleForF(const Eigen::MatrixXd& mat,
 
 	GetValidDOFId(ValidTotalDOFIdArray, IsValidArray);
 
-	cout << "ValidTotalDofIdArray is " << endl;
+	/*cout << "ValidTotalDofIdArray is " << endl;
 	cout << ValidTotalDOFIdArray << endl;
 
 	cout << "IsValidArray is " << endl;
-	cout << IsValidArray << endl;
+	cout << IsValidArray << endl;*/
 
 	for (int i = 0; i < ValidTotalDOFIdArray.size(); i++)
 	{

@@ -9,6 +9,7 @@ public:
 	Line2();
 	Line2(int ElementID,int MaterialId,
 		ElementType eletype,
+		int dim,
 		const Eigen::MatrixXi& VertexIdArray);
 
 	virtual ~Line2();
@@ -19,7 +20,9 @@ public:
 	Element* Clone() const;
 
 
-	virtual int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+	virtual int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+		const LoadType LT,
+		vector<T_>& tripList);
 
 public:
 	virtual int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& ReturnValue);
@@ -29,7 +32,7 @@ public:
 	virtual ElementType GetElementType();
 
 protected:
-	
+	void ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac);
 
 	virtual int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
 	void GenerateLoacalGaussPointAndWeight(int Order);

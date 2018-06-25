@@ -28,11 +28,13 @@ public:
     Element* CreateElement(int ElementId,
                            int MaterialId,
                            ElementType eletype,
+						   int dim,
                            const Eigen::MatrixXi& VertexIdArray);
     Element* CreateElement(int ElementId,
                            int MaterialId,
                            int EPropId,
                            ElementType eletype,
+						   int dim,
                            const Eigen::MatrixXi& VertexIdArray);
 /*
     Element* CreateElement(int ElementId,

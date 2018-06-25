@@ -96,6 +96,13 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
+
             }
             std::string newline = "Vertex," + line;
             InputItem* inputitem = new InputItem(newline,RowId);
@@ -109,6 +116,12 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
             }
             //单元的每一行的第一个词语就是其关键字
             //以下的情况同理
@@ -123,6 +136,12 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
             }
             //材料每行的关键字是其属性（各向同性，各向异性等等）
             std::string newline = "Material," + line;
@@ -136,6 +155,12 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
             }
             //单元属性每行的关键字是单元种类（梁单元，杆单元，壳单元等等）
             std::string newline = "ElementProp," + line;
@@ -149,6 +174,12 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
             }
             //约束每行关键字是约束的种类（单点约束，多点约束等等）
             std::string newline = "Constraint," + line;
@@ -162,6 +193,12 @@ BuildInFileReader::BuildInFileReader(const std::string& InputPath,
             {
                 std::getline(ReadInputFileStream,line);
                 RowId++;
+
+				if (line.find("*") != std::string::npos)
+				{
+					//防止空输入体
+					continue;
+				}
             }
 
 

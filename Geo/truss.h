@@ -15,6 +15,7 @@ public:
           int MaterialId,
           int EPropId,
           ElementType eletype,
+		  int dim,
 		  const Eigen::MatrixXi& VertexIdArray);
 
     ~Truss();
@@ -24,7 +25,9 @@ public:
 
     Element* Clone() const;
 
-	int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList);
+	int GetSpecificMatrix(SparseMatrixType SMT,
+		const LoadType LT,
+		vector<T_>& tripleList);
 	
 	int SetDOF(int dim);
 

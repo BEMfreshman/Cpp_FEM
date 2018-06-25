@@ -11,7 +11,7 @@ Load::~Load()
 
 }
 
-int Load::GetId()
+int Load::GetId() const
 {
 	return id;
 }

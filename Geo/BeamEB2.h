@@ -21,6 +21,7 @@ public:
 	BeamEB2();   //默认构造函数
 	BeamEB2(int ElementId, int MaterialId,
 		int EPropId, ElementType eletype,
+		int dim,
 		const Eigen::MatrixXi& VertexIdArray);
 
 	~BeamEB2();
@@ -34,7 +35,9 @@ public:
 
 	int SetDOF(int dim);
 
-	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+		const LoadType LT,
+		vector<T_>& tripList);
 
 	ElementType GetElementType();
 protected:

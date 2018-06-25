@@ -446,7 +446,7 @@ int InputItem::GetDataByItemName(Eigen::MatrixXi& Data,InputItemName inputitemna
                 }
                 return 1;
             }
-            else if(EleType == "TRIANGLE4" || EleType == "QUQD4" ||
+            else if(EleType == "TRIANGLE4" || EleType == "QUAD4" ||
 				EleType == "TET4")
             {
                 Data.resize(4,1);

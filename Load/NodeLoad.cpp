@@ -38,3 +38,8 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 		return 1;
 	}
 }
+
+LoadType NodeLoad::getLoadType() const
+{
+	return LoadOnPoint;
+}

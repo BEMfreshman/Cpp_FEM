@@ -169,14 +169,14 @@ FEMinfo::FEMinfo(int FEMinfoId,AbstractFileReader *FileReader)
         {
             //不存在单元属性
             Element* Ele = fac->CreateElement(id,MaterialId,
-                                              EleType,VertexIdArray);
+                                              EleType,dim,VertexIdArray);
 
 			EleMap[id] = Ele;
         }
         else
         {
             Element* Ele = fac->CreateElement(id,MaterialId,EPropId,
-                                              EleType,VertexIdArray);
+                                              EleType,dim,VertexIdArray);
 			EleMap[id] = Ele;
         }
     }
@@ -405,6 +405,11 @@ int FEMinfo::FinallyCompulsorySet()
 			for (int i = 0; i < col; i++)
 			{
 				int VertexId = VertexIdArray(0, i);
+				if (VertexId == 0)
+				{
+					printf("无效的节点编号\n");
+					return 0;
+				}
 				Vertex* Vert = VertexMap.find(VertexId)->second;
 				Vert->SetDOF(dim, Ele->GetElementType());
 				Ele->SetVertex(Vert);

@@ -4,6 +4,7 @@
 #include "../TopAbstractClass/abstractload.h"
 #include "../TopAbstractClass/abstractconstraint.h"
 #include "../Geo/vertex.h"
+#include "Eigen/OrderingMethods"
 
 LinearStaticModel::LinearStaticModel(FEMinfo* FEMInformation)
 :abstractFEMModel(FEMInformation)
@@ -22,7 +23,8 @@ void LinearStaticModel::Solve()
 	BuildKMatrix();
 	BuildfMatrix();
 
-	Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+	//Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > solver;
+	Eigen::SparseLU<Eigen::SparseMatrix < double >> solver;
 	solver.compute(K);
 	if (solver.info() != Eigen::Success)
 	{

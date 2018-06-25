@@ -10,8 +10,10 @@
 
 #include "Dof.h"
 #include "abstractelement.h"
+#include "LoadType.h"
 #include "Eigen\Eigen"
 #include <vector>
+
 
 class FEMinfo;
 
@@ -26,9 +28,10 @@ public:
 	Load(int id);
 	virtual ~Load() = 0;
 
-	int GetId();
+	int GetId() const;
 
 	virtual int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList) = 0;
+	virtual LoadType getLoadType() const = 0;
 
 	void setCoordId(int CoordId);
 	int getCoordId() const;          //»ñµÃ×ø±êÖá±àºÅ

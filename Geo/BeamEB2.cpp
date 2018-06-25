@@ -16,8 +16,9 @@ BeamEB2::BeamEB2(int ElementId,
 	int MaterialId,
 	int EPropId,
 	ElementType eletype,
+	int dim,
 	const Eigen::MatrixXi& VertexIdArray) :Line2(ElementId, MaterialId,
-	eletype, VertexIdArray)
+	eletype, dim,VertexIdArray)
 {
 	this->EPropId = EPropId;
 }
@@ -461,8 +462,16 @@ int BeamEB2::ComputeShapeFunction()
 
 }
 
-int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+	const LoadType LT,
+	vector<T_>& tripList)
 {
+	if (LT != LoadOnLine)
+	{
+		printf("载荷施加有误\n");
+		return 0;
+	}
+
 	if (GetDOFNumofEle() == 0)
 	{
 		printf("该单元未设置单元节点\n");

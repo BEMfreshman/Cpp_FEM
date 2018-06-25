@@ -1,5 +1,8 @@
 #include "Line2.h"
 #include "vertex.h"
+#include <iostream>
+
+using namespace std;
 
 Line2::Line2()
 {
@@ -8,8 +11,9 @@ Line2::Line2()
 
 Line2::Line2(int ElementID, int MaterialId,
 	ElementType eletype,
+	int dim,
 	const Eigen::MatrixXi& VertexIdArray) :
-	Element(ElementId,MaterialId,eletype,VertexIdArray)
+	Element(ElementId,MaterialId,eletype,dim,VertexIdArray)
 {
 
 }
@@ -241,7 +245,153 @@ int Line2::ComputeTMatrix(int dim)
 	}
 }
 
-int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+	const LoadType LT,
+	vector<T_>& tripList)
 {
-	return 0;
+	if (LT != LoadOnLine)
+	{
+		printf("载荷施加有误\n");
+		return 0;
+	}
+
+	if (GetDOFNumofEle() == 0)
+	{
+		printf("该单元未设置单元节点\n");
+		return 0;
+	}
+
+	int Order = 6;
+	GenerateLoacalGaussPointAndWeight(Order);
+
+	int GaussPointNum = LocalGaussPoint.rows();
+
+	ComputeShapeFunction();
+	ComputeElementLength();
+
+	Eigen::MatrixXd ForceMatrix(DOFNumofEle, 1);
+	Eigen::MatrixXd GPForceMatrix(DOFNumofEle, 1);
+
+	ForceMatrix.setZero();
+	GPForceMatrix.setZero();
+
+	map<int, Eigen::MatrixXd>::const_iterator it = Pressure.begin();
+	Eigen::MatrixXd LoadMatrix(Pressure.size(), it->second.cols());
+
+	
+	//一维单元
+	int Counter = 0;
+	for (it = Pressure.begin(); it != Pressure.end(); it++)
+	{
+		LoadMatrix.row(Counter) = it->second;
+		Counter++;
+	}
+
+	cout << "LoadMatrix" << endl;
+	cout << LoadMatrix << endl;
+
+	Eigen::MatrixXd Jac;
+	Eigen::MatrixXd EachGaussLoadMatrix(1, 3);
+
+	if (dim == 1)
+	{
+		//一个自由度,x
+		Eigen::MatrixXd EachGaussLoadMatrix_(1, 1);
+		for (int i = 0; i < GaussPointNum; i++)
+		{
+			EachGaussLoadMatrix = N.row(i).transpose() * LoadMatrix;
+			EachGaussLoadMatrix_(0, 0) = EachGaussLoadMatrix(0, 0);
+
+			ComputeJacMatrix(i, Jac);
+
+			GPForceMatrix.block(0, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 0);
+			GPForceMatrix.block(DOFNumofEle / 2, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 1);
+
+			ForceMatrix += GPForceMatrix * Jac.determinant() * GaussWeight[i];
+		}
+
+		ForceMatrix *= (ElementLength - 0) / 2.0;
+
+	}
+	else if (dim == 2)
+	{
+		//二个自由度,x,y
+		Eigen::MatrixXd EachGaussLoadMatrix_(1, 2);
+		for (int i = 0; i < GaussPointNum; i++)
+		{
+			EachGaussLoadMatrix = N.row(i) * LoadMatrix;
+
+			cout << "EachGaussLoadMatrix" << endl;
+			cout << EachGaussLoadMatrix << endl;
+
+			EachGaussLoadMatrix_(0, 0) = EachGaussLoadMatrix(0, 0);
+			EachGaussLoadMatrix_(0, 1) = EachGaussLoadMatrix(0, 1);
+
+			ComputeJacMatrix(i, Jac);
+
+			/*cout << "Jac" << endl;
+			cout << Jac << endl;*/
+
+			GPForceMatrix.block(0, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 0);
+			GPForceMatrix.block(DOFNumofEle / 2, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 1);
+
+			cout << "GPForceMatrix" << endl;
+			cout << GPForceMatrix << endl;
+
+			ForceMatrix += GPForceMatrix * Jac.determinant() * GaussWeight[i];
+
+			cout << "ForceMatrix" << endl;
+			cout << ForceMatrix << endl;
+
+			
+		}
+		ForceMatrix *= (ElementLength - 0) / 2.0;
+
+	}
+	else if (dim == 3)
+	{
+		//三个自由度,x,y,z
+		Eigen::MatrixXd EachGaussLoadMatrix_(1, 3);
+		for (int i = 0; i < GaussPointNum; i++)
+		{
+			EachGaussLoadMatrix = N.row(i).transpose() * LoadMatrix;
+			EachGaussLoadMatrix_(0, 0) = EachGaussLoadMatrix(0, 0);
+			EachGaussLoadMatrix_(0, 1) = EachGaussLoadMatrix(0, 1);
+			EachGaussLoadMatrix_(0, 2) = EachGaussLoadMatrix(0, 2);
+
+			ComputeJacMatrix(i, Jac);
+
+			GPForceMatrix.block(0, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 0);
+			GPForceMatrix.block(DOFNumofEle / 2, 0, DOFNumofEle / 2, 1) = EachGaussLoadMatrix_.transpose()* N.row(i)(0, 1);
+
+			ForceMatrix += GPForceMatrix * Jac.determinant() * GaussWeight[i];
+		}
+		ForceMatrix *= (ElementLength - 0) / 2.0;
+	}
+
+	std::cout << ForceMatrix << std::endl;
+	
+
+	ProduceValidTripleForF(ForceMatrix, tripList);
+
+	
+	return 1;
+}
+
+void Line2::ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac)
+{
+	//在等参坐标上为一维单元,仅有X坐标
+	Eigen::MatrixXd Coord(2, 1);
+	Eigen::MatrixXd EachPointCoord(1, 1);
+
+	for (int i = 0; i < 2; i++)
+	{
+		Vertex* Ver = VertexVec[i];
+		EachPointCoord(0, 0) = Ver->GetX();
+
+		Coord.row(i) = EachPointCoord;
+	}
+
+	Jac = dNdxi.block(GaussPointId, 0, 1, 2)*Coord;
+
 }

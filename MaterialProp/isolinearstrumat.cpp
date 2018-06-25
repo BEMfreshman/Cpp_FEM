@@ -22,6 +22,7 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 				return 0;
 			}
 			matReturn.resize(3, 3);
+			matReturn.setZero();
 
 			double EVal, NuVal;
 
@@ -43,6 +44,7 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 				return 0;
 			}
 			matReturn.resize(3, 3);
+			matReturn.setZero();
 			
 			double EVal, NuVal;
 

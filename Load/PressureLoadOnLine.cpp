@@ -33,8 +33,12 @@ int PressureLoadOnLine::ComputeForce(FEMinfo* FEMInformation, vector<T_>& triple
 		PressureOnPoint[EachNodeId] = EachValue;
 	}
 
-	El->ComputeForceMatrixOnEle(PressureOnPoint, tripleList);
+	El->ComputeForceMatrixOnEle(PressureOnPoint, getLoadType(),tripleList);
 
 	return 1;
+}
 
+LoadType PressureLoadOnLine::getLoadType() const
+{
+	return LoadOnLine;
 }

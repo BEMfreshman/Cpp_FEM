@@ -14,6 +14,7 @@ public:
     QuadElement(int ElementId,
                 int MaterialId,
                 ElementType eletype,
+				int dim,
                 const Eigen::MatrixXi& VertexIdArray);
     ~QuadElement();
 
@@ -28,7 +29,9 @@ public:
 
 	virtual ElementType GetElementType();
 
-	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+		const LoadType LT,
+		vector<T_>& tripList);
 
 protected:
 	virtual int ComputeStiffnessMatrix(vector<T_>& ReturnValue);

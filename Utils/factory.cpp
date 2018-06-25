@@ -26,6 +26,7 @@ Vertex* Factory::CreateVertex(int VertexId,
 Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
                                 ElementType eletype,
+								int dim,
 								const Eigen::MatrixXi& VertexIdArray)
 {
     switch(eletype)
@@ -53,7 +54,7 @@ Element* Factory::CreateElement(int ElementId,
         case QUADRILATERAL4:
         {
             return new QuadElement(ElementId,MaterialId,
-                                   eletype,VertexIdArray);
+                                   eletype,dim,VertexIdArray);
         }
 		case QUADRILATERAL8:
         {
@@ -80,6 +81,7 @@ Element* Factory::CreateElement(int ElementId,
                                 int MaterialId,
                                 int EPropId,
                                 ElementType eletype,
+								int dim,
 								const Eigen::MatrixXi& VertexIdArray)
 {
 
@@ -88,12 +90,12 @@ Element* Factory::CreateElement(int ElementId,
         case TRUSS:
         {
             return new Truss(ElementId,MaterialId,
-                             EPropId,eletype,VertexIdArray);
+                             EPropId,eletype,dim,VertexIdArray);
         }
         case BEAMEB2:
         {
 			return new BeamEB2(ElementId, MaterialId,
-				EPropId, eletype, VertexIdArray);
+				EPropId, eletype, dim,VertexIdArray);
         }
 		case BEAMEB3:
 		{
@@ -185,6 +187,7 @@ Load* Factory::CreateLoad(int LoadId,const std::string& LoadName,
 	{
 
 	}
+	return NULL;
 }
 
 Constraint* Factory::CreateConstraint(int ConstraintId, const std::string& ConstraintName,
@@ -194,4 +197,9 @@ Constraint* Factory::CreateConstraint(int ConstraintId, const std::string& Const
 	{
 		return new DirichletBC(ConstraintId, NodeId, DF, Value);
 	}
+	else
+	{
+
+	}
+	return NULL;
 }

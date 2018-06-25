@@ -13,6 +13,7 @@ public:
 	~NodeLoad();
 
 	int ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList);
+	LoadType getLoadType() const;
 
 private:
 	int NodeId;        //点的Id合集

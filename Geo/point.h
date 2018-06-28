@@ -15,6 +15,7 @@ public:
           int MaterialId,
           int EPropId,
           ElementType eletype,
+		  int dim,
           const Eigen::MatrixXi& VertexIdArray);
 
     Point(const Point& that);
@@ -27,7 +28,9 @@ public:
 	int GetSpecificMatrix(SparseMatrixType SMT, vector<T_>& tripleList);
 	int SetDOF(int dim);
 
-	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList);
+	int ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+		const LoadType LT,
+		vector<T_>& tripList);
 	
 	virtual ElementType GetElementType();
 

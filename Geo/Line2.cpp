@@ -310,7 +310,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 			ForceMatrix += GPForceMatrix * Jac.determinant() * GaussWeight[i];
 		}
 
-		ForceMatrix *= (ElementLength - 0) / 2.0;
+		//ForceMatrix *= (ElementLength - 0) / 2.0;
 
 	}
 	else if (dim == 2)
@@ -345,8 +345,10 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 
 			
 		}
-		ForceMatrix *= (ElementLength - 0) / 2.0;
 
+		/*
+		ForceMatrix *= (ElementLength - 0) / 2.0;
+		*/
 	}
 	else if (dim == 3)
 	{
@@ -366,7 +368,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 
 			ForceMatrix += GPForceMatrix * Jac.determinant() * GaussWeight[i];
 		}
-		ForceMatrix *= (ElementLength - 0) / 2.0;
+		//ForceMatrix *= (ElementLength - 0) / 2.0;
 	}
 
 	std::cout << ForceMatrix << std::endl;

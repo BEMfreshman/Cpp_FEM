@@ -4,9 +4,10 @@ Point::Point(int ElementId,
              int MaterialId,
              int EPropId,
              ElementType eletype,
+			 int dim,
 			 const Eigen::MatrixXi& VertexIdArray)
             :Element(ElementId,MaterialId,EPropId,
-                     eletype,VertexIdArray)
+                     eletype,dim,VertexIdArray)
 {
 
 }
@@ -70,7 +71,9 @@ ElementType Point::GetElementType()
 	return POINT;
 }
 
-int Point::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure, vector<T_>& tripList)
+int Point::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
+	const LoadType LT,
+	vector<T_>& tripList)
 {
 	return 0;
 }

@@ -523,14 +523,17 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 		if (abs(FP_y - SP_y) < EPS)
 		{
 			//¾ù²¼ºÉÔØ
+
+			Eigen::MatrixXd Jac;
 			double EachGaussLoad = FP_y;
 
 			for (int i = 0; i < GaussPointNum; i++)
 			{
-				ForceMatrix += EachGaussLoad * N.row(i).transpose() *	GaussWeight[i];
+				ComputeJacMatrix(i, Jac);
+				ForceMatrix += EachGaussLoad * N.row(i).transpose() * Jac.determinant() *	GaussWeight[i];
 			}
 
-			ForceMatrix *= (ElementLength - 0) / 2.0;
+			//ForceMatrix *= (ElementLength - 0) / 2.0;
 
 			cout << "ForceMatrix is " << endl;
 			cout << ForceMatrix << endl;

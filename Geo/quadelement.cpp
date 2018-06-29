@@ -226,6 +226,9 @@ int QuadElement::ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat)
 	Bmat.resize(3, 2 * VertexNum);
 	Bmat.setZero();
 
+	cout << "dNdxi\n" << endl;
+	cout << dNdxi << endl;
+
 	for (int i = 0; i < VertexNum; i++)
 	{
 		Bmat(0, i * 2) = dNdxi(GaussPointId*2, i);

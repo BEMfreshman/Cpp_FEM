@@ -29,10 +29,10 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 			GetValue(E, &EVal);
 			GetValue(Nu, &NuVal);
 
-			double coeff = EVal*(1 - NuVal) / ((1 + NuVal)*(1 - 2 * NuVal));
-			matReturn << 1, NuVal / (1 - NuVal), 0,
-				NuVal / (1 - NuVal), 1, 0,
-				0, 0, (1 - 2 * NuVal) / (2 * (1 - NuVal));
+			double coeff = EVal / ((1 + NuVal)*(1 - 2 * NuVal));
+			matReturn << 1 - NuVal, NuVal, 0,
+				NuVal , 1 - NuVal, 0,
+				0, 0, (1 - 2 * NuVal) / 2;
 
 			matReturn *= coeff;
 		}

@@ -76,6 +76,8 @@ public:
 
 	int GetVertexInEleNum() const;  //获得单元中点的数目
 	Vertex* GetVertexInEle(int i) const;
+	Vertex* GetVertexInEleById(int VertexId) const;
+
 	DOF* GetDOFInEleByTotalDOFId(int TotalDOFId) const;
 
 	void GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray, Eigen::VectorXi& IsValidArray);
@@ -106,6 +108,9 @@ protected:
     int ElementId;
     int EPropId;         //单元属性Id
     int MatId;           //材料Id
+
+	int subEleCounter;   //子弹元序列号计数器
+
     Eigen::MatrixXi VertexIdArray;
     //Eigen::ArrayXXi VertexConnect;
     //VertexIdArray指的是点Id的数组，表示由这些点组成了此Element

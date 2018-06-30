@@ -173,8 +173,10 @@ int QuadElement::ComputeStiffnessMatrix(vector<T_>& ReturnValue)
 		cout << "LoadGaussPoint" << endl;
 		cout << LocalGaussPoint.row(i) << endl;
 
-		ComputeBMatrix(i, Bmat);
+
 		ComputeJacMatrix(i, Jac);
+		ComputeBMatrix(i, Jac,Bmat);
+		
 		Ke += Bmat.transpose()*Dmat*Bmat*Jac.determinant()*GaussWeight[i];
 
 		cout << "Bmat" << endl;
@@ -214,7 +216,9 @@ ElementType QuadElement::GetElementType()
 	return QUADRILATERAL4;
 }
 
-int QuadElement::ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat)
+int QuadElement::ComputeBMatrix(int GaussPointId,
+	const Eigen::MatrixXd& Jac,
+	Eigen::MatrixXd& Bmat)
 {
 	// [dN/dxi 0    ....;
     //  0     dN/deta    ....;
@@ -229,13 +233,36 @@ int QuadElement::ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat)
 	cout << "dNdxi\n" << endl;
 	cout << dNdxi << endl;
 
+	Eigen::MatrixXd dNdxi_Each(2, 1);
+	Eigen::MatrixXd dNdx_Each(2, 1);
+	Eigen::MatrixXd InvJac(Jac.rows(), Jac.cols());
+
+	InvJac(0, 0) = Jac(1, 1);
+	InvJac(1, 1) = Jac(0, 0);
+	InvJac(1, 0) = -Jac(1, 0);
+	InvJac(0, 1) = -Jac(0, 1);
+
+	InvJac *= 1 / Jac.determinant();
+
+
 	for (int i = 0; i < VertexNum; i++)
 	{
-		Bmat(0, i * 2) = dNdxi(GaussPointId*2, i);
-		Bmat(2, i * 2 + 1) = dNdxi(GaussPointId * 2, i);
 
-		Bmat(1, i * 2 + 1) = dNdxi(GaussPointId * 2 + 1, i);
-		Bmat(2, i * 2) = dNdxi(GaussPointId * 2 + 1, i);
+		dNdxi_Each(0, 0) = dNdxi(GaussPointId * 2, i);
+		dNdxi_Each(1, 0) = dNdxi(GaussPointId * 2 + 1, i);
+
+		//计算公式《有限单元法基础及MATLAB编程》P195
+		//将形函数对局部坐标的偏导数转为对全局坐标的偏导数
+
+		dNdx_Each = InvJac * dNdxi_Each;
+
+
+
+		Bmat(0, i * 2) = dNdx_Each(0,0);
+		Bmat(2, i * 2 + 1) = dNdx_Each(0, 0);
+
+		Bmat(1, i * 2 + 1) = dNdx_Each(1, 0);
+		Bmat(2, i * 2) = dNdx_Each(1, 0);
 	}
 	return 1;
 }
@@ -292,26 +319,10 @@ int QuadElement::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressu
 			int NodeId = it->first;
 			LineVertexIdArray(Counter, 0) = NodeId;
 
-
-			for (int i = 0; i != VertexVec.size(); i++)
-			{
-				if (VertexVec[i]->GetId() == NodeId)
-				{
-					VertextmpVec.push_back(VertexVec[i]);
-					break;
-				}
-			}
-
 			Counter++;
 		}
 
-
-		Line2* LineEle = new Line2(1, 1, LINE2, dim,LineVertexIdArray);
-
-		for (int i = 0; i < VertextmpVec.size(); i++)
-		{
-			LineEle->SetVertex(VertextmpVec[i]);
-		}
+		Element* LineEle = CreateLine2Element(LineVertexIdArray);
 
 
 		LineEle->ComputeForceMatrixOnEle(Pressure, LT, tripList);
@@ -319,5 +330,30 @@ int QuadElement::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressu
 	}
 
 	return 1;
+}
+
+
+Element* QuadElement::CreateLine2Element(const Eigen::MatrixXi& LineVertexIdArray)
+{
+	vector<Vertex*> VertextmpVec;
+	Element* subEle = new Line2(++subEleCounter, MatId, LINE2, dim, LineVertexIdArray);
+	
+
+	for (int i = 0; i < LineVertexIdArray.rows(); i++)
+	{
+		Vertex* Ver = GetVertexInEleById(LineVertexIdArray(i, 0));
+		if (Ver != NULL)
+		{
+			VertextmpVec.push_back(Ver);
+		}
+	}
+
+	for (int i = 0; i < VertextmpVec.size(); i++)
+	{
+		subEle->SetVertex(VertextmpVec[i]);
+	}
+
+	return subEle;
+
 }
 

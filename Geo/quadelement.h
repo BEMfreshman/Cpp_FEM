@@ -40,11 +40,15 @@ protected:
 	void GenerateLoacalGaussPointAndWeight(int Order);
 	int ComputeShapeFunction();
 
-	int ComputeBMatrix(int GaussPointId,Eigen::MatrixXd& Bmat);
+	int ComputeBMatrix(int GaussPointId,const Eigen::MatrixXd& Jac,Eigen::MatrixXd& Bmat);
 
 	void ComputeJacMatrix(int GaussPointId,Eigen::MatrixXd& Jac);
 
 	void ComputeDMatrix(Eigen::MatrixXd& Dmat);
+
+	Element* CreateLine2Element(const Eigen::MatrixXi& LineVertexIdArray);
+
+	
 };
 
 #endif // QUADELEMENT_H

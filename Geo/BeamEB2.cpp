@@ -94,26 +94,26 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	TmatReturnT.setZero();
 
 
-	if (DOFNumofEle == 4)
+	if (dim == 1)
 	{
 		//一维梁单元
 
 		if (EleProp->hasProp(Iz) == 0)
 		{
-			printf("Iz不存在");
+			printf("Iz不存在\n");
 			return 0;
 		}
 		else if (Material->hasProp(E) == 0 && Material->hasProp(Ex) == 0
 			&& Material->hasProp(Ey) == 0 && Material->hasProp(Ez) == 0)
 		{
-			printf("不存在E");
+			printf("不存在E\n");
 			return 0;
 		}
 		else
 		{
 			ComputeElementLength();
 
-			if (Material->IsIsoMat() == 1)
+			if (Material->IsIsoMat())
 			{
 				//各向同性材料
 				double EVal,IzVal;
@@ -169,7 +169,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 			}
 		}
 	}
-	else if (DOFNumofEle == 6)
+	else if (dim == 2)
 	{
 		//二维梁单元
 
@@ -249,7 +249,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 			}
 		}
 	}
-	else if (DOFNumofEle == 12)
+	else if (dim == 3)
 	{
 		//三维梁单元
 	}

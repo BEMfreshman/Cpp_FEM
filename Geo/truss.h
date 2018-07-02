@@ -34,8 +34,8 @@ public:
 	ElementType GetElementType();
 
 protected:
-	int ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn);
-	int ComputeMassMatrix(Eigen::MatrixXd& matReturn);
+	int ComputeStiffnessMatrix(vector<T_>& tripleList);
+	int ComputeMassMatrix(vector<T_>& tripleList);
 
 };
 

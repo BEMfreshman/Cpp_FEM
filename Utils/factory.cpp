@@ -74,7 +74,7 @@ Element* Factory::CreateElement(int ElementId,
         }
 
     }
-    return NULL;
+    return nullptr;
 }
 
 Element* Factory::CreateElement(int ElementId,
@@ -114,7 +114,7 @@ Element* Factory::CreateElement(int ElementId,
 
         }
     }
-    return NULL;
+    return nullptr;
 
 }
 
@@ -187,7 +187,7 @@ Load* Factory::CreateLoad(int LoadId,const std::string& LoadName,
 	{
 
 	}
-	return NULL;
+	return nullptr;
 }
 
 Constraint* Factory::CreateConstraint(int ConstraintId, const std::string& ConstraintName,
@@ -201,5 +201,5 @@ Constraint* Factory::CreateConstraint(int ConstraintId, const std::string& Const
 	{
 
 	}
-	return NULL;
+	return nullptr;
 }

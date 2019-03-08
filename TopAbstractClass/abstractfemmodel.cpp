@@ -34,7 +34,7 @@ int abstractFEMModel::PreProcess()
 	for (int id = 1; id <= VertexNum; id++)
 	{
 		Vertex* Ver = FemInformation->getVertexById(id);
-		if (Ver == NULL)
+		if (Ver == nullptr)
 		{
 			printf("警告：点的编号不连续，DOF编号可能出错\n");
 			continue;

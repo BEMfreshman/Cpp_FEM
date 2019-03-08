@@ -16,7 +16,7 @@ InputCard::~InputCard()
         for(it = inputcard.begin();it!=inputcard.end();it++)
         {
             delete (*it);
-            (*it) = NULL;
+            (*it) = nullptr;
         }
     }
 }

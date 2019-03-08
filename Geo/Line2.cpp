@@ -33,6 +33,8 @@ Line2& Line2::operator =(const Line2& that)
 	if (this != &that)
 	{
 		Element::operator =(that);
+		this->T = that.T;
+
 		return *this;
 	}
 	else
@@ -65,15 +67,12 @@ int Line2::SetDOF(int dim)
 int Line2::ComputeShapeFunction()
 {
 	int VertexNum = VertexIdArray.rows();
-	//��Ԫ�϶���ĸ���
+
 
 	int GaussPointNum = LocalGaussPoint.rows();
-	//��˹��ĸ���
-
-	//����������״����
 
 	N.resize(GaussPointNum, VertexNum);
-	dNdxi.resize(GaussPointNum * 1/*�ߵ�Ԫֻ��*/, VertexNum);
+	dNdxi.resize(GaussPointNum * 1, VertexNum);
 
 
 	for (int i = 0; i < GaussPointNum; i++)
@@ -133,17 +132,17 @@ int Line2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 
 int Line2::ComputeElementLength()
 {
-	//���㵥Ԫ�ĳ���
+	//计算单元长度
 	if (VertexVec.size() == 0)
 	{
-		printf("VertexVecΪ��\n");
+		printf("Number of Vertex is zeros\n");
 		return 0;
 	}
 	else
 	{
 		if (VertexVec.size() > 2)
 		{
-			printf("2�ڵ�����Ԫ�洢�ĵ�ĸ�������2��");
+			printf("Number of Vertex is more than 2\n");
 		}
 
 		Vertex* FirstOne = VertexVec[0];

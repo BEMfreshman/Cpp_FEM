@@ -1,4 +1,4 @@
-﻿#include "DiricheletBC.h"
+#include "DiricheletBC.h"
 #include "../TopAbstractClass/feminfo.h"
 #include "../Geo/vertex.h"
 #include "../TopAbstractClass/DofManager.h"
@@ -24,19 +24,19 @@ BCType DirichletBC::getBCType() const
 
 int DirichletBC::ModifyForceMatrix(FEMinfo* FEMInfomation, std::vector<T_>& tripleList)
 {
-	//���õ���ɾ�����з�
+	//狄利克雷边界条件，修正载荷矩阵
 	Vertex* Ver = FEMInfomation->getVertexById(NodeId);
-	if (Ver == NULL)
+	if (Ver == nullptr)
 	{
-		printf("�߽���������ʱ��ȡVertex����\n");
+		printf("Can not get Vertex Pointer\n");
 		return 0;
 	}
 
-	//��ñ�Լ����DOF
+	//获取DOF
 	DOF* dof = Ver->getDOFById(DF);
 	for (int i = 0; i < dof->getResidualKSize(); i++)
 	{
-		double NewValueInT_ = -((dof->getResidualK(i)).value() * Value); //���ֵĸ���
+		double NewValueInT_ = -((dof->getResidualK(i)).value() * Value);
 		int col = (dof->getResidualK(i)).col();
 		int row = (dof->getResidualK(i)).row();
 

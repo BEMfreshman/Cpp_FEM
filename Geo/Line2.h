@@ -43,7 +43,7 @@ protected:
 
 protected:
 	double ElementLength;
-	Eigen::MatrixXd T;             //����ֲ��������ȫ�����������ת����
+	Eigen::MatrixXd T;             //总体局部转置矩阵
 
 	// displacement_Local = T * displacement_Global
 };

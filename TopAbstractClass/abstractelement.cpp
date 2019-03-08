@@ -8,8 +8,8 @@ Element::Element():ElementId(0),MatId(0),
 EPropId(0), DOFNumofEle(0), subEleCounter(0)
 {
 
-    EleProp = NULL;
-    Material = NULL;
+    EleProp = nullptr;
+    Material = nullptr;
 }
 
 Element::Element(int ElementId,
@@ -27,8 +27,8 @@ Element::Element(int ElementId,
 	this->dim = dim;
 	this->subEleCounter = 0;
 
-    EleProp = NULL;
-    Material = NULL;
+    EleProp = nullptr;
+    Material = nullptr;
 
 }
 
@@ -48,8 +48,8 @@ Element::Element(int ElementId,
 	this->dim = dim;
 	this->subEleCounter = 0;
 
-    EleProp = NULL;
-    Material = NULL;
+    EleProp = nullptr;
+    Material = nullptr;
 }
 
 Element::Element(const Element& that):ElementId(that.ElementId),
@@ -284,14 +284,14 @@ int Element::GetVertexInEleNum() const
 
 Vertex* Element::GetVertexInEle(int i) const
 {
-	return (i >= VertexVec.size() ? NULL : VertexVec[i]);
+	return (i >= VertexVec.size() ? nullptr : VertexVec[i]);
 }
 
 Vertex* Element::GetVertexInEleById(int VertexId) const
 {
 	if (VertexVec.size() == 0)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	for (int i = 0; i < VertexVec.size(); i++)
@@ -302,7 +302,7 @@ Vertex* Element::GetVertexInEleById(int VertexId) const
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void Element::GetValidDOFId(Eigen::VectorXi& ValidTotalDOFIdArray,
@@ -345,7 +345,7 @@ DOF* Element::GetDOFInEleByTotalDOFId(int TotalDOFId) const
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void Element::ProduceValidTriple(const Eigen::MatrixXd& mat,

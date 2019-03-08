@@ -342,7 +342,7 @@ Element* QuadElement::CreateLine2Element(const Eigen::MatrixXi& LineVertexIdArra
 	for (int i = 0; i < LineVertexIdArray.rows(); i++)
 	{
 		Vertex* Ver = GetVertexInEleById(LineVertexIdArray(i, 0));
-		if (Ver != NULL)
+		if (Ver != nullptr)
 		{
 			VertextmpVec.push_back(Ver);
 		}

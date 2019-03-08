@@ -54,7 +54,7 @@ Element* BeamEB2::Clone() const
 int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 	vector<T_>& ReturnValue)
 {
-	//���㵥Ԫ�նȾ�����ߵ�Ԫ��������
+	//
 
 	if (SMT == Stiffness)
 	{
@@ -67,23 +67,20 @@ int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 		return 1;
 	}
 
-	printf("����ʶ���SparseMatrixType\n");
+	printf("Unknown SparseMatrixType\n");
 	return 0;
 }
 
 int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 {
-	//ŷ��������Ŭ����
-	//����նȾ���
-
-	//ͨ��������ɶȣ�ȷ���նȾ���Ĵ�С
+	//计算刚度矩阵
 
 	Eigen::MatrixXd matReturn;
 	Eigen::MatrixXd TmatReturnT;
 	
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("�õ�Ԫδ���õ�Ԫ�ڵ�\n");
+		printf("The Num Of DOF of Ele is zeros\n");
 		return 0;
 	}
 
@@ -96,17 +93,17 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 	if (dim == 1)
 	{
-		//һά����Ԫ
+		//一维
 
 		if (EleProp->hasProp(Iz) == 0)
 		{
-			printf("Iz������\n");
+			printf("Value of Iz is missing\n");
 			return 0;
 		}
 		else if (Material->hasProp(E) == 0 && Material->hasProp(Ex) == 0
 			&& Material->hasProp(Ey) == 0 && Material->hasProp(Ez) == 0)
 		{
-			printf("������E\n");
+			printf("Value of E is missing\n");
 			return 0;
 		}
 		else
@@ -115,25 +112,22 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 			if (Material->IsIsoMat())
 			{
-				//����ͬ�Բ���
+				//各向同性材料
 				double EVal,IzVal;
 				if (Material->GetValue(E, &EVal) == 0)
 				{
-					printf("δ�ܳ�ȡ��E\n");
+					printf("Value of E is missing\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Iz, &IzVal) == 0)
 				{
-					printf("δ�ܳ�ȡ��Iz\n");
+					printf("Value of Iz is missing\n");
 					return 0;
 				}
 
 
 				double Coeff = EVal*IzVal / (pow(ElementLength, 3));
-
-
-				//����Ԫ���������̳̣������棩P180
 
 
 				matReturn(0, 0) = 12.0;
@@ -171,22 +165,22 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 2)
 	{
-		//��ά����Ԫ
+		//2维梁
 
 		if (EleProp->hasProp(Iz) == 0)
 		{
-			printf("Iz������");
+			printf("Value of Iz is missing\n");
 			return 0;
 		}
 		else if (EleProp->hasProp(Area) == 0)
 		{
-			printf("Area������");
+			printf("Value of Area is missing\n");
 			return 0;
 		}
 		else if (Material->hasProp(E) == 0 && Material->hasProp(Ex) == 0
 			&& Material->hasProp(Ey) == 0 && Material->hasProp(Ez) == 0)
 		{
-			printf("������E");
+			printf("Value of E is missing\n");
 			return 0;
 		}
 		else
@@ -194,23 +188,23 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 			ComputeElementLength();
 			if (Material->IsIsoMat() == 1)
 			{
-				//����ͬ�Բ���
+				//各向同性材料
 				double EVal, IzVal, AreaVal;
 				if (Material->GetValue(E, &EVal) == 0)
 				{
-					printf("δ�ܳ�ȡ��E\n");
+					printf("Value of E is missing\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Iz, &IzVal) == 0)
 				{
-					printf("δ�ܳ�ȡ��Iz\n");
+					printf("Value of Iz is missing\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Area, &AreaVal) == 0)
 				{
-					printf("δ�ܳ�ȡ��Area\n");
+					printf("Value of Area is missing\n");
 					return 0;
 				}
 
@@ -251,7 +245,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 3)
 	{
-		//��ά����Ԫ
+		//三维梁
 	}
 
 	return 0;
@@ -261,7 +255,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 {
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("�õ�Ԫδ���õ�Ԫ�ڵ�\n");
+		printf("The Number of DOF of Ele is zero\n");
 		return 0;
 	}
 
@@ -282,13 +276,13 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		if (Material->hasProp(RHO) == 0)
 		{
-			printf("ȱ���ܶ�\n");
+			printf("Value of RHO is missing\n");
 			return 0;
 		}
 		
 		if (EleProp->hasProp(Area) == 0)
 		{
-			printf("ȱ�ٽ������\n");
+			printf("Value of Area is missing\n");
 			return 0;
 		}
 
@@ -298,13 +292,13 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		if (Material->GetValue(RHO, &RHOVal) == 0)
 		{
-			printf("δ�ܳ�ȡ���ܶ�ֵ\n");
+			printf("Value of RHO is missing\n");
 			return 0;
 		}
 
 		if (EleProp->GetValue(Area, &AreaVal) == 0)
 		{
-			printf("δ�ܳ�ȡ�����\n");
+			printf("Value of Area is missing\n");
 			return 0;
 		}
 
@@ -552,11 +546,11 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 	}
 	else if (dim == 2)
 	{
-		//��ά��Ԫ
+		//二维梁单元
 	}
 	else if (dim == 3)
 	{
-		//��ά��Ԫ
+		//三维梁单元
 	}
 }
 

@@ -45,6 +45,6 @@ InputCard* AbstractFileReader::GetInputCard(InputItemType itType)
         break;
     default:
         std::cout << "未知关键字\n" << std::endl;
-        return NULL;
+        return nullptr;
     }
 }

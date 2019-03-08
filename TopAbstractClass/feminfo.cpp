@@ -454,7 +454,7 @@ Vertex* FEMinfo::getVertexById(int id) const
 	map<int, Vertex*>::const_iterator it;
 	it = VertexMap.find(id);
 
-	return (it == VertexMap.end()? NULL:it->second);
+	return (it == VertexMap.end()? nullptr:it->second);
 }
 
 int FEMinfo::getElementNum() const
@@ -467,7 +467,7 @@ Element* FEMinfo::getElementById(int id)const
 	map<int, Element*>::const_iterator it;
 	it = EleMap.find(id);
 
-	return(it == EleMap.end() ? NULL : it->second);
+	return(it == EleMap.end() ? nullptr : it->second);
 }
 
 int FEMinfo::getLoadNum() const
@@ -480,7 +480,7 @@ Load* FEMinfo::getLoadById(int id) const
 	map<int, Load*>::const_iterator it;
 	it = LoadMap.find(id);
 
-	return (it == LoadMap.end() ? NULL : it->second);
+	return (it == LoadMap.end() ? nullptr : it->second);
 }
 
 int FEMinfo::getConstraintNum() const
@@ -493,7 +493,7 @@ Constraint* FEMinfo::getConstraintById(int id)const
 	map<int, Constraint*>::const_iterator it;
 	it = ConstraintMap.find(id);
 
-	return (it == ConstraintMap.end() ? NULL : it->second);
+	return (it == ConstraintMap.end() ? nullptr : it->second);
 }
 
 int FEMinfo::getdim() const
@@ -520,11 +520,11 @@ DOF* FEMinfo::getDOFByTotalDOFId(int TotalDOFId) const
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 
 	}
-	return NULL;
+	return nullptr;
 }
 
 

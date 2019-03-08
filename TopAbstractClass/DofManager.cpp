@@ -28,7 +28,7 @@ DofManager::~DofManager()
 			it != DOFMap.end(); it++)
 		{
 			delete it->second;
-			it->second = NULL;
+			it->second = nullptr;
 		}
 	}
 }
@@ -40,10 +40,10 @@ int DofManager::getDofManagerid() const
 
 DOF* DofManager::getDOF(int i) const
 {
-	//��0��ʼ
+	//
 	if (id >= DOFMap.size())
 	{
-		return NULL;
+		return nullptr;
 	}
 	else
 	{
@@ -61,7 +61,7 @@ DOF* DofManager::getDOF(int i) const
 				return it->second;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -70,12 +70,12 @@ DOF* DofManager::getDOFById(DOFVar DF) const
 	map<DOFVar, DOF*>::const_iterator it;
 	it = DOFMap.find(DF);
 
-	return (it == DOFMap.end() ? NULL : it->second);
+	return (it == DOFMap.end() ? nullptr : it->second);
 }
 
 int DofManager::addDOF(DOF* dof)
 {
-	//���ȱ���Ѱ���Ƿ��Ѿ����ڸ����ɶ�
+	//添加DOF
 	if (DOFMap.find(dof->getDOFVar()) == DOFMap.end())
 	{
 		DOFMap[dof->getDOFVar()] = dof;

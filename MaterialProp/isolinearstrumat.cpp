@@ -1,4 +1,4 @@
-#include "isolinearstrumat.h"
+ï»¿#include "isolinearstrumat.h"
 
 IsoLinearStruMat::IsoLinearStruMat(int dim) :LinearStruMat(dim)
 {
@@ -18,7 +18,7 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 		{
 			if (hasProp(E) == 0 || hasProp(Nu) == 0)
 			{
-				printf("²ÎÊý²»×ã\n");
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 				return 0;
 			}
 			matReturn.resize(3, 3);
@@ -40,7 +40,7 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 		{
 			if (hasProp(E) == 0 || hasProp(Nu) == 0)
 			{
-				printf("²ÎÊý²»×ã\n");
+				printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 				return 0;
 			}
 			matReturn.resize(3, 3);
@@ -61,7 +61,7 @@ int IsoLinearStruMat::ComputeMatrix(MatMatrix matmatrix, Eigen::MatrixXd& matRet
 		}
 		else
 		{
-			printf("Ó¦Á¦×´Ì¬\n");
+			printf("Ó¦ï¿½ï¿½×´Ì¬\n");
 			return 0;
 		}
 	}

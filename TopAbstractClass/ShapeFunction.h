@@ -1,10 +1,10 @@
-#ifndef __SHAPEFUNCTION_H__
+ï»¿#ifndef __SHAPEFUNCTION_H__
 #define __SHAPEFUNCTION_H__
 
 enum ShapeFunType
 {
-	Lagrange,             //À­¸ñÀÊÈÕÐÎº¯Êý
-	Hermite,              //HermiteÐÎº¯Êý
+	Lagrange,             //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½
+	Hermite,              //Hermiteï¿½Îºï¿½ï¿½ï¿½
 };
 
 

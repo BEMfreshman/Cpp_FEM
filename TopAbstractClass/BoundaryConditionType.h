@@ -1,10 +1,10 @@
-#ifndef __BOUNDARYCONDITIONTYPE_H__
+ï»¿#ifndef __BOUNDARYCONDITIONTYPE_H__
 #define __BOUNDARYCONDITIONTYPE_H__
 
 enum BCType
 {
-	Dirichelet,   //µÒÀû¿ËÀ×±ß½çÌõ¼þ
-	Neumann,      //Å¦Âü±ß½çÌõ¼þ
+	Dirichelet,   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×±ß½ï¿½ï¿½ï¿½ï¿½ï¿½
+	Neumann,      //Å¦ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½
 };
 
 

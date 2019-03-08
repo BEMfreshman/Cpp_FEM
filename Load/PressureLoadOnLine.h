@@ -1,9 +1,9 @@
-#ifndef __PRESSURELOADONLINE_H__
+ï»¿#ifndef __PRESSURELOADONLINE_H__
 #define __PRESSURELOADONLINE_H__
 
 #include "../TopAbstractClass/abstractload.h"
 
-//¶ÔÏßµ¥Ôª£¨¼°Æä¼Ì³ÐÀà£©Ê©¼ÓµÄÔØºÉ
+//ï¿½ï¿½ï¿½ßµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½ï¿½à£©Ê©ï¿½Óµï¿½ï¿½Øºï¿½
 
 class PressureLoadOnLine :public Load
 {
@@ -17,9 +17,9 @@ public:
 
 protected:
 
-	int ElementId;                 //Ê©¼Ó·Ö²¼Á¦
-	Eigen::VectorXi NodeId;        //µãµÄIdºÏ¼¯
-	Eigen::MatrixXd Value;         //LoadÖµµÃ´óÐ¡
+	int ElementId;                 //Ê©ï¿½Ó·Ö²ï¿½ï¿½ï¿½
+	Eigen::VectorXi NodeId;        //ï¿½ï¿½ï¿½Idï¿½Ï¼ï¿½
+	Eigen::MatrixXd Value;         //LoadÖµï¿½Ã´ï¿½Ð¡
 };
 
 

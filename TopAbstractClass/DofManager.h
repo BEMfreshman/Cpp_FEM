@@ -1,15 +1,15 @@
-#ifndef __DOFMANAGER_H__
+О╩©#ifndef __DOFMANAGER_H__
 #define __DOFMANAGER_H__
 
 
 
-//сцсз╧эюМ╣Ц╣двтси╤х
-//╣Ц╣двтси╤х╡╩╫Ж╦Зн╛╤хсп╧ьё╛╩╧╦З╣ЦкЫтз╣д╣╔т╙юЮпмсп╧ь
-//юЩхГё╨
-//2d╣дф╫цФкд╠ъпн╣╔т╙╣дц©╦Ж╣Ц╣двтси╤хйг2
-//╤Ь2dbeam╣двтси╤хн╙3ё╗xё╛yё╛thetaё╘
+//О©╫О©╫О©╫з╧О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╤О©╫
+//О©╫О©╫О©╫О©╫О©╫О©╫и╤х╡О©╫О©╫О©╫О©╫О©╫н╛О©╫О©╫О©╫п╧ьёО©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫з╣д╣О©╫т╙О©╫О©╫О©╫О©╫О©╫п╧О©╫
+//О©╫О©╫О©╫Гё╨
+//2dО©╫О©╫ф╫О©╫О©╫О©╫д╠О©╫О©╫н╣О©╫т╙О©╫О©╫ц©О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╤О©╫О©╫О©╫2
+//О©╫О©╫2dbeamО©╫О©╫О©╫О©╫О©╫и╤О©╫н╙3О©╫О©╫xО©╫О©╫yО©╫О©╫thetaО©╫О©╫
 
-//кЫртвтси╤х╣диХ╤╗ж╩тз╣╔т╙иХжцмЙЁи╨С╫Ьпп
+//О©╫О©╫О©╫О©╫О©╫О©╫О©╫и╤х╣О©╫О©╫Х╤╗ж╩О©╫з╣О©╫т╙О©╫О©╫О©╫О©╫О©╫О©╫и╨О©╫О©╫О©╫О©╫
 #include <map>
 #include <vector>
 #include "DOFVar.h"
@@ -27,12 +27,12 @@ public:
 	virtual ~DofManager();
 
 	int getDofManagerid() const;
-	DOF* getDOF(int i) const; //╥╣╩ьеетзDOFVecжп╣д╣зi╦Жт╙кь
+	DOF* getDOF(int i) const; //О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫DOFVecО©╫п╣д╣О©╫iО©╫О©╫т╙О©╫О©╫
 	DOF* getDOFById(DOFVar DF) const;
-	int getDOFSize() const;        //╥╣╩ьDOF╣д╦ЖйЩ
+	int getDOFSize() const;        //О©╫О©╫О©╫О©╫DOFО©╫д╦О©╫О©╫О©╫
 
-	int addDOF(DOF* dof);         //тЖ╪ср╩╦ЖDOFё╗лМ╪с╣╫vec╣дд╘н╡ё╘
-	int deleteDOF(DOF* dof);    //и╬ЁЩр╩╦ЖDOF
+	int addDOF(DOF* dof);         //О©╫О©╫О©╫О©╫р╩О©╫О©╫DOFО©╫О©╫О©╫О©╫с╣О©╫vecО©╫О©╫д╘н╡О©╫О©╫
+	int deleteDOF(DOF* dof);    //и╬О©╫О©╫р╩О©╫О©╫DOF
 
 	int SetVaildDOFId(int& ValidDOFNum,int& PerscribedDOFNum);
 

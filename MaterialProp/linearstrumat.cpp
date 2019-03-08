@@ -1,4 +1,4 @@
-#include "linearstrumat.h"
+﻿#include "linearstrumat.h"
 
 LinearStruMat::LinearStruMat(int dim) :StructureMat(dim)
 {

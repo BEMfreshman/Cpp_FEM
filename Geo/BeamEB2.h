@@ -1,12 +1,12 @@
-#ifndef __BEAMEB2_H__
+ï»¿#ifndef __BEAMEB2_H__
 #define __BEAMEB2_H__
 
 //#include "../TopAbstractClass/abstractelement.h"
 
 /*
-Ò»Î¬Áºµ¥Ôª£¬ËùÔÚ×ø±êÏµÍ³Îªxoy×ø±êÏµÍ³
-zÖáÍ¨¹ıÆäÖØĞÄ£¬Ò»Î¬µ¥Ôª¸Õ¶È¾ØÕó¼ÆËã¹«Ê½ÖĞ
-µÄ¹ßĞÔ¾ØÎªIz
+Ò»Î¬ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³Îªxoyï¿½ï¿½ï¿½ï¿½ÏµÍ³
+zï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½Ò»Î¬ï¿½ï¿½Ôªï¿½Õ¶È¾ï¿½ï¿½ï¿½ï¿½ï¿½ã¹«Ê½ï¿½ï¿½
+ï¿½Ä¹ï¿½ï¿½Ô¾ï¿½ÎªIz
 
 
 */
@@ -18,7 +18,7 @@ zÖáÍ¨¹ıÆäÖØĞÄ£¬Ò»Î¬µ¥Ôª¸Õ¶È¾ØÕó¼ÆËã¹«Ê½ÖĞ
 class BeamEB2:public Line2
 {
 public:
-	BeamEB2();   //Ä¬ÈÏ¹¹Ôìº¯Êı
+	BeamEB2();   //Ä¬ï¿½Ï¹ï¿½ï¿½ìº¯ï¿½ï¿½
 	BeamEB2(int ElementId, int MaterialId,
 		int EPropId, ElementType eletype,
 		int dim,

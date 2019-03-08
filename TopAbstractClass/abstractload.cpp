@@ -1,4 +1,4 @@
-#include "abstractload.h"
+﻿#include "abstractload.h"
 
 Load::Load(int id_) 
 	:id(id_), CoordId(0)

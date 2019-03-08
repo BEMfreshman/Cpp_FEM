@@ -1,4 +1,4 @@
-#include "BeamEB2.h"
+ï»¿#include "BeamEB2.h"
 #include "../Geo/vertex.h"
 #include "../TopAbstractClass/Dof.h"
 #include "../TopAbstractClass/abastractelementprop.h"
@@ -54,7 +54,7 @@ Element* BeamEB2::Clone() const
 int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 	vector<T_>& ReturnValue)
 {
-	//¼ÆËãµ¥Ôª¸Õ¶È¾ØÕó»òÕßµ¥ÔªÖÊÁ¿¾ØÕó
+	//ï¿½ï¿½ï¿½ãµ¥Ôªï¿½Õ¶È¾ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	if (SMT == Stiffness)
 	{
@@ -67,23 +67,23 @@ int BeamEB2::GetSpecificMatrix(SparseMatrixType SMT,
 		return 1;
 	}
 
-	printf("²»¿ÉÊ¶±ðµÄSparseMatrixType\n");
+	printf("ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½SparseMatrixType\n");
 	return 0;
 }
 
 int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 {
-	//Å·À­¡ª¡ª²®Å¬ÀûÁº
-	//¼ÆËã¸Õ¶È¾ØÕó
+	//Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½Õ¶È¾ï¿½ï¿½ï¿½
 
-	//Í¨¹ýµãµÄ×ÔÓÉ¶È£¬È·¶¨¸Õ¶È¾ØÕóµÄ´óÐ¡
+	//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶È£ï¿½È·ï¿½ï¿½ï¿½Õ¶È¾ï¿½ï¿½ï¿½Ä´ï¿½Ð¡
 
 	Eigen::MatrixXd matReturn;
 	Eigen::MatrixXd TmatReturnT;
 	
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("¸Ãµ¥ÔªÎ´ÉèÖÃµ¥Ôª½Úµã\n");
+		printf("ï¿½Ãµï¿½ÔªÎ´ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½Úµï¿½\n");
 		return 0;
 	}
 
@@ -96,17 +96,17 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 	if (dim == 1)
 	{
-		//Ò»Î¬Áºµ¥Ôª
+		//Ò»Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 
 		if (EleProp->hasProp(Iz) == 0)
 		{
-			printf("Iz²»´æÔÚ\n");
+			printf("Izï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 		else if (Material->hasProp(E) == 0 && Material->hasProp(Ex) == 0
 			&& Material->hasProp(Ey) == 0 && Material->hasProp(Ez) == 0)
 		{
-			printf("²»´æÔÚE\n");
+			printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½E\n");
 			return 0;
 		}
 		else
@@ -115,17 +115,17 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 
 			if (Material->IsIsoMat())
 			{
-				//¸÷ÏòÍ¬ÐÔ²ÄÁÏ
+				//ï¿½ï¿½ï¿½ï¿½Í¬ï¿½Ô²ï¿½ï¿½ï¿½
 				double EVal,IzVal;
 				if (Material->GetValue(E, &EVal) == 0)
 				{
-					printf("Î´ÄÜ³éÈ¡µ½E\n");
+					printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½E\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Iz, &IzVal) == 0)
 				{
-					printf("Î´ÄÜ³éÈ¡µ½Iz\n");
+					printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½Iz\n");
 					return 0;
 				}
 
@@ -133,7 +133,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 				double Coeff = EVal*IzVal / (pow(ElementLength, 3));
 
 
-				//ÓÐÏÞÔª·½·¨»ù´¡½Ì³Ì£¨µÚÈý°æ£©P180
+				//ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì³Ì£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£©P180
 
 
 				matReturn(0, 0) = 12.0;
@@ -171,22 +171,22 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 2)
 	{
-		//¶þÎ¬Áºµ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 
 		if (EleProp->hasProp(Iz) == 0)
 		{
-			printf("Iz²»´æÔÚ");
+			printf("Izï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			return 0;
 		}
 		else if (EleProp->hasProp(Area) == 0)
 		{
-			printf("Area²»´æÔÚ");
+			printf("Areaï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			return 0;
 		}
 		else if (Material->hasProp(E) == 0 && Material->hasProp(Ex) == 0
 			&& Material->hasProp(Ey) == 0 && Material->hasProp(Ez) == 0)
 		{
-			printf("²»´æÔÚE");
+			printf("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½E");
 			return 0;
 		}
 		else
@@ -194,23 +194,23 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 			ComputeElementLength();
 			if (Material->IsIsoMat() == 1)
 			{
-				//¸÷ÏòÍ¬ÐÔ²ÄÁÏ
+				//ï¿½ï¿½ï¿½ï¿½Í¬ï¿½Ô²ï¿½ï¿½ï¿½
 				double EVal, IzVal, AreaVal;
 				if (Material->GetValue(E, &EVal) == 0)
 				{
-					printf("Î´ÄÜ³éÈ¡µ½E\n");
+					printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½E\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Iz, &IzVal) == 0)
 				{
-					printf("Î´ÄÜ³éÈ¡µ½Iz\n");
+					printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½Iz\n");
 					return 0;
 				}
 
 				if (EleProp->GetValue(Area, &AreaVal) == 0)
 				{
-					printf("Î´ÄÜ³éÈ¡µ½Area\n");
+					printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½Area\n");
 					return 0;
 				}
 
@@ -251,7 +251,7 @@ int BeamEB2::ComputeStiffnessMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 3)
 	{
-		//ÈýÎ¬Áºµ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 	}
 
 	return 0;
@@ -261,7 +261,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 {
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("¸Ãµ¥ÔªÎ´ÉèÖÃµ¥Ôª½Úµã\n");
+		printf("ï¿½Ãµï¿½ÔªÎ´ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½Úµï¿½\n");
 		return 0;
 	}
 
@@ -278,17 +278,17 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 	if (dim == 1)
 	{
-		//Ò»Î¬Áºµ¥Ôª
+		//Ò»Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 
 		if (Material->hasProp(RHO) == 0)
 		{
-			printf("È±ÉÙÃÜ¶È\n");
+			printf("È±ï¿½ï¿½ï¿½Ü¶ï¿½\n");
 			return 0;
 		}
 		
 		if (EleProp->hasProp(Area) == 0)
 		{
-			printf("È±ÉÙ½ØÃæÃæ»ý\n");
+			printf("È±ï¿½Ù½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 
@@ -298,13 +298,13 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		if (Material->GetValue(RHO, &RHOVal) == 0)
 		{
-			printf("Î´ÄÜ³éÈ¡µ½ÃÜ¶ÈÖµ\n");
+			printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½ï¿½Ü¶ï¿½Öµ\n");
 			return 0;
 		}
 
 		if (EleProp->GetValue(Area, &AreaVal) == 0)
 		{
-			printf("Î´ÄÜ³éÈ¡µ½Ãæ»ý\n");
+			printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 
@@ -341,17 +341,17 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 2)
 	{
-		//¶þÎ¬Áºµ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 
 		if (Material->hasProp(RHO) == 0)
 		{
-			printf("È±ÉÙÃÜ¶È\n");
+			printf("È±ï¿½ï¿½ï¿½Ü¶ï¿½\n");
 			return 0;
 		}
 
 		if (EleProp->hasProp(Area) == 0)
 		{
-			printf("È±ÉÙ½ØÃæÃæ»ý\n");
+			printf("È±ï¿½Ù½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 
@@ -361,13 +361,13 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 
 		if (Material->GetValue(RHO, &RHOVal) == 0)
 		{
-			printf("Î´ÄÜ³éÈ¡µ½ÃÜ¶ÈÖµ\n");
+			printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½ï¿½Ü¶ï¿½Öµ\n");
 			return 0;
 		}
 
 		if (EleProp->GetValue(Area, &AreaVal) == 0)
 		{
-			printf("Î´ÄÜ³éÈ¡µ½Ãæ»ý\n");
+			printf("Î´ï¿½Ü³ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 
@@ -410,7 +410,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 3)
 	{
-		//ÈýÎ¬Áºµ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ôª
 	}
 
 	return 0;
@@ -428,15 +428,15 @@ ElementType BeamEB2::GetElementType()
 
 int BeamEB2::ComputeShapeFunction()
 {
-	//HermiteÐÎº¯Êý
+	//Hermiteï¿½Îºï¿½ï¿½ï¿½
 	ComputeElementLength();
 
 	Line2::ComputeShapeFunction();
-	//Ö÷ÒªÎªÁËÐÎº¯Êý
+	//ï¿½ï¿½ÒªÎªï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½
 	dNdxi.setZero();
 
 	Eigen::MatrixXd GaussPoint(LocalGaussPoint.rows(), LocalGaussPoint.cols());
-	//´Ë´¦µÄGaussPointÊÇÔÚ[0£¬ElementLength]ÕâÌõÖ±ÏßÉÏµÄ¸ßË¹µã·Ö²¼
+	//ï¿½Ë´ï¿½ï¿½ï¿½GaussPointï¿½ï¿½ï¿½ï¿½[0ï¿½ï¿½ElementLength]ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ÏµÄ¸ï¿½Ë¹ï¿½ï¿½Ö²ï¿½
 
 	Eigen::MatrixXd ElementCoord(2, 1);
 	ElementCoord << 0, ElementLength;
@@ -468,13 +468,13 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 {
 	if (LT != LoadOnLine)
 	{
-		printf("ÔØºÉÊ©¼ÓÓÐÎó\n");
+		printf("ï¿½Øºï¿½Ê©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 		return 0;
 	}
 
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("¸Ãµ¥ÔªÎ´ÉèÖÃµ¥Ôª½Úµã\n");
+		printf("ï¿½Ãµï¿½ÔªÎ´ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½Úµï¿½\n");
 		return 0;
 	}
 	
@@ -494,7 +494,7 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 
 	if (dim == 1)
 	{
-		//Ò»Î¬µ¥Ôª
+		//Ò»Î¬ï¿½ï¿½Ôª
 		double FP_y = 0, SP_y = 0;
 
 		map<int, Eigen::MatrixXd>::const_iterator it;
@@ -522,7 +522,7 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 		
 		if (abs(FP_y - SP_y) < EPS)
 		{
-			//¾ù²¼ºÉÔØ
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 			Eigen::MatrixXd Jac;
 			double EachGaussLoad = FP_y;
@@ -541,7 +541,7 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 		}
 		else
 		{
-			//ÏßÐÔºÉÔØ
+			//ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½
 		}
 
 		ComputeTMatrix(dim);
@@ -552,11 +552,11 @@ int BeamEB2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 	}
 	else if (dim == 2)
 	{
-		//¶þÎ¬µ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½Ôª
 	}
 	else if (dim == 3)
 	{
-		//ÈýÎ¬µ¥Ôª
+		//ï¿½ï¿½Î¬ï¿½ï¿½Ôª
 	}
 }
 

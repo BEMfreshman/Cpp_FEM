@@ -1,4 +1,4 @@
-#include "beamprop.h"
+ï»¿#include "beamprop.h"
 
 BeamProp::BeamProp(int id) :EProp(id)
 {
@@ -35,7 +35,7 @@ int BeamProp::SetValue(const std::map<std::string, double>& EPropNameAndValue)
 
 		if (__SetValue(EPV, it->second) == 0)
 		{
-			printf("´íÎó£ºµ¥ÔªÊôĞÔÉèÖÃ´íÎó\n");
+			printf("Failed\n");
 			return 0;
 		}
 	}

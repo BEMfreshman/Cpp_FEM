@@ -1,4 +1,4 @@
-#ifndef LINEARSTRUMAT_H
+﻿#ifndef LINEARSTRUMAT_H
 #define LINEARSTRUMAT_H
 
 #include "structuremat.h"

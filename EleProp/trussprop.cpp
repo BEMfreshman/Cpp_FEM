@@ -1,4 +1,4 @@
-#include "trussprop.h"
+ï»¿#include "trussprop.h"
 
 TrussProp::TrussProp(int id) :EProp(id)
 {
@@ -22,14 +22,14 @@ int TrussProp::SetValue(const std::map<std::string, double>& EPropNameAndValue)
 		}
 		else
 		{
-			printf("·Ç·¨ÊôĞÔ\n");
+			printf("ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 
 
 		if (__SetValue(EPV, it->second) == 0)
 		{
-			printf("´íÎó£ºµ¥ÔªÊôĞÔÉèÖÃ´íÎó\n");
+			printf("ï¿½ï¿½ï¿½ó£ºµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½\n");
 			return 0;
 		}
 	}

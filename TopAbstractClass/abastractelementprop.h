@@ -1,4 +1,4 @@
-#ifndef ABASTRACTELEMENTPROP_H
+ï»¿#ifndef ABASTRACTELEMENTPROP_H
 #define ABASTRACTELEMENTPROP_H
 
 #include <map>
@@ -22,7 +22,7 @@ public:
 	
 
 protected:
-	int id;      //µ¥ÔªÊôÐÔID
+	int id;      //ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ID
 
 	map<EPropVar, double> EPropd;
 

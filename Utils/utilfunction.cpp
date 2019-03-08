@@ -1,4 +1,4 @@
-#include "utilfunction.h"
+﻿#include "utilfunction.h"
 
 void trim(std::string& StrInput)
 {

@@ -1,4 +1,4 @@
-#include "Line2.h"
+ï»¿#include "Line2.h"
 #include "vertex.h"
 #include <iostream>
 
@@ -65,15 +65,15 @@ int Line2::SetDOF(int dim)
 int Line2::ComputeShapeFunction()
 {
 	int VertexNum = VertexIdArray.rows();
-	//µ¥ÔªÉÏ¶¥µãµÄ¸öÊý
+	//ï¿½ï¿½Ôªï¿½Ï¶ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 
 	int GaussPointNum = LocalGaussPoint.rows();
-	//¸ßË¹µãµÄ¸öÊý
+	//ï¿½ï¿½Ë¹ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
 
-	//À­¸ñÀÊÈÕÐÎ×´º¯Êý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´ï¿½ï¿½ï¿½ï¿½
 
 	N.resize(GaussPointNum, VertexNum);
-	dNdxi.resize(GaussPointNum * 1/*Ïßµ¥ÔªÖ»ÓÐ*/, VertexNum);
+	dNdxi.resize(GaussPointNum * 1/*ï¿½ßµï¿½ÔªÖ»ï¿½ï¿½*/, VertexNum);
 
 
 	for (int i = 0; i < GaussPointNum; i++)
@@ -113,7 +113,7 @@ void Line2::GenerateLoacalGaussPointAndWeight(int Order)
 		std::vector<double>().swap(GaussWeight);
 	}
 
-	OneDimensionGPAndWeight(Order);      //Éú³ÉÒ»Î¬µÄ¸ßË¹µãºÍÈ¨ÖØÖµ
+	OneDimensionGPAndWeight(Order);      //ï¿½ï¿½ï¿½ï¿½Ò»Î¬ï¿½Ä¸ï¿½Ë¹ï¿½ï¿½ï¿½È¨ï¿½ï¿½Öµ
 
 	LocalGaussPoint.resize(Order, 1);
 	double EachGaussWeight;
@@ -133,17 +133,17 @@ int Line2::ComputeStiffnessMatrix(Eigen::MatrixXd& matReturn)
 
 int Line2::ComputeElementLength()
 {
-	//¼ÆËãµ¥ÔªµÄ³¤¶È
+	//ï¿½ï¿½ï¿½ãµ¥Ôªï¿½Ä³ï¿½ï¿½ï¿½
 	if (VertexVec.size() == 0)
 	{
-		printf("VertexVecÎª¿Õ\n");
+		printf("VertexVecÎªï¿½ï¿½\n");
 		return 0;
 	}
 	else
 	{
 		if (VertexVec.size() > 2)
 		{
-			printf("2½ÚµãÁºµ¥Ôª´æ´¢µÄµãµÄ¸öÊý´óÓÚ2¸ö");
+			printf("2ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½æ´¢ï¿½Äµï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½");
 		}
 
 		Vertex* FirstOne = VertexVec[0];
@@ -172,7 +172,7 @@ int Line2::ComputeElementLength()
 
 int Line2::ComputeTMatrix(int dim)
 {
-	//¼ÆËãÐý×ª¾ØÕó
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
 
 	Eigen::Vector3d XBar(1, 0, 0);
 
@@ -187,7 +187,7 @@ int Line2::ComputeTMatrix(int dim)
 
 	if (dim == 1)
 	{
-		//1Î¬µÄÇé¿ö
+		//1Î¬ï¿½ï¿½ï¿½ï¿½ï¿½
 		double cosb = X.dot(XBar) / (X.norm()*XBar.norm());
 		T.resize(4, 4);
 		T.setZero();
@@ -206,8 +206,8 @@ int Line2::ComputeTMatrix(int dim)
 		double angle = acos(cosb);
 
 		double crossXBarX = XBar(0)*X(1) - XBar(1)*X(0);
-		// >0 ÔòÓÉXBarÄæÊ±ÕëÐý×ªÖÁXµÄ½Ç¶ÈÊÇÐ¡ÓÚ3.1415926µÄ
-		// <0 Ôò´óÓÚ3.1415926
+		// >0 ï¿½ï¿½ï¿½ï¿½XBarï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Xï¿½Ä½Ç¶ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½3.1415926ï¿½ï¿½
+		// <0 ï¿½ï¿½ï¿½ï¿½ï¿½3.1415926
 
 		if (crossXBarX <0)
 		{
@@ -251,13 +251,13 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 {
 	if (LT != LoadOnLine)
 	{
-		printf("ÔØºÉÊ©¼ÓÓÐÎó\n");
+		printf("ï¿½Øºï¿½Ê©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n");
 		return 0;
 	}
 
 	if (GetDOFNumofEle() == 0)
 	{
-		printf("¸Ãµ¥ÔªÎ´ÉèÖÃµ¥Ôª½Úµã\n");
+		printf("ï¿½Ãµï¿½ÔªÎ´ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½Úµï¿½\n");
 		return 0;
 	}
 
@@ -279,7 +279,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 	Eigen::MatrixXd LoadMatrix(Pressure.size(), it->second.cols());
 
 	
-	//Ò»Î¬µ¥Ôª
+	//Ò»Î¬ï¿½ï¿½Ôª
 	int Counter = 0;
 	for (it = Pressure.begin(); it != Pressure.end(); it++)
 	{
@@ -295,7 +295,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 
 	if (dim == 1)
 	{
-		//Ò»¸ö×ÔÓÉ¶È,x
+		//Ò»ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½,x
 		Eigen::MatrixXd EachGaussLoadMatrix_(1, 1);
 		for (int i = 0; i < GaussPointNum; i++)
 		{
@@ -315,7 +315,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 	}
 	else if (dim == 2)
 	{
-		//¶þ¸ö×ÔÓÉ¶È,x,y
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½,x,y
 		Eigen::MatrixXd EachGaussLoadMatrix_(1, 2);
 		for (int i = 0; i < GaussPointNum; i++)
 		{
@@ -352,7 +352,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 	}
 	else if (dim == 3)
 	{
-		//Èý¸ö×ÔÓÉ¶È,x,y,z
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½,x,y,z
 		Eigen::MatrixXd EachGaussLoadMatrix_(1, 3);
 		for (int i = 0; i < GaussPointNum; i++)
 		{
@@ -382,7 +382,7 @@ int Line2::ComputeForceMatrixOnEle(const map<int, Eigen::MatrixXd>& Pressure,
 
 void Line2::ComputeJacMatrix(int GaussPointId, Eigen::MatrixXd& Jac)
 {
-	//ÔÚµÈ²Î×ø±êÉÏÎªÒ»Î¬µ¥Ôª,½öÓÐX×ø±ê
+	//ï¿½ÚµÈ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªÒ»Î¬ï¿½ï¿½Ôª,ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
 	Eigen::MatrixXd Coord(2, 1);
 	Eigen::MatrixXd EachPointCoord(1, 1);
 

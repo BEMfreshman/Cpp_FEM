@@ -1,4 +1,4 @@
-#include "structuremat.h"
+﻿#include "structuremat.h"
 
 StructureMat::StructureMat(int dim) :Mat(dim)
 {

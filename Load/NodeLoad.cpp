@@ -1,4 +1,4 @@
-#include "NodeLoad.h"
+ï»¿#include "NodeLoad.h"
 #include "../TopAbstractClass/feminfo.h"
 #include "../Geo/vertex.h"
 
@@ -17,14 +17,14 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 {
 	if (NodeId == 0 || Value.size() == 0)
 	{
-		//ÎÞÔØºÉ
+		//ï¿½ï¿½ï¿½Øºï¿½
 		return 0;
 	}
 	else
 	{
 		Vertex* Ver = FEMInformation->getVertexById(NodeId);
-		vector<int> tmpDOFId;         //¼ÇÂ¼È«¾ÖDOFId
-		vector<int> tmpDOFVarId;     //¼ÇÂ¼¾Ö²¿DOFId
+		vector<int> tmpDOFId;         //ï¿½ï¿½Â¼È«ï¿½ï¿½DOFId
+		vector<int> tmpDOFVarId;     //ï¿½ï¿½Â¼ï¿½Ö²ï¿½DOFId
 
 		Ver->getGlobalValidDOFId(tmpDOFId);
 		Ver->getLocalDOFVarId(tmpDOFVarId);
@@ -32,7 +32,7 @@ int NodeLoad::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 		for (size_t i = 0; i < tmpDOFId.size(); i++)
 		{
 			tripleList.push_back(T_(tmpDOFId[i], 0, Value(0, tmpDOFVarId[i] - 1)));
-			//×ÔÓÉ¶È´Ó1¿ªÊ¼¼ÆËã£¬ËùÒÔÒª-1
+			//ï¿½ï¿½ï¿½É¶È´ï¿½1ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½ï¿½Òª-1
 		}
 
 		return 1;

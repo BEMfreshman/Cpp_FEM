@@ -1,4 +1,4 @@
-#ifndef ORTHLINEARSTRUMAT_H
+﻿#ifndef ORTHLINEARSTRUMAT_H
 #define ORTHLINEARSTRUMAT_H
 
 #include "linearstrumat.h"

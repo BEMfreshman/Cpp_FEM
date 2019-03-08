@@ -1,4 +1,4 @@
-#ifndef ISOLINEARSTRUMAT_H
+﻿#ifndef ISOLINEARSTRUMAT_H
 #define ISOLINEARSTRUMAT_H
 
 #include "linearstrumat.h"

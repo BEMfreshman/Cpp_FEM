@@ -1,4 +1,4 @@
-#include "DiricheletBC.h"
+ï»¿#include "DiricheletBC.h"
 #include "../TopAbstractClass/feminfo.h"
 #include "../Geo/vertex.h"
 #include "../TopAbstractClass/DofManager.h"
@@ -24,19 +24,19 @@ BCType DirichletBC::getBCType() const
 
 int DirichletBC::ModifyForceMatrix(FEMinfo* FEMInfomation, std::vector<T_>& tripleList)
 {
-	//²ÉÓÃµÄÊÇÉ¾³ýÐÐÁÐ·¨
+	//ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð·ï¿½
 	Vertex* Ver = FEMInfomation->getVertexById(NodeId);
 	if (Ver == NULL)
 	{
-		printf("±ß½çÌõ¼þ´¦ÀíÊ±³éÈ¡VertexÓÐÎó\n");
+		printf("ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½È¡Vertexï¿½ï¿½ï¿½ï¿½\n");
 		return 0;
 	}
 
-	//»ñµÃ±»Ô¼ÊøµÄDOF
+	//ï¿½ï¿½Ã±ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½DOF
 	DOF* dof = Ver->getDOFById(DF);
 	for (int i = 0; i < dof->getResidualKSize(); i++)
 	{
-		double NewValueInT_ = -((dof->getResidualK(i)).value() * Value); //Êý×ÖµÄ¸ºÊý
+		double NewValueInT_ = -((dof->getResidualK(i)).value() * Value); //ï¿½ï¿½ï¿½ÖµÄ¸ï¿½ï¿½ï¿½
 		int col = (dof->getResidualK(i)).col();
 		int row = (dof->getResidualK(i)).row();
 

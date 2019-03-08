@@ -1,11 +1,11 @@
-#ifndef __DIRICHLETBC_H__
+ï»¿#ifndef __DIRICHLETBC_H__
 #define __DIRICHLETBC_H__
 
 #include "../TopAbstractClass/abstractconstraint.h"
 
-//¸¸Àà£ºConstraint£¨³éÏóÀà£©
-//µÚÒ»Àà±ß½çÌõ¼ş
-//Ò²¾ÍÊÇÖ¸¶¨±ß½çÉÏµãµÄÎ»ÒÆÖµ
+//ï¿½ï¿½ï¿½à£ºConstraintï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£©
+//ï¿½ï¿½Ò»ï¿½ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½
+//Ò²ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ïµï¿½ï¿½Î»ï¿½ï¿½Öµ
 
 class DirichletBC:public Constraint
 {

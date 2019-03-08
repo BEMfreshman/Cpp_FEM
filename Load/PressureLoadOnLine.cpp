@@ -1,4 +1,4 @@
-#include "PressureLoadOnLine.h"
+ï»¿#include "PressureLoadOnLine.h"
 #include "../TopAbstractClass/elementtype.h"
 #include "../TopAbstractClass/feminfo.h"
 
@@ -19,7 +19,7 @@ PressureLoadOnLine::~PressureLoadOnLine()
 
 int PressureLoadOnLine::ComputeForce(FEMinfo* FEMInformation, vector<T_>& tripleList)
 {
-	//Ê×ÏÈÅÐ¶ÏÕâ¸öElementId¶ÔÓ¦µÄµ¥ÔªÀàÐÍ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ElementIdï¿½ï¿½Ó¦ï¿½Äµï¿½Ôªï¿½ï¿½ï¿½ï¿½
 	Element* El = FEMInformation->getElementById(ElementId);
 	ElementType ET = El->GetElementType();
 

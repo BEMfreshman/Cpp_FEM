@@ -1,7 +1,7 @@
-#ifndef __NODELOAD_H__
+ï»¿#ifndef __NODELOAD_H__
 #define __NODELOAD_H__
 
-//¼¯ÖÐÔØºÉ£¬×÷ÓÃÓÚµãÉÏ
+//ï¿½ï¿½ï¿½ï¿½ï¿½ØºÉ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½
 
 #include "../TopAbstractClass/abstractload.h"
 
@@ -16,8 +16,8 @@ public:
 	LoadType getLoadType() const;
 
 private:
-	int NodeId;        //µãµÄIdºÏ¼¯
-	Eigen::MatrixXd Value;         //LoadÖµµÃ´óÐ¡
+	int NodeId;        //ï¿½ï¿½ï¿½Idï¿½Ï¼ï¿½
+	Eigen::MatrixXd Value;         //LoadÖµï¿½Ã´ï¿½Ð¡
 
 };
 

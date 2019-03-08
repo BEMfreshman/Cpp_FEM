@@ -1,4 +1,4 @@
-#include "beam3.h"
+﻿#include "beam3.h"
 
 BEAM3::BEAM3()
 {

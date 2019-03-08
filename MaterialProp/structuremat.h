@@ -1,4 +1,4 @@
-#ifndef STRUCTUREMAT_H
+﻿#ifndef STRUCTUREMAT_H
 #define STRUCTUREMAT_H
 
 #include "../TopAbstractClass/abstractmaterial.h"

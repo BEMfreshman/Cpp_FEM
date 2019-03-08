@@ -1,11 +1,11 @@
-#ifndef __DOFVAR_H__
+ï»¿#ifndef __DOFVAR_H__
 #define __DOFVAR_H__
 
 enum DOFVar
 {
-	u = 1,        //x·½Ïò
-	v,        //y·½Ïò
-	w,        //z·½Ïò
+	u = 1,        //xï¿½ï¿½ï¿½ï¿½
+	v,        //yï¿½ï¿½ï¿½ï¿½
+	w,        //zï¿½ï¿½ï¿½ï¿½
 
 	tx,       //
 	ty,

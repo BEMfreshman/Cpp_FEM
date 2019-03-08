@@ -1,4 +1,4 @@
-#include "abastractelementprop.h"
+﻿#include "abastractelementprop.h"
 
 EProp::EProp(int id)
 {

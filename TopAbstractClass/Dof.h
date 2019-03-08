@@ -1,4 +1,4 @@
-#ifndef __DOF_H__
+ï»¿#ifndef __DOF_H__
 #define __DOF_H__
 
 #include "DOFVar.h"
@@ -24,7 +24,7 @@ public:
 
 	void SetVaildTotalDOFId(int VaildTotalDOFId);
 
-	void SetAns(double ans);        //½â³öÀ´µÄÖµ
+	void SetAns(double ans);        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 	double getAns();
 
 
@@ -37,7 +37,7 @@ private:
 
 	DOFVar DF;
 
-	vector<T_> residualK; //Èç¹û´ËDOFÎÞÐ§£¬ÔòresidualK´æÔÚ
+	vector<T_> residualK; //ï¿½ï¿½ï¿½ï¿½ï¿½DOFï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½residualKï¿½ï¿½ï¿½ï¿½
 
 	double ans;
 

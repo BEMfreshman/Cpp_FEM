@@ -1,4 +1,4 @@
-#ifndef __LINE2_H__
+ï»¿#ifndef __LINE2_H__
 #define __LINE2_H__
 
 #include "../TopAbstractClass/abstractelement.h"
@@ -43,7 +43,7 @@ protected:
 
 protected:
 	double ElementLength;
-	Eigen::MatrixXd T;             //´ú±í¾Ö²¿×ø±êÖáºÍÈ«¾Ö×ø±êÖáµÄÐý×ª¾ØÕó
+	Eigen::MatrixXd T;             //ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
 
 	// displacement_Local = T * displacement_Global
 };

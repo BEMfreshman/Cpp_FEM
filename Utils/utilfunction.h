@@ -1,4 +1,4 @@
-#ifndef UTILFUNCTION_H
+﻿#ifndef UTILFUNCTION_H
 #define UTILFUNCTION_H
 
 #include <string>

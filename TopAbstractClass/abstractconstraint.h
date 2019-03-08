@@ -1,4 +1,4 @@
-#ifndef __ABSTRACTCONSTRAINT_H__
+ï»¿#ifndef __ABSTRACTCONSTRAINT_H__
 #define __ABSTRACTCONSTRAINT_H__
 
 #include "BoundaryConditionType.h"
@@ -17,7 +17,7 @@ public:
 
 	virtual BCType getBCType() const = 0;
 	virtual int ModifyForceMatrix(FEMinfo* FEMInfomation, std::vector<T_>& tripleList) = 0;
-	//ÐÞÊÎÔØºÉÕóÁÐ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Øºï¿½ï¿½ï¿½ï¿½ï¿½
 
 	int getNodeId();
 	DOFVar getDOFVar();

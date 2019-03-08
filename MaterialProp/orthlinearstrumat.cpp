@@ -1,4 +1,4 @@
-#include "orthlinearstrumat.h"
+﻿#include "orthlinearstrumat.h"
 
 OrthLinearStruMat::OrthLinearStruMat(int dim) :LinearStruMat(dim)
 {

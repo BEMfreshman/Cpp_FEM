@@ -1,4 +1,4 @@
-#include "Dof.h"
+﻿#include "Dof.h"
 
 DOF::DOF(int LocalDOFId_, DOFVar DF_) 
 	:LocalDOFId(LocalDOFId_), DF(DF_)

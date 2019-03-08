@@ -1,4 +1,4 @@
-#include "DofManager.h"
+ï»¿#include "DofManager.h"
 #include "Dof.h"
 
 DofManager::DofManager()
@@ -40,7 +40,7 @@ int DofManager::getDofManagerid() const
 
 DOF* DofManager::getDOF(int i) const
 {
-	//´Ó0¿ªÊ¼
+	//ï¿½ï¿½0ï¿½ï¿½Ê¼
 	if (id >= DOFMap.size())
 	{
 		return NULL;
@@ -75,7 +75,7 @@ DOF* DofManager::getDOFById(DOFVar DF) const
 
 int DofManager::addDOF(DOF* dof)
 {
-	//Ê×ÏÈ±éÀúÑ°ÕÒÊÇ·ñÒÑ¾­´æÔÚ¸Ã×ÔÓÉ¶È
+	//ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½É¶ï¿½
 	if (DOFMap.find(dof->getDOFVar()) == DOFMap.end())
 	{
 		DOFMap[dof->getDOFVar()] = dof;
@@ -106,7 +106,7 @@ int DofManager::deleteDOF(DOF* dof)
 
 	if (it == DOFMap.end())
 	{
-		//²»´æÔÚ´Ëµã£¬·µ»Ø0
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ú´Ëµã£¬ï¿½ï¿½ï¿½ï¿½0
 		return 0;
 	}
 	else
@@ -195,7 +195,10 @@ int DofManager::getGlobalValidDOFId(vector<int>& GlobalValidDOFId)
 		it++)
 	{
 		DOF* dof = it->second;
-		dof->getIsVaild() ? GlobalValidDOFId.push_back(dof->getVaildTotalDOFId()) : 1;
+		if(dof->getIsVaild())
+		{
+			GlobalValidDOFId.push_back(dof->getVaildTotalDOFId());
+		}
 	}
 	return 1;
 }
@@ -207,7 +210,10 @@ int DofManager::getLocalDOFVarId(vector<int>& LocalValidDOFId)
 		it++)
 	{
 		DOF* dof = it->second;
-		dof->getIsVaild() ? LocalValidDOFId.push_back((int)dof->getDOFVar()) : 1;
+		if(dof->getIsVaild())
+		{
+			LocalValidDOFId.push_back((int)dof->getDOFVar());
+		}
 	}
 	return 1;
 }

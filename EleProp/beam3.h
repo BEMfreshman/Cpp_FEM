@@ -1,4 +1,4 @@
-#ifndef BEAM3_H
+﻿#ifndef BEAM3_H
 #define BEAM3_H
 
 

@@ -1,4 +1,4 @@
-#ifndef ABSTRACTMATERIAL_H
+ï»¿#ifndef ABSTRACTMATERIAL_H
 #define ABSTRACTMATERIAL_H
 
 #include "matpropvar.h"
@@ -54,7 +54,7 @@ protected:
 
 protected:
 	int id;
-	int dim;     //Î¬¶È
+	int dim;     //Î¬ï¿½ï¿½
 	
 
 	MatCategory matcate;

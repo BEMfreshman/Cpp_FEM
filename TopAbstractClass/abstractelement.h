@@ -13,9 +13,7 @@ using namespace std;
 /* 抽象Element
  * 向下继承为
  * 点单元
- * 杆单元（二维，三维）
- * 梁单元（二维，三维）
- * 壳单元
+ * 线单元（二维，三维）
  * 平面应变单元（三角形，四边形）
  * 平面应力单元（三角形，四边形）
  * 四面体单元
@@ -35,19 +33,22 @@ typedef Eigen::Triplet<double> T_;
 class Element
 {
 public: 
-    
+
+    // TODO:
+    //  将所有的ElementType换做ElementName（string）
+    //  Element类构造函数中加上FEMInformation的指针
 
     Element();
 
     Element(int ElementId,
             int MaterialId,
-            ElementType eletype,
+            const string& ElementName,
 			int dim,
             const Eigen::MatrixXi& VertexIdArray);
     Element(int ElementId,
             int MaterialId,
             int EPropId,
-            ElementType eletype,
+            const string& ElementName,
 			int dim,
             const Eigen::MatrixXi& VertexIdArray);
 

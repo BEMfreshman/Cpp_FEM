@@ -404,7 +404,7 @@ int BeamEB2::ComputeMassMatrix(vector<T_>& tripleList)
 	}
 	else if (dim == 3)
 	{
-		//��ά����Ԫ
+		//3 dim
 	}
 
 	return 0;
@@ -422,11 +422,11 @@ ElementType BeamEB2::GetElementType()
 
 int BeamEB2::ComputeShapeFunction()
 {
-	//Hermite�κ���
+	//Hermite插值
 	ComputeElementLength();
 
 	Line2::ComputeShapeFunction();
-	//��ҪΪ���κ���
+	//计算形函数
 	dNdxi.setZero();
 
 	Eigen::MatrixXd GaussPoint(LocalGaussPoint.rows(), LocalGaussPoint.cols());

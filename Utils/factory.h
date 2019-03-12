@@ -19,6 +19,9 @@ class Constraint;
  * 即可获得所有计算需要的类的实例
  */
 
+// TODO:
+//  依照Factory中以Create开头的函数，调整所有的类，将指向FEMInformation的信息加入到构造函数中去
+
 class Factory
 {
 public:
